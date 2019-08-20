@@ -31,3 +31,16 @@
     transform: rotate(360deg);
   }
 }
+
+.User-picture{
+  width: 24vh;
+  height: 24vh;
+  margin-left: 10vh;
+  margin-right: 10vh;
+  margin-top: 2vh;
+  margin-bottom: 3vh;
+  border-radius: 24vh;
+}
+.Library-picture{
+  height: 100vh;
+}
