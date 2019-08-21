@@ -30,14 +30,20 @@ class App extends React.Component {
           crossOrigin="anonymous"
         />
         <Router>
-          <Route
-            exact="true"
+        <Route
+            exact={true}
             path={'/'}
             render={() => {
               return this.state.loggedIn ? 
-              <Home  />
+              <Redirect to="./home"/>
               :
               <Redirect to="./login"/>;
+            }}
+          />
+          <Route
+            path={'/home'}
+            render={() => {
+              return <Home />
             }}
           />
           <Route

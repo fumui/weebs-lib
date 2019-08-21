@@ -14,7 +14,7 @@ class BookCard extends React.Component{
   render(){
     const {description} = this.state
     return(
-    <Card style={{ width: '20%'}}>
+    <Card style={{ width: '25%', margin: '3%'}}>
       <figure>
         <Card.Img variant="top" src={this.state.imgUrl} className="book-image"/>
       </figure>

@@ -27,7 +27,7 @@ class YearDropdown extends React.Component{
         <Dropdown.Menu>
           {yearsList.length > 0 ? 
             yearsList.map((year, index) => {
-              return <Dropdown.Item key={index} href={`/year/${year.year}`}>{year.year}</Dropdown.Item>
+              return <Dropdown.Item key={index} href={`http://localhost:3000/home/year/${year.year}`}>{year.year}</Dropdown.Item>
             }):
             <Dropdown.Item key="0" href="#">Loading...</Dropdown.Item>}
         </Dropdown.Menu>

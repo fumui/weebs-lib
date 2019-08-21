@@ -1,5 +1,6 @@
 import React from 'react'
 import Sidebar from 'react-sidebar'
+import { Route } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
 import {Button, Navbar, Form, InputGroup, FormControl } from 'react-bootstrap'
@@ -26,6 +27,12 @@ class Home extends React.Component{
     })
   }
 
+  Genre({ match }) {
+    return (
+      <BooksList dataSource={`http://localhost:3030/books/genre/${match}`}/>
+    );
+  }
+
   render(){
     return(
       <div>
@@ -36,7 +43,7 @@ class Home extends React.Component{
             />}
           open={this.state.sidebarOpen}
           onSetOpen={this.onSetSidebarOpen}
-          styles={{ sidebar: { background: "white", zIndex:"20" } }}
+          styles={{ sidebar: { background: "white", zIndex:"20", position:"fixed" } }}
         >
         </Sidebar>
         <Navbar className="bg-light justify-content-between">
@@ -59,8 +66,30 @@ class Home extends React.Component{
           </Form>
           <Navbar.Brand href="#home"><img src={Bookshelf} alt="bookshelf"/>Weeb's Library</Navbar.Brand>
         </Navbar>
-        <PopularBooksCarousel />
-        <BooksList/>
+        <Route 
+          path="/home" 
+          exact={true}
+          render={() => {
+            return(
+              <div>
+                <PopularBooksCarousel />
+                <BooksList/>
+              </div>
+            );
+          }} 
+        />
+        <Route 
+          path="/home/genre/:genre" 
+          component={(url) => {
+            return <BooksList dataSource={`http://localhost:3030/books/genre/${url.match.params.genre}`}/>;
+          }} 
+        />
+        <Route 
+          path="/home/year/:year" 
+          component={(url) => {
+            return <BooksList dataSource={`http://localhost:3030/books/year/${url.match.params.year}`}/>;
+          }} 
+        />
       </div>
     )
   }
