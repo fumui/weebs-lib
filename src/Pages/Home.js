@@ -16,7 +16,8 @@ class Home extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      sidebarOpen : false
+      sidebarOpen : false,
+      search:""
     }
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
   }
@@ -26,13 +27,10 @@ class Home extends React.Component{
       sidebarOpen : open
     })
   }
-
-  Genre({ match }) {
-    return (
-      <BooksList dataSource={`http://localhost:3030/books/genre/${match}`}/>
-    );
+  componentDidMount(){
+    if(!document.cookie.includes('token'))
+      window.location.replace("http://localhost:3000/")
   }
-
   render(){
     return(
       <div>
@@ -58,6 +56,7 @@ class Home extends React.Component{
                 <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faSearch}/></InputGroup.Text>
               </InputGroup.Prepend>
               <FormControl
+                name="search"
                 placeholder="Search book"
                 aria-label="Search book"
                 aria-describedby="basic-addon1"
@@ -73,7 +72,7 @@ class Home extends React.Component{
             return(
               <div>
                 <PopularBooksCarousel />
-                <BooksList/>
+                <BooksList dataSource={`http://localhost:3030/books/${window.location.search}`}/>
               </div>
             );
           }} 
