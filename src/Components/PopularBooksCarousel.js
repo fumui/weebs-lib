@@ -21,9 +21,9 @@ class PopularBookCarousel extends React.Component{
     const {popularBooksList} = this.state
     return (
       <Carousel style={{width:"50%", marginLeft:"25%", marginRight:"25%"}}>
-        {popularBooksList.map((book) => {
+        {popularBooksList.map((book, index) => {
           return (
-          <Carousel.Item >
+          <Carousel.Item key={index} >
             <figure>
               <img
                 className="d-block w-100 carousel-book-image"

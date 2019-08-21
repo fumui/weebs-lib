@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 import RegisterForm from '../Components/RegisterForm';
 import LoginForm from '../Components/LoginForm';
@@ -10,8 +10,14 @@ class Login extends React.Component{
   constructor(props){
     super(props)
     this.state = {
+      loggedIn: this.isLoggedIn()
     }
   }
+
+  isLoggedIn(){
+    return document.cookie.includes('token')
+  }
+
   render(){
     return(
       <div style={{margin: 0 }}>
@@ -25,11 +31,11 @@ class Login extends React.Component{
             <img src={Bookshelf} alt='bookshelf' width="100px" style={{margin:"1vh"}} />
           </div>
         </div>
-        <Router>
           <Route
             path={'/login'}
             render={() => {
               return (
+              this.state.loggedIn ? <Redirect to="./"/> :
                 <div style={{position:"relative"}}>
                   <div className="Header" style={{position:"absolute", marginTop:"20vh", marginLeft:"100vh"}}>
                     <h1>Login</h1>
@@ -54,7 +60,6 @@ class Login extends React.Component{
               );
             }}
           />
-        </Router>
         
       </div>
     )

@@ -24,9 +24,10 @@ class BooksList extends React.Component{
     const {data} = this.state
     return(
       <div style={{display: 'flex', flexWrap:"wrap", flexDirection: 'row'}}>
-        {data.map((book) => {
+        {data.map((book, index) => {
           return(
             <BookCard  
+            key={index}
             imgUrl={book.image} 
             title={book.title}
             description={book.description.substr(0,75)+'...'} />

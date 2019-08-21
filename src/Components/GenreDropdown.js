@@ -26,10 +26,10 @@ class GenreDropdown extends React.Component{
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {genresList.length > 0 ? 
-            genresList.map((genre) => {
-              return <Dropdown.Item href={`/genre/${genre.id}`}>{genre.name}</Dropdown.Item>
+            genresList.map((genre, index) => {
+              return <Dropdown.Item key={index} href={`/genre/${genre.id}`}>{genre.name}</Dropdown.Item>
             }):
-            <Dropdown.Item href="#/action-1">Loading...</Dropdown.Item>}
+            <Dropdown.Item href="#">Loading...</Dropdown.Item>}
         </Dropdown.Menu>
       </Dropdown>
     )
