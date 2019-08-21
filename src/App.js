@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css'
 
 import Home from './Pages/Home'
-import Login from './Pages/Login'
+import Auth from './Pages/Auth'
 class App extends React.Component {
 
   render(){
@@ -25,15 +25,15 @@ class App extends React.Component {
           <Route
             path={'/login'}
             render={() => {
-              return <Login  />;
+              return <Auth  />;
             }}
           />
-          {/* <Route
+          <Route
             path={'/register'}
             render={() => {
-              return <Register  />;
+              return <Auth  />;
             }}
-          /> */}
+          />
         </Router>
       </div>
     )

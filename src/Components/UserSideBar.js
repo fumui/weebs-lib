@@ -13,7 +13,8 @@ class UserSideBar extends React.Component{
   }
 
   render(){
-    return (<div>
+    return (
+    <div>
       <img src={this.state.image} alt="user"  className="User-picture"/>
       <h5>{this.state.username}</h5>
     </div>)

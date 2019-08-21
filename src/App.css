@@ -42,5 +42,66 @@
   border-radius: 24vh;
 }
 .Library-picture{
+  position: absolute;
   height: 100vh;
+  float: left;
+  left: 0;
+  z-index: 0;
+}
+#inspire{
+  text-align:left;
+  font-size: 64px;
+  margin-top:5vh;
+  margin-left:5vh;
+  position: absolute;
+  z-index: 100;
+  color:white;
+  text-shadow: 2px 2px 5px rgb(0, 0, 0);
+}
+#disclaimer{
+  text-align:left;
+  font-size: 16px;
+  margin-top:95vh;
+  margin-bottom: 0px;
+  margin-left:5vh;
+  position: absolute;
+  z-index: 100;
+  color:white;
+  text-shadow: 2px 2px 5px rgb(0, 0, 0);
+}
+.Header {
+  font-size: 64px;
+  line-height: 83px;
+  color: #424242;
+}
+.app-form-group{
+  width: 50vh;
+  max-height: 15vh;
+}
+.app-form-group .app-form-control{
+  padding: 2vh;
+  border:none;
+}
+figure{  
+  width:100%;
+  overflow: hidden;
+  margin:0;  
+}
+
+figure img{
+  margin:-45% 0;
+}
+figure img.book-image{
+  margin:-30% 0;
+}
+
+figure img.carousel-book-image{    
+  margin-bottom: -75%;
+  margin-top: 0%;
+}
+.book-carousel-caption{
+  background: black;
+  opacity: 0.6;
+  margin-left: -15%;
+  width: 100%;
 }

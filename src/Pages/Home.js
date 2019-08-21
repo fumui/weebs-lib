@@ -1,13 +1,15 @@
-import React from 'react';
+import React from 'react'
 import Sidebar from 'react-sidebar'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
-import {Button, Navbar, Form, InputGroup, FormControl} from 'react-bootstrap'
-import UserSideBar from '../Components/UserSideBar';
-import Bookshelf from '../bookshelf.svg'
-import GenreDropdown from "../Components/GenreDropdown";
-import YearDropdown from '../Components/YearDropdown';
+import {Button, Navbar, Form, InputGroup, FormControl } from 'react-bootstrap'
 
+import BooksList from '../Components/BooksList'
+import UserSideBar from '../Components/UserSideBar'
+import Bookshelf from '../bookshelf.svg'
+import GenreDropdown from "../Components/GenreDropdown"
+import YearDropdown from '../Components/YearDropdown'
+import PopularBooksCarousel from '../Components/PopularBooksCarousel';
 
 class Home extends React.Component{
   constructor(props){
@@ -34,7 +36,7 @@ class Home extends React.Component{
             />}
           open={this.state.sidebarOpen}
           onSetOpen={this.onSetSidebarOpen}
-          styles={{ sidebar: { background: "white" } }}
+          styles={{ sidebar: { background: "white", zIndex:"20" } }}
         >
         </Sidebar>
         <Navbar className="bg-light justify-content-between">
@@ -57,6 +59,8 @@ class Home extends React.Component{
           </Form>
           <Navbar.Brand href="#home"><img src={Bookshelf} alt="bookshelf"/>Weeb's Library</Navbar.Brand>
         </Navbar>
+        <PopularBooksCarousel />
+        <BooksList/>
       </div>
     )
   }
