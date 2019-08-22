@@ -72,7 +72,7 @@ class Home extends React.Component{
             return(
               <div>
                 <PopularBooksCarousel />
-                <BooksList dataSource={`http://localhost:3030/books/${window.location.search}`}/>
+                <BooksList dataSource={`http://localhost:3030/books${window.location.search}`}/>
               </div>
             );
           }} 

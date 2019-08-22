@@ -4,6 +4,8 @@ import './App.css'
 
 import Home from './Pages/Home'
 import Auth from './Pages/Auth'
+import BookDetail from './Pages/BookDetail';
+
 class App extends React.Component {
   constructor(props){
     super(props)
@@ -45,6 +47,12 @@ class App extends React.Component {
             render={() => {
               return <Home />
             }}
+          />
+          <Route
+            path={'/book/:id'}
+            component={(url) => {
+              return <BookDetail bookUrl={`http://localhost:3030/books/${url.match.params.id}`}/>;
+            }} 
           />
           <Route
             path={'/login'}

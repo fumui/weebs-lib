@@ -1,6 +1,9 @@
 import React from 'react'
+import {Container, Row, Button} from 'react-bootstrap'
+import Axios from 'axios';
 import '../App.css'
 
+import AddBookModal from './AddBookModal'
 class UserSideBar extends React.Component{
   constructor(props){
     super(props)
@@ -9,14 +12,45 @@ class UserSideBar extends React.Component{
       image: props.image || "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg",
       email: props.email || "dummy@gmail.com",
       level: props.level || "regular",
+      fullname: props.fullname || "dummyfullname",
+      id: props.id ,
     }
   }
-
+  componentDidMount(){
+    Axios.get("http://localhost:3030/users/profile",{
+      headers:{
+        Authorization : document.cookie.split("=")[1],
+      }
+    })
+      .then(res => {
+        const userData=res.data.data;
+        console.log("userdata", userData)
+        this.setState({
+          username : userData.username,
+          fullname : userData.fullname,
+          email : userData.email,
+          level : userData.level,
+          id : userData.id,
+        })
+      })
+      .catch(err => console.log(err))
+  }
   render(){
     return (
     <div>
       <img src={this.state.image} alt="user"  className="User-picture"/>
-      <h5>{this.state.username}</h5>
+      <h5>{this.state.fullname}</h5>
+      <Container className="sidebar-buttons ">
+        <Row className="justify-content-md-center"><Button size="lg" variant="light">Explore</Button></Row>
+        <Row className="justify-content-md-center"><Button size="lg" variant="light">History</Button></Row>
+        {
+          this.state.level == "admin" ? 
+          <Row className="justify-content-md-center">
+            <AddBookModal/>
+          </Row>
+          :''
+        }
+      </Container>
     </div>)
   }
 }

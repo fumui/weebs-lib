@@ -27,7 +27,7 @@ class GenreDropdown extends React.Component{
         <Dropdown.Menu>
           {genresList.length > 0 ? 
             genresList.map((genre, index) => {
-              return <Dropdown.Item key={index} href={`http://localhost:3000/home/genre/${genre.name}`}>{genre.name}</Dropdown.Item>
+              return <Dropdown.Item key={index} href={`http://localhost:3000/home/genre/${genre.name}/`}>{genre.name}</Dropdown.Item>
             }):
             <Dropdown.Item href="#">Loading...</Dropdown.Item>}
         </Dropdown.Menu>

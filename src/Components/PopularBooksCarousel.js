@@ -9,6 +9,11 @@ class PopularBookCarousel extends React.Component{
     this.state = {
       popularBooksList:[]
     }
+    this.getDetails = this.getDetails.bind(this)
+  }
+  
+  getDetails = (id) =>{
+    window.location.href =`/book/${id}`
   }
   componentDidMount = () => {
     Axios.get ('http://localhost:3030/books/popular')
@@ -23,7 +28,7 @@ class PopularBookCarousel extends React.Component{
       <Carousel style={{width:"50%", marginLeft:"25%", marginRight:"25%"}}>
         {popularBooksList.map((book, index) => {
           return (
-          <Carousel.Item key={index} >
+          <Carousel.Item key={index} onClick={()=>this.getDetails(book.id)}>
             <figure>
               <img
                 className="d-block w-100 carousel-book-image"

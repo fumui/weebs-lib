@@ -10,19 +10,26 @@ class BooksList extends React.Component{
     this.state = {
       dataSource: props.dataSource || "http://localhost:3030/books",
       data: [],
-      totalPage:1,
       page: 1,
-      limit: 10,
+      limit: 12,
     }
+    this.nextPage = this.nextPage.bind(this)
   }
 
+    
   componentDidMount(){
-    Axios.get(this.state.dataSource)
+    console.log(this.state)
+    Axios.get(`${this.state.dataSource}`)
       .then((result) =>{
         this.setState({
           data: result.data.data
         })
       })
+      .catch(err => console.log(err))
+  }
+  
+  nextPage = () =>{
+    this.setState({page:(Number(this.state.page)+1)})
   }
 
   render(){
@@ -33,30 +40,24 @@ class BooksList extends React.Component{
           {data.map((book, index) => {
             return(
               <BookCard  
+              onClick={() => this.getDetails(index)}
               key={index}
               imgUrl={book.image} 
+              bookId={book.id}
               title={book.title}
               description={book.description.substr(0,75)+'...'} />
             )
           })}
         </div>
-        {/* <Pagination>
-          <Pagination.First />
-          <Pagination.Prev />
-          <Pagination.Item>{1}</Pagination.Item>
-          <Pagination.Ellipsis />
-
-          <Pagination.Item>{10}</Pagination.Item>
-          <Pagination.Item>{11}</Pagination.Item>
-          <Pagination.Item active>{12}</Pagination.Item>
-          <Pagination.Item>{13}</Pagination.Item>
-          <Pagination.Item disabled>{14}</Pagination.Item>
-
-          <Pagination.Ellipsis />
-          <Pagination.Item>{20}</Pagination.Item>
-          <Pagination.Next />
-          <Pagination.Last />
-        </Pagination> */}
+        <Pagination className="justify-content-md-center">
+          { this.state.page === 1?<Pagination.Item active>{1}</Pagination.Item>
+          :<div>
+            <Pagination.Prev />
+            <Pagination.Item active>{this.state.page}</Pagination.Item>
+          </div>
+          }
+          <Pagination.Next onClick={() => this.nextPage()}/>
+        </Pagination>
       </div>
     )
   }

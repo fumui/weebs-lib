@@ -45,7 +45,6 @@ class LoginForm extends React.Component{
   }
 
   render(){
-    console.log(document.cookie.includes('token'))
     if(document.cookie.includes('token')) return <Redirect to="../"/>
     else return(
       <Form style={this.state.style} onSubmit={this.handleSubmit}>

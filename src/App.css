@@ -105,3 +105,64 @@ figure img.carousel-book-image{
   margin-left: -15%;
   width: 100%;
 }
+.book-detail-image{
+  width: 100vw;
+  height: 45vh;
+  overflow: hidden;
+}
+.book-detail-image .cover-img{
+  width: 100vw;
+  position: relative;
+  margin:-75% -55%;
+  overflow: hidden;
+}
+.book-img{
+  position: absolute;
+  margin-top: 20vh;
+  right: 5vw;
+  width: 15vw;
+  -webkit-box-shadow: 9px 11px 5px 0px rgba(0,0,0,0.32);
+  -moz-box-shadow: 9px 11px 5px 0px rgba(0,0,0,0.32);
+  box-shadow: 9px 11px 5px 0px rgba(0,0,0,0.32);
+  border-radius: 1rem;
+}
+.book-detail-data{
+  text-align: left;
+  padding: 3vw;
+  width:70vw;
+}
+.book-detail-data .genre-button{
+  border-radius: 2rem;
+}
+.book-detail-data .availability-button{
+  float: right;
+}
+.borrow-button{
+  position: absolute;
+  right: 8vw;
+  bottom: 10vh;
+}
+.book-detail-data .book-title{
+  font-size: 3vw;
+}
+.book-detail-data .book-description{
+  margin-top: 2vh; 
+  font-size: 1.5vw;
+}
+.book-detail-data .book-date-released{
+  font-size: 2vw;
+  padding: 0.25vw;
+}
+.book-detail-data .book-availability{
+  border-radius: 2rem;
+}
+.back-button{
+  position: absolute;
+  left: 2vw;
+  top: 2vw;
+  z-index: 2;
+  border-radius: 100%!important;
+}
+.sidebar-buttons{
+  margin-top: 10vh;
+}
