@@ -39,7 +39,11 @@ class BooksList extends React.Component{
   }
   componentDidMount(){
     console.log(this.state)
-    Axios.get(`${this.state.dataSource}`)
+    Axios.get(`${this.state.dataSource}`,{
+      headers:{
+        Authorization : document.cookie.split("=")[1],
+      }
+    })
       .then((result) =>{
         this.setState({
           data: result.data.data
