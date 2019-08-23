@@ -26,13 +26,17 @@ const onClickMinus = () =>{
   window.location.href = newHref
 }
 export default function Pagination(){
-  const hasPrevPage = window.location.search.includes("page") || window.location.search.includes("page=1")
+  const params= window.location.search
+  const hasPrevPage = params.includes("page") || params.includes("page=1")
+  const page = params.includes("page") ? params.charAt(params.indexOf("page") + 5) : 1
   return(
     <Fragment>
       <Button 
         disabled={!hasPrevPage}
-        onClick={onClickMinus}>-</Button>
-      <Button onClick={onClickPlus}>+</Button>
+        onClick={onClickMinus}>{'<'}</Button>
+      <Button 
+        disabled={!hasPrevPage}>{page}</Button>
+      <Button onClick={onClickPlus}>{'>'}</Button>
     </Fragment>
   )
 }

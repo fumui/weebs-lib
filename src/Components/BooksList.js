@@ -1,7 +1,7 @@
 import React from 'react';
 import Axios from 'axios';
 import BookCard from './BookCard';
-import { Button, Alert } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 
 class BooksList extends React.Component{
   constructor(props){
