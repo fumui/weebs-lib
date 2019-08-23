@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import {Container, Row, Button} from 'react-bootstrap'
 import Axios from 'axios';
 import '../App.css'
@@ -42,8 +43,8 @@ class UserSideBar extends React.Component{
       <img src={this.state.image} alt="user"  className="User-picture"/>
       <h5>{this.state.fullname}</h5>
       <Container className="sidebar-buttons ">
-        <Row className="justify-content-md-center"><Button size="lg" variant="light">Explore</Button></Row>
-        <Row className="justify-content-md-center"><Button size="lg" variant="light">History</Button></Row>
+        <Row className="justify-content-md-center"><Link to="/home/explore" className="btn btn-light btn-lg" size="lg" variant="light">Explore</Link></Row>
+        <Row className="justify-content-md-center"><Link to="/home/history" className="btn btn-light btn-lg" size="lg" variant="light">History</Link></Row>
         {
           this.state.level === "admin" ? 
           <Row className="justify-content-md-center">
