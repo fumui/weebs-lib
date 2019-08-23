@@ -11,12 +11,18 @@ class UserSideBar extends React.Component{
     super(props)
     this.state = {
       username: props.username || "dummy",
-      image: props.image || "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg",
+      image: props.image || "https://icon-library.net/images/user-login-icon/user-login-icon-17.jpg",
       email: props.email || "dummy@gmail.com",
       level: props.level || "regular",
       fullname: props.fullname || "dummyfullname",
       id: props.id ,
     }
+    this.handleLogout = this.handleLogout.bind(this)
+  }
+  handleLogout = (event) => { 
+    const time = new Date()
+    document.cookie = "token=; "+time.toUTCString+"path=/"
+    window.location.reload()
   }
   componentDidMount(){
     Axios.get("http://localhost:3030/users/profile",{
@@ -26,7 +32,6 @@ class UserSideBar extends React.Component{
     })
       .then(res => {
         const userData=res.data.data;
-        console.log("userdata", userData)
         this.setState({
           username : userData.username,
           fullname : userData.fullname,
@@ -52,6 +57,7 @@ class UserSideBar extends React.Component{
           </Row>
           :''
         }
+        <Row className="justify-content-md-center"><Button size="lg" variant="light" onClick={this.handleLogout} >Logout</Button></Row>
       </Container>
     </div>)
   }
