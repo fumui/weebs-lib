@@ -166,3 +166,8 @@ figure img.carousel-book-image{
 .sidebar-buttons{
   margin-top: 10vh;
 }
+.book-detail-control{
+  position: absolute;
+  right:2vw;
+  top:2vw;
+}

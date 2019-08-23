@@ -21,7 +21,6 @@ class Home extends React.Component{
     }
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
   }
-
   onSetSidebarOpen = (open) => {
     this.setState({
       sidebarOpen : open

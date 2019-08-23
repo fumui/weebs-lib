@@ -1,6 +1,5 @@
 import React from 'react'
 import {Modal, Button} from 'react-bootstrap'
-import AddBookForm from './AddBookForm';
 
 function ModalLayer(props) {
   return (
@@ -12,30 +11,32 @@ function ModalLayer(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Add Book
+          {props.title}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddBookForm />
+        {props.content}
       </Modal.Body>
     </Modal>
   );
 }
 
-function AddBookModal() {
+function BookModal(props) {
   const [modalShow, setModalShow] = React.useState(false);
 
   return (
     <div>
-      <Button variant="light" size="lg" onClick={() => setModalShow(true)}>
-        Add Book
+      <Button variant={props.variant || "light"} size="lg" onClick={() => setModalShow(true)}>
+        {props.title}
       </Button>
 
       <ModalLayer
         show={modalShow}
         onHide={() => setModalShow(false)}
+        title={props.title}
+        content={props.content}
       />
     </div>
   );
 }
-export default AddBookModal
+export default BookModal

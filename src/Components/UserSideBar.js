@@ -3,7 +3,8 @@ import {Container, Row, Button} from 'react-bootstrap'
 import Axios from 'axios';
 import '../App.css'
 
-import AddBookModal from './AddBookModal'
+import BookModal from './BookModal'
+import AddBookForm from './AddBookForm';
 class UserSideBar extends React.Component{
   constructor(props){
     super(props)
@@ -46,7 +47,7 @@ class UserSideBar extends React.Component{
         {
           this.state.level == "admin" ? 
           <Row className="justify-content-md-center">
-            <AddBookModal/>
+            <BookModal title="Add Book" content={<AddBookForm />}/>
           </Row>
           :''
         }

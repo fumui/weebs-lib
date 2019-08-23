@@ -15,7 +15,7 @@ class BookCard extends React.Component{
   }
 
   getDetails = (id) =>{
-    window.location.href =`/book/${id}`
+    window.location.href =`http://localhost:3000/book/${id}`
   }
   render(){
     const {description} = this.state
