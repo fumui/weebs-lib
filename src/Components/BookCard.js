@@ -1,6 +1,5 @@
 import React from 'react'
 import { Card } from "react-bootstrap"
-import {Redirect} from 'react-router-dom';
 
 class BookCard extends React.Component{
   constructor(props){

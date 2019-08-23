@@ -94,7 +94,7 @@ class AddBookForm extends React.Component{
           <Form.Label column sm="2">Genre</Form.Label>
           <Col sm="10">
             <Form.Control onChange={this.handleChange} as="select" name="genre_id">
-              {genreList.length != 0 ? genreList.map((genre) => {
+              {genreList.length !== 0 ? genreList.map((genre) => {
                 return <option value={genre.id} key={genre.id}> {genre.name} </option>
               })
               :<option>Loading...</option>

@@ -1,7 +1,7 @@
 import React from 'react'
 import Axios from 'axios';
 import {Button, Container, Row, Modal, Alert} from 'react-bootstrap';
-import {Link, Redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import BookModal from '../Components/BookModal';
@@ -84,7 +84,7 @@ class BookDetail extends React.Component{
       book_id:this.state.bookData.id,
       user_id:this.state.userData.id,
     }
-    if(action == "Borrow"){
+    if(action === "Borrow"){
       Axios.post(`http://localhost:3030/borrowings/`,data,{
         headers:{
           Authorization : document.cookie.split("=")[1],
@@ -98,7 +98,7 @@ class BookDetail extends React.Component{
           })
         })
         .catch(err => console.log(err))
-    }else if(action == "Return"){
+    }else if(action === "Return"){
       Axios.patch(`http://localhost:3030/borrowings/`,data,{
         headers:{
           Authorization : document.cookie.split("=")[1],
@@ -140,10 +140,10 @@ class BookDetail extends React.Component{
         <div style={{overflow:"hidden"}}>
           <Link to="../../home" variant="light" className=" btn btn-light back-button"><FontAwesomeIcon  icon={faArrowLeft} /></Link>
           <div className="book-detail-image">
-            <img className="cover-img" src={newImageUrl} />
-            <img className="book-img" src={bookData.image}  />
+            <img className="cover-img" src={newImageUrl} alt="cover"/>
+            <img className="book-img" src={bookData.image}  alt="miniCover"/>
           </div>
-          {this.state.userData.level =='admin' ? 
+          {this.state.userData.level === 'admin' ? 
           <div className="book-detail-control">
             <Row>
               <BookModal
@@ -178,7 +178,7 @@ class BookDetail extends React.Component{
             className="borrow-button"
             onClick={this.handleBorrow}
           >
-            {this.state.userData.id == this.state.borrowedBy ?"Return":"Borrow"}
+            {this.state.userData.id === this.state.borrowedBy ?"Return":"Borrow"}
           </Button>
           <Modal show={this.state.showModal} onHide={this.handleClose}>
             <Modal.Header>

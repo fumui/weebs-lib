@@ -45,7 +45,7 @@ class UserSideBar extends React.Component{
         <Row className="justify-content-md-center"><Button size="lg" variant="light">Explore</Button></Row>
         <Row className="justify-content-md-center"><Button size="lg" variant="light">History</Button></Row>
         {
-          this.state.level == "admin" ? 
+          this.state.level === "admin" ? 
           <Row className="justify-content-md-center">
             <BookModal title="Add Book" content={<AddBookForm />}/>
           </Row>

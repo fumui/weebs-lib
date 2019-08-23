@@ -111,8 +111,8 @@ class EditBookForm extends React.Component{
             <Form.Label column sm="2">Genre</Form.Label>
             <Col sm="10">
               <Form.Control onChange={this.handleChange} as="select" name="genre_id">
-                {genreList.length != 0 ? genreList.map((genre) => {
-                  const selected = this.state.genre_id == genre.id ? 'selected':''
+                {genreList.length !== 0 ? genreList.map((genre) => {
+                  const selected = this.state.genre_id === genre.id ? 'selected':''
                   return <option {...selected} value={genre.id} key={genre.id}> {genre.name} </option>
                 })
                 :<option>Loading...</option>
