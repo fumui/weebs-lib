@@ -11,34 +11,8 @@ class BooksList extends React.Component{
       dataSource: props.dataSource || "http://localhost:3030/books",
       data: [],
     }
-    this.onClickPlus = this.onClickPlus.bind(this)
-    this.onClickMinus = this.onClickMinus.bind(this)
-  }
-  onClickPlus = () =>{
-    const curr = window.location.href
-    let newHref = window.location.origin
-    const containsSearchQuery = curr.includes('?')
-    const containsPageQuery = curr.includes('page')
-    if(containsPageQuery){
-      let index = curr.indexOf("page")
-      let nextPage = Number(curr.charAt( (index+5) )) + 1
-      newHref = curr.replace(curr.substr(index, 6),`page=${nextPage}`)
-    }else if(containsSearchQuery){
-      newHref = curr.concat('&page=2')
-    }else{
-      newHref = curr.concat('?page=2')
-    }
-    window.location.href = newHref
-  }
-  onClickMinus = () =>{
-    const curr = window.location.href
-    let index = curr.indexOf("page")
-    let prevPage = Number(curr.charAt( (index+5) )) - 1
-    let newHref = curr.replace(curr.substr(index, 6),`page=${prevPage}`)
-    window.location.href = newHref
   }
   componentDidMount(){
-    console.log(this.state)
     Axios.get(`${this.state.dataSource}`,{
       headers:{
         Authorization : document.cookie.split("=")[1],
@@ -53,11 +27,8 @@ class BooksList extends React.Component{
   }
 
   render(){
-    const hasPrevPage = window.location.search.includes("page") || window.location.search.includes("page=1")
-    console.log(hasPrevPage)
     const {data} = this.state
     return(
-      <div>
         <div style={{display: 'flex', flexWrap:"wrap", flexDirection: 'row'}} className="justify-content-between">
           {
             data !==null? data.map((book, index) => {
@@ -73,12 +44,7 @@ class BooksList extends React.Component{
               }
             ):<Alert variant='danger'>Book Not Found</Alert>
           }
-          </div>
-        <Button 
-          disabled={!hasPrevPage}
-          onClick={this.onClickMinus}>-</Button>
-        <Button onClick={this.onClickPlus}>+</Button>
-      </div>
+        </div>
     )
   }
 }
