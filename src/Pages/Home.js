@@ -1,6 +1,7 @@
 import React from 'react'
 import Sidebar from 'react-sidebar'
 import { Route } from 'react-router-dom';
+import Axios from 'axios';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
 import {Button, Navbar, Form, InputGroup, FormControl } from 'react-bootstrap'
@@ -17,7 +18,8 @@ class Home extends React.Component{
     super(props)
     this.state = {
       sidebarOpen : false,
-      search:""
+      search:"",
+      userData:undefined,
     }
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
   }
@@ -26,11 +28,26 @@ class Home extends React.Component{
       sidebarOpen : open
     })
   }
-  componentDidMount(){
+  componentWillMount(){
     if(!document.cookie.includes('token'))
       window.location.replace("http://localhost:3000/")
+    
+    Axios.get("http://localhost:3030/users/profile",{
+      headers:{
+        Authorization : document.cookie.split("=")[1],
+      }
+    })
+      .then(res => {
+        const userData=res.data.data;
+        console.log("userdata", userData)
+        this.setState({
+          userData:userData
+        })
+      })
+      .catch(err => console.log(err))
   }
   render(){
+    console.log(this.state.userData)
     return(
       <div>
         <Sidebar
@@ -85,6 +102,24 @@ class Home extends React.Component{
                 <BooksList dataSource={`http://localhost:3030/books${window.location.search}`}/>
               </div>
             );
+          }} 
+        />
+        <Route 
+          path="/home/history" 
+          exact={true}
+          render={() => {
+            if(this.state.userData !== undefined )
+              return(
+                <div>
+                  <BooksList dataSource={`http://localhost:3030/borrowings/history/${this.state.userData.id}`}/>
+                </div>
+              );
+            else 
+              return(
+                <div>
+                  Loading...
+                </div>
+              );
           }} 
         />
         <Route 
