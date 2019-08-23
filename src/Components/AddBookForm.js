@@ -1,5 +1,5 @@
-import React from 'react';
-import {Row, Col, Form, Button} from 'react-bootstrap';
+import React,{Fragment} from 'react';
+import {Row, Col, Form, Button, Modal} from 'react-bootstrap';
 import Axios from 'axios';
 
 class AddBookForm extends React.Component{
@@ -13,10 +13,19 @@ class AddBookForm extends React.Component{
         image:'',
         date_released:'',
         genre_id:'',
-      }
+      },
+      showModal:false,
+      modalTitle:"",
+      modalMessage:"",
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClose  = this.handleClose.bind(this);
+  }
+
+  handleClose = ()=>{
+    this.setState({showModal: false})
+    window.location.reload()
   }
 
   handleChange(event){
@@ -38,7 +47,13 @@ class AddBookForm extends React.Component{
         Authorization : document.cookie.split("=")[1],
       }
     })
-      .then(res => console.log(res))
+      .then(res => {
+        this.setState({
+          showModal:true,
+          modalTitle:"Success",
+          modalMessage:res.data.message,
+        })
+      })
       .catch(err => console.log(err))
     event.preventDefault();
   }
@@ -53,60 +68,73 @@ class AddBookForm extends React.Component{
   render(){
     const {genreList} = this.state
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Group as={Row} controlId="formPlaintextTitle">
-          <Form.Label column sm="2">
-            Title
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control onChange={this.handleChange} type="text" name="title" placeholder="Title..." />
-          </Col>
-        </Form.Group>
+      <Fragment>
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Group as={Row} controlId="formPlaintextTitle">
+            <Form.Label column sm="2">
+              Title
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control onChange={this.handleChange} type="text" name="title" placeholder="Title..." />
+            </Col>
+          </Form.Group>
 
-        <Form.Group as={Row} controlId="formPlaintextDescription">
-          <Form.Label column sm="2">
-          Description
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control onChange={this.handleChange} type="text" name="description" placeholder="Description..." />
-          </Col>
-        </Form.Group>
+          <Form.Group as={Row} controlId="formPlaintextDescription">
+            <Form.Label column sm="2">
+            Description
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control onChange={this.handleChange} type="text" name="description" placeholder="Description..." />
+            </Col>
+          </Form.Group>
 
-        <Form.Group as={Row} controlId="formPlaintextImageURL">
-          <Form.Label column sm="2">
-          Image URL
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control onChange={this.handleChange} type="text" name="image" placeholder="Image URL..." />
-          </Col>
-        </Form.Group>
+          <Form.Group as={Row} controlId="formPlaintextImageURL">
+            <Form.Label column sm="2">
+            Image URL
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control onChange={this.handleChange} type="text" name="image" placeholder="Image URL..." />
+            </Col>
+          </Form.Group>
 
-        <Form.Group as={Row} controlId="formPlaintextDateReleased">
-          <Form.Label column sm="2">
-          Date Released
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control onChange={this.handleChange} name="date_released" type="date" />
-          </Col>
-        </Form.Group>
+          <Form.Group as={Row} controlId="formPlaintextDateReleased">
+            <Form.Label column sm="2">
+            Date Released
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control onChange={this.handleChange} name="date_released" type="date" />
+            </Col>
+          </Form.Group>
 
-        <Form.Group as={Row} controlId="formPlaintextGenre">
-          <Form.Label column sm="2">Genre</Form.Label>
-          <Col sm="10">
-            <Form.Control onChange={this.handleChange} as="select" name="genre_id">
-              {genreList.length !== 0 ? genreList.map((genre) => {
-                return <option value={genre.id} key={genre.id}> {genre.name} </option>
-              })
-              :<option>Loading...</option>
-            }
-            </Form.Control>
-          </Col>
-        </Form.Group>
+          <Form.Group as={Row} controlId="formPlaintextGenre">
+            <Form.Label column sm="2">Genre</Form.Label>
+            <Col sm="10">
+              <Form.Control onChange={this.handleChange} as="select" name="genre_id">
+                {genreList.length !== 0 ? genreList.map((genre) => {
+                  return <option value={genre.id} key={genre.id}> {genre.name} </option>
+                })
+                :<option>Loading...</option>
+              }
+              </Form.Control>
+            </Col>
+          </Form.Group>
 
-        <Button style={{float:"right"}} variant="warning" type="submit" className="btn-black">
-          Save
-        </Button>
-      </Form>
+          <Button style={{float:"right"}} variant="warning" type="submit" className="btn-black">
+            Save
+          </Button>
+        </Form>
+        <Modal show={this.state.showModal} onHide={this.handleClose}>
+          <Modal.Header>
+            <Modal.Title>{this.state.modalTitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{this.state.modalMessage}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </Fragment>
     );
   }
 }

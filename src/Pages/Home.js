@@ -77,6 +77,17 @@ class Home extends React.Component{
           }} 
         />
         <Route 
+          path="/home/explore" 
+          exact={true}
+          render={() => {
+            return(
+              <div>
+                <BooksList dataSource={`http://localhost:3030/books${window.location.search}`}/>
+              </div>
+            );
+          }} 
+        />
+        <Route 
           path="/home/genre/:genre" 
           component={(url) => {
             return <BooksList dataSource={`http://localhost:3030/books/genre/${url.match.params.genre}`}/>;
