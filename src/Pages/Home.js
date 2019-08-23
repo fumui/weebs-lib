@@ -12,6 +12,7 @@ import Bookshelf from '../bookshelf.svg'
 import GenreDropdown from "../Components/GenreDropdown"
 import YearDropdown from '../Components/YearDropdown'
 import PopularBooksCarousel from '../Components/PopularBooksCarousel';
+import Pagination from '../Components/Pagination';  
 
 class Home extends React.Component{
   constructor(props){
@@ -19,7 +20,7 @@ class Home extends React.Component{
     this.state = {
       sidebarOpen : false,
       search:"",
-      userData:undefined,
+      userData:null,
     }
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
   }
@@ -29,7 +30,7 @@ class Home extends React.Component{
     })
   }
   componentWillMount(){
-    if(!document.cookie.includes('token'))
+    if(!document.cookie.includes('token=Bearer'))
       window.location.replace("http://localhost:3000/")
     
     Axios.get("http://localhost:3030/users/profile",{
@@ -39,7 +40,6 @@ class Home extends React.Component{
     })
       .then(res => {
         const userData=res.data.data;
-        console.log("userdata", userData)
         this.setState({
           userData:userData
         })
@@ -47,7 +47,6 @@ class Home extends React.Component{
       .catch(err => console.log(err))
   }
   render(){
-    console.log(this.state.userData)
     return(
       <div>
         <Sidebar
@@ -89,6 +88,7 @@ class Home extends React.Component{
               <div>
                 <PopularBooksCarousel />
                 <BooksList dataSource={`http://localhost:3030/books${window.location.search}`}/>
+                <Pagination/>
               </div>
             );
           }} 
@@ -100,6 +100,7 @@ class Home extends React.Component{
             return(
               <div>
                 <BooksList dataSource={`http://localhost:3030/books${window.location.search}`}/>
+                <Pagination/>
               </div>
             );
           }} 
