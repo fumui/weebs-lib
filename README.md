@@ -1,4 +1,14 @@
+# Weeb's Library
+
+Front-End App based on Rent Book App Back-End project. 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Getting Started
+
+- to use this project, you also need to clone [Rent Book App](https://github.com/IndBrony/Rent-Book) and configure it to your machine. 
+- then run `npm install` to install all the dependencies needed
+- you're all set, you can start to run available scripts listed below
 
 ## Available Scripts
 
