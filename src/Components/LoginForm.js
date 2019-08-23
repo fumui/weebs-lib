@@ -1,6 +1,6 @@
 import React from 'react';
 import Axios from 'axios';
-import {Form, Button} from 'react-bootstrap';
+import {Form, Button, Spinner} from 'react-bootstrap';
 import {Link, Redirect} from 'react-router-dom';
 
 class LoginForm extends React.Component{
@@ -11,6 +11,7 @@ class LoginForm extends React.Component{
       email: '',
       password:'',
       loggedIn:false,
+      loading:false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,6 +28,9 @@ class LoginForm extends React.Component{
   }
 
   handleSubmit(event) {
+    this.setState({
+      loading:true
+    })
     Axios.post('http://localhost:3030/users/login', {
       email: this.state.email, 
       password: this.state.password
@@ -39,13 +43,21 @@ class LoginForm extends React.Component{
   }
   
   loggingIn(res){
+    this.setState({
+      loading:false
+    })
+    console.log(res)
     const token = res.data.token
-    document.cookie = `token=${token}`
-    window.location.reload()
+    if(token === undefined){
+      window.alert(res.data.message)
+    } else {
+      document.cookie = `token=${token}`
+      window.location.reload()
+    }
   }
 
   render(){
-    if(document.cookie.includes('token')) return <Redirect to="../"/>
+    if(document.cookie.includes('token=Bearer ')) return <Redirect to="../"/>
     else return(
       <Form style={this.state.style} onSubmit={this.handleSubmit}>
         <div className="card app-form-group">
@@ -73,9 +85,21 @@ class LoginForm extends React.Component{
             />
           </Form.Group>
         </div>
-        <Button variant="dark" type="submit" className="btn-black">
-          Login
-        </Button>
+        {this.state.loading?
+          <Button variant="dark" disabled>
+            <Spinner
+              as="span"
+              animation="grow"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            Loading...
+          </Button>:
+          <Button variant="dark" type="submit" className="btn-black">
+            Login
+          </Button>
+        }
         <Link to="./register" className="btn btn-light" >Sign up</Link>
         
       </Form>
