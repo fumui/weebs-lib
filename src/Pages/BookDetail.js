@@ -68,6 +68,7 @@ class BookDetail extends React.Component{
       }
     })
       .then(res => {
+        console.log(res)
         this.setState({
           showModal:true,
           modalTitle:"Success",
@@ -184,7 +185,9 @@ class BookDetail extends React.Component{
             <Modal.Header>
               <Modal.Title>{this.state.modalTitle}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>{this.state.modalMessage}</Modal.Body>
+            <Modal.Body>
+            {this.state.modalMessage}
+            </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleClose}>
                 Close

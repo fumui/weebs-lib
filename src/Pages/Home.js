@@ -13,6 +13,7 @@ import GenreDropdown from "../Components/GenreDropdown"
 import YearDropdown from '../Components/YearDropdown'
 import PopularBooksCarousel from '../Components/PopularBooksCarousel';
 import Pagination from '../Components/Pagination';  
+import SortByDropdown from '../Components/SortByDropdown';
 
 class Home extends React.Component{
   constructor(props){
@@ -20,7 +21,7 @@ class Home extends React.Component{
     this.state = {
       sidebarOpen : false,
       search:"",
-      userData:null,
+      userData:undefined,
     }
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
   }
@@ -65,6 +66,7 @@ class Home extends React.Component{
           </Button>
           <GenreDropdown/>
           <YearDropdown/>
+          <SortByDropdown/>
           <Form inline>
             <InputGroup>
               <InputGroup.Prepend>

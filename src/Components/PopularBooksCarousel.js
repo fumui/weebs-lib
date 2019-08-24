@@ -25,7 +25,7 @@ class PopularBookCarousel extends React.Component{
   render(){
     const {popularBooksList} = this.state
     return (
-      <Carousel style={{width:"50%", marginLeft:"25%", marginRight:"25%"}}>
+      <Carousel style={{width:"45%", marginLeft:"25%", marginRight:"25%"}}>
         {popularBooksList.map((book, index) => {
           return (
           <Carousel.Item key={index} onClick={()=>this.getDetails(book.id)}>

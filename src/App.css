@@ -171,3 +171,9 @@ figure img.carousel-book-image{
   right:2vw;
   top:2vw;
 }
+.availability-badge{
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 1rem;
+}

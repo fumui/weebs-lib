@@ -29,21 +29,26 @@ class BooksList extends React.Component{
   render(){
     const {data} = this.state
     return(
-        <div style={{display: 'flex', flexWrap:"wrap", flexDirection: 'row'}} className="justify-content-between">
-          {
-            data !==null? data.map((book, index) => {
-              return(
-                  <BookCard  
-                  onClick={() => this.getDetails(index)}
-                  key={index}
-                  imgUrl={book.image} 
-                  bookId={book.id}
-                  title={book.title}
-                  description={book.description.substr(0,75)+'...'} />
-                )
-              }
-            ):<Alert variant='danger'>Book Not Found</Alert>
-          }
+        <div style={{marginTop:"3vh",padding:"3vw", textAlign:"left"}}>
+          <h3>List Book</h3>
+          <div style={{display: 'flex', flexWrap:"wrap", flexDirection: 'row'}} className="justify-content-between">
+            {
+              data !==null? data.map((book, index) => {
+                return(
+                    <BookCard  
+                    onClick={() => this.getDetails(index)}
+                    key={index}
+                    imgUrl={book.image} 
+                    availability={book.availability}
+                    genre={book.genre}
+                    bookId={book.id}
+                    title={book.title}
+                    description={book.description.substr(0,75)+'...'} />
+                  )
+                }
+              ):<Alert variant='danger' style={{zIndex:2}}>Book Not Found</Alert>
+            }
+          </div>
         </div>
     )
   }

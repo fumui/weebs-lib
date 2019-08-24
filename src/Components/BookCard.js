@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card } from "react-bootstrap"
+import { Card, Badge } from "react-bootstrap"
 
 class BookCard extends React.Component{
   constructor(props){
@@ -9,6 +9,8 @@ class BookCard extends React.Component{
       bookId: props.bookId,
       title : props.title,
       description : props.description,
+      availability : props.availability,
+      genre : props.genre,
     }
     this.getDetails = this.getDetails.bind(this)
   }
@@ -25,9 +27,11 @@ class BookCard extends React.Component{
     >
       <figure>
         <Card.Img variant="top" src={this.state.imgUrl} className="book-image"/>
+        {this.state.availability === 1 ? <Badge variant="warning" className="availability-badge">Available</Badge>: <Badge variant="danger" className="availability-badge">Unavailable</Badge>}
       </figure>
       <Card.Body>
         <Card.Title>{this.state.title}</Card.Title>
+        <Badge variant="warning">{this.state.genre}</Badge>
         <Card.Text>
           {description.length > 30 ?  description.substr(0,75)+'...': description}
         </Card.Text>
