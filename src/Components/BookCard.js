@@ -1,5 +1,6 @@
 import React from 'react'
 import { Card, Badge } from "react-bootstrap"
+import { Redirect } from 'react-router-dom'
 
 class BookCard extends React.Component{
   constructor(props){
@@ -11,33 +12,41 @@ class BookCard extends React.Component{
       description : props.description,
       availability : props.availability,
       genre : props.genre,
+      redirectToDetails:false,
     }
-    this.getDetails = this.getDetails.bind(this)
+    this.redirectToDetails = this.redirectToDetails.bind(this)
   }
 
-  getDetails = (id) =>{
-    window.location.href =`http://localhost:3000/book/${id}`
+  // shouldComponentUpdate(nextProps, nextState){
+  //   return this.props.bookId !== nextProps.bookId
+  // }
+
+  redirectToDetails = () =>{
+    this.setState({redirectToDetails:true})
   }
   render(){
+    if (this.state.redirectToDetails)
+      return <Redirect to={`book/${this.state.bookId}`}/>
     const {description} = this.state
     return(
-    <Card 
-      style={{ width: '25%', margin: '3%'}} 
-      onClick={() => this.getDetails(this.state.bookId)}
-    >
-      <figure>
-        <Card.Img variant="top" src={this.state.imgUrl} className="book-image"/>
-        {this.state.availability === 1 ? <Badge variant="warning" className="availability-badge">Available</Badge>: <Badge variant="danger" className="availability-badge">Unavailable</Badge>}
-      </figure>
-      <Card.Body>
-        <Card.Title>{this.state.title}</Card.Title>
-        <Badge variant="warning">{this.state.genre}</Badge>
-        <Card.Text>
-          {description.length > 30 ?  description.substr(0,75)+'...': description}
-        </Card.Text>
-      </Card.Body>
-    </Card>
-  )}
+      <Card 
+        style={{ width: '25%', margin: '3%'}} 
+        onClick={() => this.redirectToDetails()}
+      >
+        <figure>
+          <Card.Img variant="top" src={this.state.imgUrl} className="book-image"/>
+          {this.state.availability === 1 ? <Badge variant="warning" className="availability-badge">Available</Badge>: <Badge variant="danger" className="availability-badge">Unavailable</Badge>}
+        </figure>
+        <Card.Body>
+          <Card.Title>{this.state.title}</Card.Title>
+          <Badge variant="warning">{this.state.genre}</Badge>
+          <Card.Text>
+            {description.length > 30 ?  description.substr(0,75)+'...': description}
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    )
+  }
 }
 
 export default BookCard

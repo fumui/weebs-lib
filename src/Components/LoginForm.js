@@ -51,13 +51,13 @@ class LoginForm extends React.Component{
     if(token === undefined){
       window.alert(res.data.message)
     } else {
-      document.cookie = `token=${token}`
+      window.localStorage.setItem("token", token)
       window.location.reload()
     }
   }
 
   render(){
-    if(document.cookie.includes('token=Bearer ')) return <Redirect to="../"/>
+    if(window.localStorage.getItem("token")) return <Redirect to="../"/>
     else return(
       <Form style={this.state.style} onSubmit={this.handleSubmit}>
         <div className="card app-form-group">

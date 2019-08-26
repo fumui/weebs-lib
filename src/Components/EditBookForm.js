@@ -45,7 +45,7 @@ class EditBookForm extends React.Component{
   handleSubmit(event){
     Axios.patch(`http://localhost:3030/books/${this.state.idBook}`,this.state.formData,{
       headers:{
-        Authorization : document.cookie.split("=")[1],
+        Authorization : window.localStorage.getItem("token")
       }
     })
       .then(res => {

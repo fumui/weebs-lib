@@ -7,7 +7,12 @@ class GenreDropdown extends React.Component{
     super(props)
     this.state = {
       genresList: [],
+      history: props.history,
     }
+  }
+
+  goToGenrePath = (genreName) =>{
+    this.state.history.push(`/home/genre/${genreName}/`)
   }
 
   componentDidMount = () => {
@@ -26,8 +31,8 @@ class GenreDropdown extends React.Component{
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {genresList.length > 0 ? 
-            genresList.map((genre, index) => {
-              return <Dropdown.Item key={index} href={`http://localhost:3000/home/genre/${genre.name}/`}>{genre.name}</Dropdown.Item>
+            genresList.map((genre) => {
+              return <Dropdown.Item key={genre.name} onClick={()=>{this.goToGenrePath(genre.name)}}>{genre.name}</Dropdown.Item>
             }):
             <Dropdown.Item href="#">Loading...</Dropdown.Item>}
         </Dropdown.Menu>

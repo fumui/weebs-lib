@@ -7,7 +7,7 @@ class PopularBookCarousel extends React.Component{
     super(props)
 
     this.state = {
-      popularBooksList:[]
+      popularBooksList: null
     }
     this.getDetails = this.getDetails.bind(this)
   }
@@ -26,7 +26,7 @@ class PopularBookCarousel extends React.Component{
     const {popularBooksList} = this.state
     return (
       <Carousel style={{width:"45%", marginLeft:"25%", marginRight:"25%"}}>
-        {popularBooksList.map((book, index) => {
+        {popularBooksList !== null ? popularBooksList.map((book, index) => {
           return (
           <Carousel.Item key={index} onClick={()=>this.getDetails(book.id)}>
             <figure>
@@ -35,14 +35,14 @@ class PopularBookCarousel extends React.Component{
                 src={book.image}
                 alt={book.title}
               />
-            </figure>
-            <Carousel.Caption bsPrefix='carousel-caption' className="book-carousel-caption">
-              <h3>{book.title}</h3>
-            </Carousel.Caption>
-          </Carousel.Item>
-        )})}
-          
-        </Carousel>
+              </figure>
+              <Carousel.Caption bsPrefix='carousel-caption' className="book-carousel-caption">
+                <h3>{book.title}</h3>
+              </Carousel.Caption>
+            </Carousel.Item>
+          )}
+        ):<div></div>}
+      </Carousel>
   )}
 }
 export default PopularBookCarousel

@@ -15,7 +15,7 @@ class Login extends React.Component{
   }
 
   isLoggedIn(){
-    return document.cookie.includes('token=Bearer')
+    return window.localStorage.getItem("token")
   }
 
   render(){

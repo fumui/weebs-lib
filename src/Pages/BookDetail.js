@@ -27,7 +27,7 @@ class BookDetail extends React.Component{
   }
 
   componentDidMount(){
-    if(!document.cookie.includes('token'))
+    if(!window.localStorage.getItem("token"))
       window.location.replace("http://localhost:3000/")
       
     Axios.get(this.state.bookUrl)
@@ -37,7 +37,7 @@ class BookDetail extends React.Component{
         this.setState({bookData:bookData})
         return Axios.get(`http://localhost:3030/borrowings/book/${bookData.id}`,{
           headers:{
-            Authorization : document.cookie.split("=")[1],
+            Authorization : window.localStorage.getItem("token")
           }
         })
       })
@@ -48,7 +48,7 @@ class BookDetail extends React.Component{
     
     Axios.get("http://localhost:3030/users/profile",{
       headers:{
-        Authorization : document.cookie.split("=")[1],
+        Authorization : window.localStorage.getItem("token")
       }
     })
       .then(res => {
@@ -64,7 +64,7 @@ class BookDetail extends React.Component{
   handleDelete(event){
     Axios.delete(`http://localhost:3030/books/${this.state.bookData.id}`,{
       headers:{
-        Authorization : document.cookie.split("=")[1],
+        Authorization : window.localStorage.getItem("token")
       }
     })
       .then(res => {
@@ -88,7 +88,7 @@ class BookDetail extends React.Component{
     if(action === "Borrow"){
       Axios.post(`http://localhost:3030/borrowings/`,data,{
         headers:{
-          Authorization : document.cookie.split("=")[1],
+          Authorization : window.localStorage.getItem("token")
         }
       })
         .then(res => {
@@ -102,7 +102,7 @@ class BookDetail extends React.Component{
     }else if(action === "Return"){
       Axios.patch(`http://localhost:3030/borrowings/`,data,{
         headers:{
-          Authorization : document.cookie.split("=")[1],
+          Authorization : window.localStorage.getItem("token")
         }
       })
         .then(res => {

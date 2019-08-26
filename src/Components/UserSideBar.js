@@ -20,14 +20,13 @@ class UserSideBar extends React.Component{
     this.handleLogout = this.handleLogout.bind(this)
   }
   handleLogout = (event) => { 
-    const time = new Date()
-    document.cookie = "token=; "+time.toUTCString+"path=/"
+    window.localStorage.removeItem("token")
     window.location.reload()
   }
   componentDidMount(){
     Axios.get("http://localhost:3030/users/profile",{
       headers:{
-        Authorization : document.cookie.split("=")[1],
+        Authorization : window.localStorage.getItem("token")
       }
     })
       .then(res => {

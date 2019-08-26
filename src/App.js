@@ -9,18 +9,12 @@ import BookDetail from './Pages/BookDetail';
 class App extends React.Component {
   constructor(props){
     super(props)
-    const isLoggedIn = document.cookie.includes("token=Bearer ")
+    const isLoggedIn = window.localStorage.getItem("token") !== null
     this.state = {
       loggedIn: isLoggedIn
     }
   }
 
-  componentDidMount(){
-    // const isLoggedIn = document.cookie.includes("token=Bearer ")
-    // if(this.state.loggedIn !== isLoggedIn){
-    //   this.setState({loggedIn:isLoggedIn})
-    // }
-  }
   render(){
     return (
       <div className='App'>
@@ -37,8 +31,8 @@ class App extends React.Component {
           />
           <Route
             path={'/home'}
-            render={() => {
-              return <Home />
+            render={({history}) => {
+              return <Home history={history}/>
             }}
           />
           <Route

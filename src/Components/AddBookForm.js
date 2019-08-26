@@ -44,7 +44,7 @@ class AddBookForm extends React.Component{
 
     Axios.post('http://localhost:3030/books/',this.state.formData,{
       headers:{
-        Authorization : document.cookie.split("=")[1],
+        Authorization : window.localStorage.getItem("token")
       }
     })
       .then(res => {

@@ -12,7 +12,6 @@ import Bookshelf from '../bookshelf.svg'
 import GenreDropdown from "../Components/GenreDropdown"
 import YearDropdown from '../Components/YearDropdown'
 import PopularBooksCarousel from '../Components/PopularBooksCarousel';
-import Pagination from '../Components/Pagination';  
 import SortByDropdown from '../Components/SortByDropdown';
 
 class Home extends React.Component{
@@ -21,7 +20,7 @@ class Home extends React.Component{
     this.state = {
       sidebarOpen : false,
       search:"",
-      userData:undefined,
+      userData:undefined
     }
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
   }
@@ -31,12 +30,12 @@ class Home extends React.Component{
     })
   }
   componentWillMount(){
-    if(!document.cookie.includes('token=Bearer'))
+    if(!window.localStorage.getItem("token"))
       window.location.replace("http://localhost:3000/")
     
     Axios.get("http://localhost:3030/users/profile",{
       headers:{
-        Authorization : document.cookie.split("=")[1],
+        Authorization : window.localStorage.getItem("token")
       }
     })
       .then(res => {
@@ -47,6 +46,7 @@ class Home extends React.Component{
       })
       .catch(err => console.log(err))
   }
+
   render(){
     return(
       <div>
@@ -64,9 +64,9 @@ class Home extends React.Component{
           <Button variant="light" onClick={() => this.onSetSidebarOpen(true)}>
             <FontAwesomeIcon icon={faBars}/>
           </Button>
-          <GenreDropdown/>
-          <YearDropdown/>
-          <SortByDropdown/>
+          <GenreDropdown history={this.props.history}/>
+          <YearDropdown history={this.props.history}/>
+          <SortByDropdown history={this.props.history}/>
           <Form inline>
             <InputGroup>
               <InputGroup.Prepend>
@@ -85,12 +85,12 @@ class Home extends React.Component{
         <Route 
           path="/home" 
           exact={true}
-          render={() => {
+          render={({history}) => {
+            let params = new URLSearchParams(window.location.search)
             return(
               <div>
                 <PopularBooksCarousel />
-                <BooksList dataSource={`http://localhost:3030/books${window.location.search}`}/>
-                <Pagination/>
+                <BooksList history={history} sortby={params.get("sortby")} dataSource={`http://localhost:3030/books`} key={window.location.href} />
               </div>
             );
           }} 
@@ -102,7 +102,6 @@ class Home extends React.Component{
             return(
               <div>
                 <BooksList dataSource={`http://localhost:3030/books${window.location.search}`}/>
-                <Pagination/>
               </div>
             );
           }} 
