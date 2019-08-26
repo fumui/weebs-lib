@@ -28,7 +28,7 @@ class BookDetail extends React.Component{
 
   componentDidMount(){
     if(!window.localStorage.getItem("token"))
-      window.location.replace("http://localhost:3000/")
+      this.props.history.push('/')
       
     Axios.get(this.state.bookUrl)
       .then(result => {
@@ -68,7 +68,6 @@ class BookDetail extends React.Component{
       }
     })
       .then(res => {
-        console.log(res)
         this.setState({
           showModal:true,
           modalTitle:"Success",
@@ -118,7 +117,7 @@ class BookDetail extends React.Component{
 
   handleClose = ()=>{
     this.setState({showModal: false})
-    window.location.reload()
+    this.props.history.push('/')
   }
 
   render(){
@@ -198,6 +197,5 @@ class BookDetail extends React.Component{
       )
     }
   }
-
 }
 export default BookDetail

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import RegisterForm from '../Components/RegisterForm';
 import LoginForm from '../Components/LoginForm';
@@ -12,6 +12,8 @@ class Login extends React.Component{
     this.state = {
       loggedIn: this.isLoggedIn()
     }
+    if(this.isLoggedIn())  
+      props.history.push('/')
   }
 
   isLoggedIn(){
@@ -35,7 +37,7 @@ class Login extends React.Component{
             path={'/login'}
             render={() => {
               return (
-              this.state.loggedIn ? <Redirect to="./"/> :
+              this.state.loggedIn ? this.props.history.push('/') :
                 <div style={{position:"relative"}}>
                   <div className="Header" style={{position:"absolute", marginTop:"20vh", marginLeft:"100vh"}}>
                     <h1>Login</h1>

@@ -3,8 +3,8 @@ import Sidebar from 'react-sidebar'
 import { Route } from 'react-router-dom';
 import Axios from 'axios';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
-import {Button, Navbar, Form, InputGroup, FormControl } from 'react-bootstrap'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
+import {Button, Navbar} from 'react-bootstrap'
 
 import BooksList from '../Components/BooksList'
 import UserSideBar from '../Components/UserSideBar'
@@ -13,6 +13,7 @@ import GenreDropdown from "../Components/GenreDropdown"
 import YearDropdown from '../Components/YearDropdown'
 import PopularBooksCarousel from '../Components/PopularBooksCarousel';
 import SortByDropdown from '../Components/SortByDropdown';
+import {SearchBook} from '../Components/SearchBook';
 
 class Home extends React.Component{
   constructor(props){
@@ -23,16 +24,16 @@ class Home extends React.Component{
       userData:undefined
     }
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
+    
   }
   onSetSidebarOpen = (open) => {
     this.setState({
       sidebarOpen : open
     })
   }
-  componentWillMount(){
-    if(!window.localStorage.getItem("token"))
-      window.location.replace("http://localhost:3000/")
-    
+  componentDidMount(){
+    if(window.localStorage.getItem("token") === null)
+      this.props.history.push('/')
     Axios.get("http://localhost:3030/users/profile",{
       headers:{
         Authorization : window.localStorage.getItem("token")
@@ -53,6 +54,7 @@ class Home extends React.Component{
         <Sidebar
           sidebar={
             <UserSideBar
+              history={this.props.history}
               username="Fuad"
             />}
           open={this.state.sidebarOpen}
@@ -67,20 +69,8 @@ class Home extends React.Component{
           <GenreDropdown history={this.props.history}/>
           <YearDropdown history={this.props.history}/>
           <SortByDropdown history={this.props.history}/>
-          <Form inline>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faSearch}/></InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                name="search"
-                placeholder="Search book"
-                aria-label="Search book"
-                aria-describedby="basic-addon1"
-              />
-            </InputGroup>
-          </Form>
-          <Navbar.Brand href="#home"><img src={Bookshelf} alt="bookshelf"/>Weeb's Library</Navbar.Brand>
+          <SearchBook history={this.props.history}/>
+          <Navbar.Brand onClick={()=>{this.props.history.push("/home")}}><img src={Bookshelf} alt="bookshelf"/>Weeb's Library</Navbar.Brand>
         </Navbar>
         <Route 
           path="/home" 
@@ -89,8 +79,8 @@ class Home extends React.Component{
             let params = new URLSearchParams(window.location.search)
             return(
               <div>
-                <PopularBooksCarousel />
-                <BooksList history={history} sortby={params.get("sortby")} dataSource={`http://localhost:3030/books`} key={window.location.href} />
+                <PopularBooksCarousel history={history}/>
+                <BooksList history={history} sortby={params.get("sortby")} search={params.get("search")} dataSource={`http://localhost:3030/books`} key={window.location.href} />
               </div>
             );
           }} 

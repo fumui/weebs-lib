@@ -17,16 +17,12 @@ class BookCard extends React.Component{
     this.redirectToDetails = this.redirectToDetails.bind(this)
   }
 
-  // shouldComponentUpdate(nextProps, nextState){
-  //   return this.props.bookId !== nextProps.bookId
-  // }
-
   redirectToDetails = () =>{
     this.setState({redirectToDetails:true})
   }
   render(){
     if (this.state.redirectToDetails)
-      return <Redirect to={`book/${this.state.bookId}`}/>
+      return <Redirect to={`/book/${this.state.bookId}`}/>
     const {description} = this.state
     return(
       <Card 

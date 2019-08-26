@@ -5,7 +5,6 @@ import Axios from 'axios';
 class PopularBookCarousel extends React.Component{
   constructor(props){
     super(props)
-
     this.state = {
       popularBooksList: null
     }
@@ -13,7 +12,7 @@ class PopularBookCarousel extends React.Component{
   }
   
   getDetails = (id) =>{
-    window.location.href =`/book/${id}`
+    this.props.history.push(`/book/${id}`)
   }
   componentDidMount = () => {
     Axios.get ('http://localhost:3030/books/popular')

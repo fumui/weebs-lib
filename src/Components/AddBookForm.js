@@ -17,6 +17,7 @@ class AddBookForm extends React.Component{
       showModal:false,
       modalTitle:"",
       modalMessage:"",
+      history:props.history,
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,7 +26,7 @@ class AddBookForm extends React.Component{
 
   handleClose = ()=>{
     this.setState({showModal: false})
-    window.location.reload()
+    this.state.history.push("/")
   }
 
   handleChange(event){

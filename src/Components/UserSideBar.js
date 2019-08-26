@@ -16,12 +16,14 @@ class UserSideBar extends React.Component{
       level: props.level || "regular",
       fullname: props.fullname || "dummyfullname",
       id: props.id ,
+      history: props.history,
     }
     this.handleLogout = this.handleLogout.bind(this)
   }
   handleLogout = (event) => { 
     window.localStorage.removeItem("token")
-    window.location.reload()
+    if(window.localStorage.getItem("token") === null)
+      this.props.history.push('/')
   }
   componentDidMount(){
     Axios.get("http://localhost:3030/users/profile",{
@@ -52,7 +54,7 @@ class UserSideBar extends React.Component{
         {
           this.state.level === "admin" ? 
           <Row className="justify-content-md-center">
-            <BookModal title="Add Book" content={<AddBookForm />}/>
+            <BookModal title="Add Book" content={<AddBookForm history={this.state.history}/>}/>
           </Row>
           :''
         }

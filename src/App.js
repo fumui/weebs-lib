@@ -6,57 +6,47 @@ import Home from './Pages/Home'
 import Auth from './Pages/Auth'
 import BookDetail from './Pages/BookDetail';
 
-class App extends React.Component {
-  constructor(props){
-    super(props)
-    const isLoggedIn = window.localStorage.getItem("token") !== null
-    this.state = {
-      loggedIn: isLoggedIn
-    }
-  }
-
-  render(){
-    return (
-      <div className='App'>
-        <Router>
+const App=()=> {
+  return (
+    <div className='App'>
+      <Router>
+      <Route
+          exact={true}
+          path={'/'}
+          render={() => {
+            return window.localStorage.getItem("token") !== null ? 
+            <Redirect to="./home"/>
+            :
+            <Redirect to="./login"/>;
+          }}
+        />
         <Route
-            exact={true}
-            path={'/'}
-            render={() => {
-              return this.state.loggedIn ? 
-              <Redirect to="./home"/>
-              :
-              <Redirect to="./login"/>;
-            }}
-          />
-          <Route
-            path={'/home'}
-            render={({history}) => {
-              return <Home history={history}/>
-            }}
-          />
-          <Route
-            path={'/book/:id'}
-            component={(url) => {
-              return <BookDetail bookUrl={`http://localhost:3030/books/${url.match.params.id}`}/>;
-            }} 
-          />
-          <Route
-            path={'/login'}
-            render={() => {
-              return <Auth  />;
-            }}
-          />
-          <Route
-            path={'/register'}
-            render={() => {
-              return <Auth  />;
-            }}
-          />
-        </Router>
-      </div>
-    )
-  }
+          path={'/home'}
+          render={({history}) => {
+            return <Home history={history}/>
+          }}
+        />
+        <Route
+          path={'/book/:id'}
+          component={({match,history}) => {
+            return <BookDetail history={history} bookUrl={`http://localhost:3030/books/${match.params.id}`} key={history.location}/>;
+          }} 
+        />
+        <Route
+          path={'/login'}
+          render={({history}) => {
+            return <Auth history={history}/>;
+          }}
+        />
+        <Route
+          path={'/register'}
+          render={({history}) => {
+            return <Auth history={history}/>;
+          }}
+        />
+      </Router>
+    </div>
+  )
 }
 
 export default App

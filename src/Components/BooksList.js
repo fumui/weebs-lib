@@ -1,7 +1,9 @@
 import React from 'react';
-import Axios from 'axios';
-import BookCard from './BookCard';
+import {connect} from 'react-redux';
 import { Alert, Button } from 'react-bootstrap';
+
+import BookCard from './BookCard';
+import {getBooks} from '../Publics/Actions/books'
 
 class BooksList extends React.Component{
   constructor(props){
@@ -12,7 +14,6 @@ class BooksList extends React.Component{
       history: props.history,
       data: null,
       page: 1,
-      sortby: props.sortby,
     }
   }
   componentDidMount(){
@@ -23,25 +24,29 @@ class BooksList extends React.Component{
     this.getDataBooks(this.state.page + page)
   }
 
-  getDataBooks = (page) => {
-    let getPage = page || this.state.page
-    let sorted = this.state.sortby !== undefined 
-    let url = `${this.state.dataSource}?page=${getPage}`
-    if(sorted)
-      url += `&sortby=${this.state.sortby}`
-    console.log(url)
-    Axios.get(url,{
-      headers:{
-        Authorization : window.localStorage.getItem("token")
-      }
+  getDataBooks = async (page) => {
+    await this.props.dispatch(getBooks(this.state.dataSource, page, this.props.sortby, this.props.search))
+    this.setState({
+      data: this.props.book
     })
-      .then((result) =>{
-        this.setState({
-          data: result.data.data,
-          page: getPage
-        })
-      })
-      .catch(err => console.log(err))
+    // let getPage = page || this.state.page
+    // let url = `${this.state.dataSource}?page=${getPage}`
+    // if(this.state.sortby !== null)
+    //   url += `&sortby=${this.state.sortby}`
+    // if(this.state.search !== null )
+    //   url += `&search=${this.state.search}`
+    // Axios.get(url,{
+    //   headers:{
+    //     Authorization : window.localStorage.getItem("token")
+    //   }
+    // })
+    //   .then((result) =>{
+    //     this.setState({
+    //       data: result.data.data,
+    //       page: getPage
+    //     })
+    //   })
+    //   .catch(err => console.log(err))
   }
   
   render(){
@@ -54,7 +59,7 @@ class BooksList extends React.Component{
           <div style={{display: 'flex', flexWrap:"wrap", flexDirection: 'row'}} className="justify-content-between">
             {
                data !== null ? 
-               data.map((book, index) => {
+               data.booksList.map((book, index) => {
                 console.log(book.id)
                 return(
                     <BookCard  
@@ -82,5 +87,11 @@ class BooksList extends React.Component{
         </div>
     )
   }
+
 }
-export default BooksList
+const mapStateToProps = state => {
+  return{
+    book: state.book
+  }
+}
+export default connect(mapStateToProps)(BooksList)
