@@ -1,8 +1,8 @@
 import React from 'react';
-import Axios from 'axios';
 import {Form, Button, Spinner} from 'react-bootstrap';
 import {Link, Redirect} from 'react-router-dom';
-
+import {connect} from 'react-redux';
+import {login} from '../Publics/Actions/users';
 class LoginForm extends React.Component{
   constructor(props){
     super(props)
@@ -11,11 +11,9 @@ class LoginForm extends React.Component{
       email: '',
       password:'',
       loggedIn:false,
-      loading:false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.loggingIn = this.loggingIn.bind(this);
   }
 
   handleChange(event) {
@@ -27,35 +25,19 @@ class LoginForm extends React.Component{
     });
   }
 
-  handleSubmit(event) {
-    this.setState({
-      loading:true
-    })
-    Axios.post('http://localhost:3030/users/login', {
+  handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = {
       email: this.state.email, 
       password: this.state.password
+    }
+    await this.props.dispatch(login(data))
+    window.localStorage.setItem("token", this.props.user.token)
+    this.setState({
+      loggedIn:true
     })
-    .then(this.loggingIn)
-    .catch(function (error) {
-      console.log(error);
-    });
-    event.preventDefault();
   }
   
-  loggingIn(res){
-    this.setState({
-      loading:false
-    })
-    console.log(res)
-    const token = res.data.token
-    if(token === undefined){
-      window.alert(res.data.message)
-    } else {
-      window.localStorage.setItem("token", token)
-      window.location.reload()
-    }
-  }
-
   render(){
     if(window.localStorage.getItem("token")) return <Redirect to="../"/>
     else return(
@@ -85,7 +67,7 @@ class LoginForm extends React.Component{
             />
           </Form.Group>
         </div>
-        {this.state.loading?
+        {this.props.user.isLoading?
           <Button variant="dark" disabled>
             <Spinner
               as="span"
@@ -106,4 +88,9 @@ class LoginForm extends React.Component{
     )
   }
 }
-export default LoginForm
+const mapStateToProps = state => {
+  return{
+    user: state.user
+  }
+}
+export default connect(mapStateToProps)(LoginForm)

@@ -1,6 +1,8 @@
 import React from 'react'
-import Axios from 'axios'
+import {connect} from 'react-redux'
 import {Dropdown} from 'react-bootstrap'
+
+import {getBookYears} from '../Publics/Actions/books';
 
 class YearDropdown extends React.Component{
   constructor(props){
@@ -15,12 +17,9 @@ class YearDropdown extends React.Component{
   }
 
 
-  componentDidMount = () => {
-    Axios.get ('http://localhost:3030/books/year/')
-      .then (res => {
-        this.setState ({yearsList: res.data.data});
-      })
-      .catch (err => console.log ('error =', err));
+  componentDidMount = async () => {
+    await this.props.dispatch(getBookYears())
+    this.setState ({yearsList: this.props.book.yearsList})
   };
   render() {
     const {yearsList} = this.state
@@ -40,4 +39,9 @@ class YearDropdown extends React.Component{
     )
   }
 }
-export default YearDropdown
+const mapStateToProps = state => {
+  return{
+    book: state.book
+  }
+}
+export default connect(mapStateToProps)(YearDropdown)

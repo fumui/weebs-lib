@@ -1,6 +1,9 @@
 import React, {Fragment} from 'react';
 import {Modal, Row, Col, Form, Button} from 'react-bootstrap';
 import Axios from 'axios';
+import {connect} from 'react-redux'
+import {editBook} from '../Publics/Actions/books';
+import {getGenres} from '../Publics/Actions/genres';
 
 class EditBookForm extends React.Component{
   constructor(props){
@@ -20,17 +23,14 @@ class EditBookForm extends React.Component{
       modalMessage:"",
     }
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClose=this.handleClose.bind(this);
   }
 
   handleClose = ()=>{
     this.setState({showModal: false})
-    window.location.reload()
   }
 
 
-  handleChange(event){
+  handleChange= (event) => {
     let newFormData = {...this.state.formData}
     const target = event.target
     const name = target.name
@@ -42,29 +42,20 @@ class EditBookForm extends React.Component{
     console.log(this.state.formData)
   }
 
-  handleSubmit(event){
-    Axios.patch(`http://localhost:3030/books/${this.state.idBook}`,this.state.formData,{
-      headers:{
-        Authorization : window.localStorage.getItem("token")
-      }
-    })
-      .then(res => {
-        this.setState({
-          showModal:true,
-          modalTitle:"Success",
-          modalMessage:res.data.message,
-        })
-      })
-      .catch(err => console.log(err))
+  handleSubmit = async (event)=>{
     event.preventDefault();
+    await this.props.dispatch(editBook(this.state.idBook,this.state.formData))
+    
+    this.setState({
+      showModal:true,
+      modalTitle:"Success",
+      modalMessage:"Success edit book",
+    })
   }
 
-  componentDidMount = () => {
-    Axios.get ('http://localhost:3030/genres')
-      .then (res => {
-        this.setState ({genreList: res.data.data});
-      })
-      .catch (err => console.log ('error =', err));
+  componentDidMount = async () => {
+    await this.props.dispatch(getGenres())
+    this.setState ({genreList: this.props.genre.genresList})
   };
   render(){
     const {genreList} = this.state
@@ -121,7 +112,7 @@ class EditBookForm extends React.Component{
             </Col>
           </Form.Group>
 
-          <Button style={{float:"right"}} variant="warning" type="submit" className="btn-black">
+          <Button  style={{float:"right"}} variant="warning" type="submit" className="btn-black">
             Save
           </Button>
         </Form>
@@ -140,4 +131,10 @@ class EditBookForm extends React.Component{
     );
   }
 }
-export default EditBookForm
+const mapStateToProps = (state) => {
+  return{
+    book: state.book,
+    genre: state.genre
+  }
+}
+export default connect(mapStateToProps)(EditBookForm)

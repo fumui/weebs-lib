@@ -88,10 +88,11 @@ class Home extends React.Component{
         <Route 
           path="/home/explore" 
           exact={true}
-          render={() => {
+          render={({history}) => {
+            let params = new URLSearchParams(window.location.search)
             return(
               <div>
-                <BooksList dataSource={`http://localhost:3030/books${window.location.search}`}/>
+                <BooksList history={history} sortby={params.get("sortby")} search={params.get("search")} dataSource={`http://localhost:3030/books`} key={window.location.href} />
               </div>
             );
           }} 

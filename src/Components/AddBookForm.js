@@ -1,9 +1,9 @@
 import React,{Fragment} from 'react';
 import {Row, Col, Form, Button, Modal} from 'react-bootstrap';
-import Axios from 'axios';
 import {connect} from 'react-redux';
 
 import {addBook} from '../Publics/Actions/books';
+import {getGenres} from '../Publics/Actions/genres';
 
 class AddBookForm extends React.Component{
   constructor(props){
@@ -47,20 +47,17 @@ class AddBookForm extends React.Component{
   handleSubmit = async (event) => {
     await this.props.dispatch(addBook(this.state.formData))
     console.log(this.props.book)
-    // this.setState({
-    //   showModal: true,
-    //   modalTitle:"",
-    //   modalMessage:"",
-    // })
+    this.setState({
+      showModal: true,
+      modalTitle:"Success",
+      modalMessage:"Success Adding Book",
+    })
     event.preventDefault();
   }
 
-  componentDidMount = () => {
-    Axios.get ('http://localhost:3030/genres')
-      .then (res => {
-        this.setState ({genreList: res.data.data});
-      })
-      .catch (err => console.log ('error =', err));
+  componentDidMount = async () => {
+    await this.props.dispatch(getGenres())
+    this.setState ({genreList: this.props.genre.genresList})
   };
   render(){
     const {genreList} = this.state
@@ -137,7 +134,8 @@ class AddBookForm extends React.Component{
 }
 const mapStateToProps = state => {
   return{
-    book: state.book
+    book: state.book,
+    genre: state.genre
   }
 }
 export default connect(mapStateToProps)(AddBookForm)

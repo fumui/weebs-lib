@@ -1,7 +1,9 @@
 import React,{Fragment} from 'react';
-import Axios from 'axios';
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Form, Button, Modal} from 'react-bootstrap';
+
+import {register} from '../Publics/Actions/users';
 
 class RegisterForm extends React.Component{
   constructor(props){
@@ -16,17 +18,13 @@ class RegisterForm extends React.Component{
         password:'',
       }
     }
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClose=this.handleClose.bind(this);
   }
 
   handleClose = ()=>{
     this.setState({showModal: false})
-    window.location.reload()
   }
 
-  handleChange(event){
+  handleChange = (event) => {
     let newFormData = {...this.state.formData}
     const target = event.target
     const name = target.name
@@ -37,17 +35,23 @@ class RegisterForm extends React.Component{
     })
   }
 
-  handleSubmit(event){
-    Axios.post('http://localhost:3030/users/register',this.state.formData)
-      .then(res => {
-        this.setState({
-          showModal:true,
-          modalTitle:"Success",
-          modalMessage:res.data.message,
-        })
-      })
-      .catch(err => console.log(err))
+  handleSubmit = async (event) => {
     event.preventDefault();
+    await this.props.dispatch(register(this.state.formData))
+    this.setState({
+      showModal:true,
+      modalTitle:"Success",
+      modalMessage:"Success Registering",
+    })
+    // Axios.post('http://localhost:3030/users/register',this.state.formData)
+    //   .then(res => {
+    //     this.setState({
+    //       showModal:true,
+    //       modalTitle:"Success",
+    //       modalMessage:res.data.message,
+    //     })
+    //   })
+    //   .catch(err => console.log(err))
   }
   render(){
     return(
@@ -96,4 +100,9 @@ class RegisterForm extends React.Component{
     )
   }
 }
-export default RegisterForm
+const mapStateToProps = state => {
+  return{
+    user: state.user
+  }
+}
+export default connect(mapStateToProps)(RegisterForm)

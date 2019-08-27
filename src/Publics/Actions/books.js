@@ -29,3 +29,49 @@ export const addBook = (data) => {
     )
   }
 }
+export const deleteBook = (id) => {
+  return {
+    type:'DELETE_BOOKS',
+    payload: Axios.delete(`http://localhost:3030/books/${id}`,{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}
+export const editBook = (id, data) => {
+  return {
+    type:'EDIT_BOOKS',
+    payload: Axios.patch(`http://localhost:3030/books/${id}`, data,{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}
+
+export const getBookYears = () => {
+  return {
+    type:'GET_BOOK_YEARS',
+    payload: Axios.get('http://localhost:3030/books/year/',{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}
+
+export const getPopularBooks = () => {
+  return {
+    type:'GET_POPULAR_BOOKS',
+    payload: Axios.get('http://localhost:3030/books/popular',{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}

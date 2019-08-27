@@ -1,6 +1,7 @@
 import React from 'react'
-import Axios from 'axios'
+import {connect} from 'react-redux';
 import {Dropdown} from 'react-bootstrap'
+import {getGenres} from '../Publics/Actions/genres'
 
 class GenreDropdown extends React.Component{
   constructor(props){
@@ -15,12 +16,9 @@ class GenreDropdown extends React.Component{
     this.state.history.push(`/home/genre/${genreName}/`)
   }
 
-  componentDidMount = () => {
-    Axios.get ('http://localhost:3030/genres')
-      .then (res => {
-        this.setState ({genresList: res.data.data});
-      })
-      .catch (err => console.log ('error =', err));
+  componentDidMount = async () => {
+    await this.props.dispatch(getGenres())
+    this.setState ({genresList: this.props.genre.genresList})
   };
   render() {
     const {genresList} = this.state
@@ -40,4 +38,9 @@ class GenreDropdown extends React.Component{
     )
   }
 }
-export default GenreDropdown
+const mapStateToProps = state => {
+  return{
+    genre: state.genre
+  }
+}
+export default connect(mapStateToProps)(GenreDropdown)

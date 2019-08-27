@@ -5,8 +5,10 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+
 import BookModal from '../Components/BookModal';
 import EditBookForm from '../Components/EditBookForm';
+import {deleteBook} from '../Publics/Actions/books';
 
 class BookDetail extends React.Component{
   constructor(props){
@@ -58,20 +60,14 @@ class BookDetail extends React.Component{
       .catch(err => console.log(err))
   }
 
-  handleDelete(event){
-    Axios.delete(`http://localhost:3030/books/${this.state.bookData.id}`,{
-      headers:{
-        Authorization : window.localStorage.getItem("token")
-      }
+  handleDelete = async (event) => {
+    await this.props.dispatch(deleteBook(this.state.bookData.id))
+    this.setState({
+      showModal:true,
+      modalTitle:"Success",
+      modalMessage:`Success deleting Book`,
+      redirectOnCloseModal:true
     })
-      .then(res => {
-        this.setState({
-          showModal:true,
-          modalTitle:"Success",
-          modalMessage:res.data.message,
-        })
-      })
-      .catch(err => console.log(err))
   }
 
   handleBorrow(event){
@@ -126,7 +122,8 @@ class BookDetail extends React.Component{
 
   handleClose = ()=>{
     this.setState({showModal: false})
-    // this.props.history.push('/')
+    if (this.state.redirectOnCloseModal)
+      this.props.history.push('/')
   }
 
   render(){

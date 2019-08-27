@@ -1,6 +1,7 @@
 import React from 'react';
 import {Carousel} from 'react-bootstrap'
-import Axios from 'axios';
+import {connect} from 'react-redux';
+import {getPopularBooks} from '../Publics/Actions/books';
 
 class PopularBookCarousel extends React.Component{
   constructor(props){
@@ -14,12 +15,14 @@ class PopularBookCarousel extends React.Component{
   getDetails = (id) =>{
     this.props.history.push(`/book/${id}`)
   }
-  componentDidMount = () => {
-    Axios.get ('http://localhost:3030/books/popular')
-      .then (res => {
-        this.setState ({popularBooksList: res.data.data});
-      })
-      .catch (err => console.log ('error =', err));
+  componentDidMount = async () => {
+    await this.props.dispatch(getPopularBooks())
+    this.setState ({popularBooksList: this.props.book.popularBooksList})
+    // Axios.get ('http://localhost:3030/books/popular')
+    //   .then (res => {
+    //     this.setState ({popularBooksList: res.data.data});
+    //   })
+    //   .catch (err => console.log ('error =', err));
   };
   render(){
     const {popularBooksList} = this.state
@@ -44,4 +47,9 @@ class PopularBookCarousel extends React.Component{
       </Carousel>
   )}
 }
-export default PopularBookCarousel
+const mapStateToProps = state => {
+  return{
+    book: state.book
+  }
+}
+export default connect(mapStateToProps)(PopularBookCarousel)
