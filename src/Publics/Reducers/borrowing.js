@@ -1,72 +1,73 @@
 const initState = {
-  userProfile:{},
-  isLoading:false,
-  isRejected:false,
-  isFulfilled:false,
+   borrowingData:{},
+   isLoading:false,
+   isRejected:false,
+   isFulfilled:false,
 }
-const user = (state = initState, action)=>{
+const borrowing = (state = initState, action) => {
   switch(action.type){
-    case 'LOGIN_PENDING':
+    case 'BORROW_BOOK_PENDING':
       return{
         ...state,
         isLoading:true,
         isRejected:false,
         isFulfilled:false,
       }
-    case 'LOGIN_REJECTED':
+    case 'BORROW_BOOK_REJECTED':
       return{
         ...state,
         isLoading:false,
         isRejected:true,
       }
-    case 'LOGIN_FULFILLED':
+    case 'BORROW_BOOK_FULFILLED':
       return{
         ...state,
         isLoading:false,
         isFulfilled:true,
-        token:action.payload.data.token
+        borrowingData:action.payload.data.data
       }
-    case 'REGISTER_PENDING':
+    case 'RETURN_BOOK_PENDING':
       return{
         ...state,
         isLoading:true,
         isRejected:false,
         isFulfilled:false,
       }
-    case 'REGISTER_REJECTED':
+    case 'RETURN_BOOK_REJECTED':
       return{
         ...state,
         isLoading:false,
         isRejected:true,
       }
-    case 'REGISTER_FULFILLED':
+    case 'RETURN_BOOK_FULFILLED':
       return{
         ...state,
         isLoading:false,
         isFulfilled:true,
+        borrowingData:action.payload.data.data
       }
-    case 'GET_PROFILE_PENDING':
+    case 'GET_LATEST_BOOK_BORROWING_PENDING':
       return{
         ...state,
         isLoading:true,
         isRejected:false,
         isFulfilled:false,
       }
-    case 'GET_PROFILE_REJECTED':
+    case 'GET_LATEST_BOOK_BORROWING_REJECTED':
       return{
         ...state,
         isLoading:false,
         isRejected:true,
       }
-    case 'GET_PROFILE_FULFILLED':
+    case 'GET_LATEST_BOOK_BORROWING_FULFILLED':
       return{
         ...state,
         isLoading:false,
         isFulfilled:true,
-        userProfile: action.payload.data.data
+        borrowingData:action.payload.data.data
       }
     default:
       return state
   }
 }
-export default user
+export default borrowing

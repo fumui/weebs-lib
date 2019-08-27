@@ -12,3 +12,14 @@ export const register = (data) => {
     payload: Axios.post('http://localhost:3030/users/register', data)
   }
 }
+export const getProfile = () => {
+  return {
+    type:'GET_PROFILE',
+    payload: Axios.get("http://localhost:3030/users/profile",{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}

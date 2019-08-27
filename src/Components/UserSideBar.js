@@ -1,9 +1,10 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Container, Row, Button} from 'react-bootstrap'
-import Axios from 'axios';
 import '../App.css'
+import {connect} from 'react-redux';
 
+import {getProfile} from '../Publics/Actions/users';
 import BookModal from './BookModal'
 import AddBookForm from './AddBookForm';
 class UserSideBar extends React.Component{
@@ -25,23 +26,11 @@ class UserSideBar extends React.Component{
     if(window.localStorage.getItem("token") === null)
       this.props.history.push('/')
   }
-  componentDidMount(){
-    Axios.get("http://localhost:3030/users/profile",{
-      headers:{
-        Authorization : window.localStorage.getItem("token")
-      }
+  componentDidMount = async() => {
+    await this.props.dispatch(getProfile())
+    this.setState({
+      ...this.props.user.userProfile
     })
-      .then(res => {
-        const userData=res.data.data;
-        this.setState({
-          username : userData.username,
-          fullname : userData.fullname,
-          email : userData.email,
-          level : userData.level,
-          id : userData.id,
-        })
-      })
-      .catch(err => console.log(err))
   }
   render(){
     return (
@@ -63,4 +52,9 @@ class UserSideBar extends React.Component{
     </div>)
   }
 }
-export default UserSideBar
+const mapStateToProps = (state) => {
+  return{
+    user: state.user
+  }
+}
+export default connect(mapStateToProps)(UserSideBar)

@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react';
 import {Modal, Row, Col, Form, Button} from 'react-bootstrap';
-import Axios from 'axios';
 import {connect} from 'react-redux'
 import {editBook} from '../Publics/Actions/books';
 import {getGenres} from '../Publics/Actions/genres';

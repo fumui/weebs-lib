@@ -18,11 +18,6 @@ class PopularBookCarousel extends React.Component{
   componentDidMount = async () => {
     await this.props.dispatch(getPopularBooks())
     this.setState ({popularBooksList: this.props.book.popularBooksList})
-    // Axios.get ('http://localhost:3030/books/popular')
-    //   .then (res => {
-    //     this.setState ({popularBooksList: res.data.data});
-    //   })
-    //   .catch (err => console.log ('error =', err));
   };
   render(){
     const {popularBooksList} = this.state

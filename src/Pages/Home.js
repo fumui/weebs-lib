@@ -1,7 +1,7 @@
 import React from 'react'
 import Sidebar from 'react-sidebar'
 import { Route } from 'react-router-dom';
-import Axios from 'axios';
+import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import {Button, Navbar} from 'react-bootstrap'
@@ -14,6 +14,7 @@ import YearDropdown from '../Components/YearDropdown'
 import PopularBooksCarousel from '../Components/PopularBooksCarousel';
 import SortByDropdown from '../Components/SortByDropdown';
 import {SearchBook} from '../Components/SearchBook';
+import {getProfile} from '../Publics/Actions/users';
 
 class Home extends React.Component{
   constructor(props){
@@ -34,18 +35,10 @@ class Home extends React.Component{
   componentDidMount(){
     if(window.localStorage.getItem("token") === null)
       this.props.history.push('/')
-    Axios.get("http://localhost:3030/users/profile",{
-      headers:{
-        Authorization : window.localStorage.getItem("token")
-      }
-    })
-      .then(res => {
-        const userData=res.data.data;
-        this.setState({
-          userData:userData
-        })
+      this.props.dispatch(getProfile())
+      this.setState({
+        userData: this.props.user.userProfile
       })
-      .catch(err => console.log(err))
   }
 
   render(){
@@ -55,7 +48,6 @@ class Home extends React.Component{
           sidebar={
             <UserSideBar
               history={this.props.history}
-              username="Fuad"
             />}
           open={this.state.sidebarOpen}
           onSetOpen={this.onSetSidebarOpen}
@@ -131,4 +123,9 @@ class Home extends React.Component{
     )
   }
 }
-export default Home
+const mapStateToProps = (state) => {
+  return{
+    user: state.user,
+  }
+}
+export default connect(mapStateToProps)(Home)

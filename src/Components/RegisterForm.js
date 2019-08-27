@@ -43,15 +43,6 @@ class RegisterForm extends React.Component{
       modalTitle:"Success",
       modalMessage:"Success Registering",
     })
-    // Axios.post('http://localhost:3030/users/register',this.state.formData)
-    //   .then(res => {
-    //     this.setState({
-    //       showModal:true,
-    //       modalTitle:"Success",
-    //       modalMessage:res.data.message,
-    //     })
-    //   })
-    //   .catch(err => console.log(err))
   }
   render(){
     return(

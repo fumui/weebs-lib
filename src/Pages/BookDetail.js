@@ -9,6 +9,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import BookModal from '../Components/BookModal';
 import EditBookForm from '../Components/EditBookForm';
 import {deleteBook} from '../Publics/Actions/books';
+import {getProfile} from '../Publics/Actions/users';
+import {borrow, returnBook, getLatestBorrowingByBookId} from '../Publics/Actions/borrowings';
 
 class BookDetail extends React.Component{
   constructor(props){
@@ -17,10 +19,7 @@ class BookDetail extends React.Component{
     this.state= {
       bookUrl:props.bookUrl,
       bookData: props.book.booksList.find((book)=>{return book.id === Number(props.bookId)}),
-      userData:{
-        level:'regular',
-        id:undefined,
-      },
+      userData:{},
       borrowedBy:0,
       showModal:false,
       modalTitle:"",
@@ -31,33 +30,19 @@ class BookDetail extends React.Component{
     this.handleClose=this.handleClose.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount = async () => {
     if(!window.localStorage.getItem("token"))
       this.props.history.push('/')
       
-    Axios.get(`http://localhost:3030/borrowings/book/${this.props.bookId}`,{
-      headers:{
-        Authorization : window.localStorage.getItem("token")
-      }
+    await this.props.dispatch(getLatestBorrowingByBookId(this.props.bookId))
+    const borrowedBy = this.props.borrowing.borrowingData ? this.props.borrowing.borrowingData[0].user_id : 0
+    this.setState({
+      borrowedBy: borrowedBy
     })
-      .then(res=> this.setState({
-        borrowedBy: res.data.data[0].user_id
-      }))
-      .catch(err => console.log(err))
-
-    Axios.get("http://localhost:3030/users/profile",{
-      headers:{
-        Authorization : window.localStorage.getItem("token")
-      }
+    await this.props.dispatch(getProfile())
+    this.setState({
+      userData: this.props.user.userProfile
     })
-      .then(res => {
-        const userData=res.data.data;
-        console.log("userdata", userData)
-        this.setState({
-          userData:userData,
-        })
-      })
-      .catch(err => console.log(err))
   }
 
   handleDelete = async (event) => {
@@ -70,7 +55,7 @@ class BookDetail extends React.Component{
     })
   }
 
-  handleBorrow(event){
+  handleBorrow = async (event) => {
     const target= event.target
     const action = target.innerHTML
     const data = {
@@ -78,45 +63,29 @@ class BookDetail extends React.Component{
       user_id:this.state.userData.id,
     }
     if(action === "Borrow"){
-      Axios.post(`http://localhost:3030/borrowings/`,data,{
-        headers:{
-          Authorization : window.localStorage.getItem("token")
+      await this.props.dispatch(borrow(data))
+      this.setState({
+        showModal:true,
+        modalTitle:"Success",
+        modalMessage:"Book Borrowed",
+        borrowedBy:data.user_id,
+        bookData:{
+          ...this.state.bookData,
+          availability:0
         }
       })
-        .then(res => {
-          console.log(res)
-          this.setState({
-            showModal:true,
-            modalTitle:"Success",
-            modalMessage:res.data.message,
-            borrowedBy:res.data.data.user_id,
-            bookData:{
-              ...this.state.bookData,
-              availability:0
-            }
-          })
-        })
-        .catch(err => console.log(err))
     }else if(action === "Return"){
-      Axios.patch(`http://localhost:3030/borrowings/`,data,{
-        headers:{
-          Authorization : window.localStorage.getItem("token")
+      await this.props.dispatch(returnBook(data))
+      this.setState({
+        showModal:true,
+        modalTitle:"Success",
+        modalMessage:"Book Returned",
+        borrowedBy:0,
+        bookData:{
+          ...this.state.bookData,
+          availability:1
         }
       })
-        .then(res => {
-          console.log(res)
-          this.setState({
-            showModal:true,
-            modalTitle:"Success",
-            modalMessage:res.data.message,
-            borrowedBy:0,
-            bookData:{
-              ...this.state.bookData,
-              availability:1
-            }
-          })
-        })
-        .catch(err => console.log(err))
     }
   }
 
@@ -207,7 +176,9 @@ class BookDetail extends React.Component{
 }
   const mapStateToProps = (state) => {
     return{
-      book: state.book
+      book: state.book,
+      user: state.user,
+      borrowing: state.borrowing
     }
   }
 export default connect(mapStateToProps)(BookDetail)
