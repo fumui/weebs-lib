@@ -17,3 +17,15 @@ export const getBooks = (dataSource, page = 1, sortby, search) => {
     )
   }
 }
+
+export const addBook = (data) => {
+  return {
+    type:'ADD_BOOKS',
+    payload: Axios.post('http://localhost:3030/books', data, {
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}

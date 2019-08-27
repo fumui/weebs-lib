@@ -27,38 +27,19 @@ class BooksList extends React.Component{
   getDataBooks = async (page) => {
     await this.props.dispatch(getBooks(this.state.dataSource, page, this.props.sortby, this.props.search))
     this.setState({
-      data: this.props.book
+      data: this.props.book,
+      page: page
     })
-    // let getPage = page || this.state.page
-    // let url = `${this.state.dataSource}?page=${getPage}`
-    // if(this.state.sortby !== null)
-    //   url += `&sortby=${this.state.sortby}`
-    // if(this.state.search !== null )
-    //   url += `&search=${this.state.search}`
-    // Axios.get(url,{
-    //   headers:{
-    //     Authorization : window.localStorage.getItem("token")
-    //   }
-    // })
-    //   .then((result) =>{
-    //     this.setState({
-    //       data: result.data.data,
-    //       page: getPage
-    //     })
-    //   })
-    //   .catch(err => console.log(err))
   }
   
   render(){
-    console.log(this.state)
-    console.log(this.props)
     const {data} = this.state
     return(
         <div style={{marginTop:"3vh",padding:"3vw", textAlign:"left"}}>
           <h3>List Book</h3>
           <div style={{display: 'flex', flexWrap:"wrap", flexDirection: 'row'}} className="justify-content-between">
             {
-               data !== null ? 
+               data !== null && data.booksList? 
                data.booksList.map((book, index) => {
                 console.log(book.id)
                 return(

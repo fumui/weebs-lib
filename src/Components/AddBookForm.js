@@ -1,6 +1,9 @@
 import React,{Fragment} from 'react';
 import {Row, Col, Form, Button, Modal} from 'react-bootstrap';
 import Axios from 'axios';
+import {connect} from 'react-redux';
+
+import {addBook} from '../Publics/Actions/books';
 
 class AddBookForm extends React.Component{
   constructor(props){
@@ -26,7 +29,7 @@ class AddBookForm extends React.Component{
 
   handleClose = ()=>{
     this.setState({showModal: false})
-    this.state.history.push("/")
+    // this.state.history.push("/")
   }
 
   handleChange(event){
@@ -41,21 +44,14 @@ class AddBookForm extends React.Component{
     console.log(this.state.formData)
   }
 
-  handleSubmit(event){
-
-    Axios.post('http://localhost:3030/books/',this.state.formData,{
-      headers:{
-        Authorization : window.localStorage.getItem("token")
-      }
-    })
-      .then(res => {
-        this.setState({
-          showModal:true,
-          modalTitle:"Success",
-          modalMessage:res.data.message,
-        })
-      })
-      .catch(err => console.log(err))
+  handleSubmit = async (event) => {
+    await this.props.dispatch(addBook(this.state.formData))
+    console.log(this.props.book)
+    // this.setState({
+    //   showModal: true,
+    //   modalTitle:"",
+    //   modalMessage:"",
+    // })
     event.preventDefault();
   }
 
@@ -139,4 +135,9 @@ class AddBookForm extends React.Component{
     );
   }
 }
-export default AddBookForm
+const mapStateToProps = state => {
+  return{
+    book: state.book
+  }
+}
+export default connect(mapStateToProps)(AddBookForm)

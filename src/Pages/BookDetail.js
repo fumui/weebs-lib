@@ -1,17 +1,20 @@
 import React from 'react'
 import Axios from 'axios';
 import {Button, Container, Row, Modal, Alert} from 'react-bootstrap';
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import BookModal from '../Components/BookModal';
 import EditBookForm from '../Components/EditBookForm';
+
 class BookDetail extends React.Component{
   constructor(props){
     super(props)
+    console.log(props)
     this.state= {
       bookUrl:props.bookUrl,
-      bookData:undefined,
+      bookData: props.book.booksList.find((book)=>{return book.id === Number(props.bookId)}),
       userData:{
         level:'regular',
         id:undefined,
@@ -30,22 +33,16 @@ class BookDetail extends React.Component{
     if(!window.localStorage.getItem("token"))
       this.props.history.push('/')
       
-    Axios.get(this.state.bookUrl)
-      .then(result => {
-        console.log(result.data.data)
-        const bookData = result.data.data !== null? result.data.data[0]:null
-        this.setState({bookData:bookData})
-        return Axios.get(`http://localhost:3030/borrowings/book/${bookData.id}`,{
-          headers:{
-            Authorization : window.localStorage.getItem("token")
-          }
-        })
-      })
+    Axios.get(`http://localhost:3030/borrowings/book/${this.props.bookId}`,{
+      headers:{
+        Authorization : window.localStorage.getItem("token")
+      }
+    })
       .then(res=> this.setState({
         borrowedBy: res.data.data[0].user_id
       }))
       .catch(err => console.log(err))
-    
+
     Axios.get("http://localhost:3030/users/profile",{
       headers:{
         Authorization : window.localStorage.getItem("token")
@@ -91,10 +88,16 @@ class BookDetail extends React.Component{
         }
       })
         .then(res => {
+          console.log(res)
           this.setState({
             showModal:true,
             modalTitle:"Success",
             modalMessage:res.data.message,
+            borrowedBy:res.data.data.user_id,
+            bookData:{
+              ...this.state.bookData,
+              availability:0
+            }
           })
         })
         .catch(err => console.log(err))
@@ -105,10 +108,16 @@ class BookDetail extends React.Component{
         }
       })
         .then(res => {
+          console.log(res)
           this.setState({
             showModal:true,
             modalTitle:"Success",
             modalMessage:res.data.message,
+            borrowedBy:0,
+            bookData:{
+              ...this.state.bookData,
+              availability:1
+            }
           })
         })
         .catch(err => console.log(err))
@@ -117,11 +126,12 @@ class BookDetail extends React.Component{
 
   handleClose = ()=>{
     this.setState({showModal: false})
-    this.props.history.push('/')
+    // this.props.history.push('/')
   }
 
   render(){
     const {bookData} = this.state
+    console.log(this.state)
     if(bookData === undefined){
       console.log(this.state)
       return (
@@ -198,4 +208,9 @@ class BookDetail extends React.Component{
     }
   }
 }
-export default BookDetail
+  const mapStateToProps = (state) => {
+    return{
+      book: state.book
+    }
+  }
+export default connect(mapStateToProps)(BookDetail)
