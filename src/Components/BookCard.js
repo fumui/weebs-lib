@@ -14,7 +14,6 @@ class BookCard extends React.Component{
       genre : props.genre,
       redirectToDetails:false,
     }
-    this.redirectToDetails = this.redirectToDetails.bind(this)
   }
 
   redirectToDetails = () =>{
@@ -26,8 +25,8 @@ class BookCard extends React.Component{
     const {description} = this.state
     return(
       <Card 
-        style={{ width: '25%', margin: '3%'}} 
-        onClick={() => this.redirectToDetails()}
+        style={{ width: '25%',cursor:"pointer", margin: '3%'}} 
+        onClick={() => {this.redirectToDetails()}}
       >
         <figure>
           <Card.Img variant="top" src={this.state.imgUrl} className="book-image"/>

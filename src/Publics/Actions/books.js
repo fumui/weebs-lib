@@ -1,5 +1,5 @@
 import Axios from 'axios'
-
+const token = window.localStorage.getItem("token")
 export const getBooks = (dataSource, page = 1, sortby, search) => {
   let url = `${dataSource}?page=${page}`
   if(sortby !== null)
@@ -11,19 +11,29 @@ export const getBooks = (dataSource, page = 1, sortby, search) => {
     type:'GET_BOOKS',
     payload: Axios.get(url,{
         headers:{
-          Authorization : window.localStorage.getItem("token")
+          Authorization : token
         }
       }
     )
   }
 }
-
+export const getBookById = (id) => {
+  return {
+    type:'GET_BOOK_BY_ID',
+    payload: Axios.get(`http://localhost:3030/books/${id}`,{
+        headers:{
+          Authorization : token
+        }
+      }
+    )
+  }
+}
 export const addBook = (data) => {
   return {
     type:'ADD_BOOKS',
     payload: Axios.post('http://localhost:3030/books', data, {
         headers:{
-          Authorization : window.localStorage.getItem("token")
+          Authorization : token
         }
       }
     )
@@ -34,7 +44,7 @@ export const deleteBook = (id) => {
     type:'DELETE_BOOKS',
     payload: Axios.delete(`http://localhost:3030/books/${id}`,{
         headers:{
-          Authorization : window.localStorage.getItem("token")
+          Authorization : token
         }
       }
     )
@@ -45,7 +55,7 @@ export const editBook = (id, data) => {
     type:'EDIT_BOOKS',
     payload: Axios.patch(`http://localhost:3030/books/${id}`, data,{
         headers:{
-          Authorization : window.localStorage.getItem("token")
+          Authorization : token
         }
       }
     )
@@ -57,7 +67,7 @@ export const getBookYears = () => {
     type:'GET_BOOK_YEARS',
     payload: Axios.get('http://localhost:3030/books/year/',{
         headers:{
-          Authorization : window.localStorage.getItem("token")
+          Authorization : token
         }
       }
     )
@@ -69,7 +79,7 @@ export const getPopularBooks = () => {
     type:'GET_POPULAR_BOOKS',
     payload: Axios.get('http://localhost:3030/books/popular',{
         headers:{
-          Authorization : window.localStorage.getItem("token")
+          Authorization : token
         }
       }
     )

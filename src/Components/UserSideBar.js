@@ -5,8 +5,7 @@ import '../App.css'
 import {connect} from 'react-redux';
 
 import {getProfile} from '../Publics/Actions/users';
-import BookModal from './BookModal'
-import AddBookForm from './AddBookForm';
+import AddBookModal from './AddBookModal';
 class UserSideBar extends React.Component{
   constructor(props){
     super(props)
@@ -43,7 +42,8 @@ class UserSideBar extends React.Component{
         {
           this.state.level === "admin" ? 
           <Row className="justify-content-md-center">
-            <BookModal title="Add Book" content={<AddBookForm history={this.state.history}/>}/>
+            <AddBookModal history={this.state.history}/>
+            {/* <BookModal title="Add Book" content={<AddBookForm history={this.state.history}/>}/> */}
           </Row>
           :''
         }

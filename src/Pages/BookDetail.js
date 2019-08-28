@@ -1,5 +1,4 @@
 import React from 'react'
-import Axios from 'axios';
 import {Button, Container, Row, Modal, Alert} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
@@ -8,9 +7,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
 import BookModal from '../Components/BookModal';
 import EditBookForm from '../Components/EditBookForm';
-import {deleteBook} from '../Publics/Actions/books';
+import {deleteBook, getBookById} from '../Publics/Actions/books';
 import {getProfile} from '../Publics/Actions/users';
 import {borrow, returnBook, getLatestBorrowingByBookId} from '../Publics/Actions/borrowings';
+import EditBookModal from '../Components/EditBookModal';
 
 class BookDetail extends React.Component{
   constructor(props){
@@ -34,11 +34,19 @@ class BookDetail extends React.Component{
     if(!window.localStorage.getItem("token"))
       this.props.history.push('/')
       
-    await this.props.dispatch(getLatestBorrowingByBookId(this.props.bookId))
-    const borrowedBy = this.props.borrowing.borrowingData ? this.props.borrowing.borrowingData[0].user_id : 0
-    this.setState({
-      borrowedBy: borrowedBy
-    })
+    if(!this.state.bookData){
+      await this.props.dispatch(getBookById(this.props.bookId))
+      this.setState(
+        {bookData: this.props.book.booksList.find((book)=>{return book.id == Number(this.props.bookId)})},
+        async ()=>{
+          await this.props.dispatch(getLatestBorrowingByBookId(this.props.bookId))
+          const borrowedBy = this.props.borrowing.borrowingData ? this.props.borrowing.borrowingData[0].user_id : 0
+          this.setState({
+            borrowedBy: borrowedBy
+          })
+        }
+      )
+    }
     await this.props.dispatch(getProfile())
     this.setState({
       userData: this.props.user.userProfile
@@ -111,7 +119,7 @@ class BookDetail extends React.Component{
         <Alert variant="danger">Book Not Found</Alert>
       )
     }else{
-      const newImageUrl = bookData.image.split('w=')[0] + `w=${window.innerWidth}`
+      const newImageUrl = bookData.image.includes('yenpress')? bookData.image.split('w=')[0] + `w=${window.innerWidth}`:bookData.image
       return (
         <div style={{overflow:"hidden"}}>
           <Link to="../../home" variant="light" className=" btn btn-light back-button"><FontAwesomeIcon  icon={faArrowLeft} /></Link>
@@ -122,7 +130,7 @@ class BookDetail extends React.Component{
           {this.state.userData.level === 'admin' ? 
           <div className="book-detail-control">
             <Row>
-              <BookModal
+              {/* <BookModal
                 title="Edit Book"
                 variant="outline-light"
                 content={
@@ -135,7 +143,8 @@ class BookDetail extends React.Component{
                     genre_id={bookData.genre_id}
                   />
                 }
-              />
+              /> */}
+              <EditBookModal history={this.props.history} />
               <Button variant="outline-light" size="lg" onClick={this.handleDelete}>Delete</Button>
             </Row>
           </div>

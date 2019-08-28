@@ -26,6 +26,7 @@ class EditBookForm extends React.Component{
 
   handleClose = ()=>{
     this.setState({showModal: false})
+    this.props.closeModal()
   }
 
 
@@ -93,17 +94,16 @@ class EditBookForm extends React.Component{
             Date Released
             </Form.Label>
             <Col sm="10">
-              <Form.Control value={this.state.formData.date_released} onChange={this.handleChange} name="date_released" type="date" />
+              <Form.Control value={this.state.formData.date_released.split('T')[0]} onChange={this.handleChange} name="date_released" type="date" />
             </Col>
           </Form.Group>
 
           <Form.Group as={Row} controlId="formPlaintextGenre">
             <Form.Label column sm="2">Genre</Form.Label>
             <Col sm="10">
-              <Form.Control onChange={this.handleChange} as="select" name="genre_id">
+              <Form.Control onChange={this.handleChange} as="select" name="genre_id" value={this.props.genre_id}>
                 {genreList.length !== 0 ? genreList.map((genre) => {
-                  const selected = this.state.genre_id === genre.id 
-                  return <option selected={selected} value={genre.id} key={genre.id}> {genre.name} </option>
+                  return <option value={genre.id} key={genre.id}> {genre.name} </option>
                 })
                 :<option>Loading...</option>
               }

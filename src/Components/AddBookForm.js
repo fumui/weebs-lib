@@ -22,6 +22,7 @@ class AddBookForm extends React.Component{
       modalMessage:"",
       history:props.history,
     }
+    console.log(props)
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClose  = this.handleClose.bind(this);
@@ -29,6 +30,7 @@ class AddBookForm extends React.Component{
 
   handleClose = ()=>{
     this.setState({showModal: false})
+    this.props.closeModal()
     // this.state.history.push("/")
   }
 
@@ -45,6 +47,7 @@ class AddBookForm extends React.Component{
   }
 
   handleSubmit = async (event) => {
+    event.preventDefault();
     await this.props.dispatch(addBook(this.state.formData))
     console.log(this.props.book)
     this.setState({
@@ -52,7 +55,6 @@ class AddBookForm extends React.Component{
       modalTitle:"Success",
       modalMessage:"Success Adding Book",
     })
-    event.preventDefault();
   }
 
   componentDidMount = async () => {
@@ -60,6 +62,7 @@ class AddBookForm extends React.Component{
     this.setState ({genreList: this.props.genre.genresList})
   };
   render(){
+    const today = new Date()
     const {genreList} = this.state
     return (
       <Fragment>
@@ -96,7 +99,7 @@ class AddBookForm extends React.Component{
             Date Released
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={this.handleChange} name="date_released" type="date" />
+              <Form.Control onChange={this.handleChange} defaultValue={today.toISOString().split('T')[0]} name="date_released" type="date" />
             </Col>
           </Form.Group>
 
@@ -104,6 +107,7 @@ class AddBookForm extends React.Component{
             <Form.Label column sm="2">Genre</Form.Label>
             <Col sm="10">
               <Form.Control onChange={this.handleChange} as="select" name="genre_id">
+                <option>Select Genre</option>
                 {genreList.length !== 0 ? genreList.map((genre) => {
                   return <option value={genre.id} key={genre.id}> {genre.name} </option>
                 })
