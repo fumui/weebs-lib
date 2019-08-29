@@ -88,7 +88,7 @@ const book = (state = initState, action)=>{
         errMessage:action.payload.response.data.message,
       }
     case 'EDIT_BOOKS_FULFILLED':
-      const newBookData = action.payload.data.data
+      const newBookData = action.payload.data.data[0]
       return{
         ...state,
         isLoading:false,

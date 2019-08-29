@@ -79,7 +79,7 @@ class AddBookForm extends React.Component{
               Title
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={this.handleChange} type="text" name="title" placeholder="Title..." />
+              <Form.Control onChange={this.handleChange} type="text" name="title" placeholder="Title..." required/>
             </Col>
           </Form.Group>
 
@@ -88,7 +88,7 @@ class AddBookForm extends React.Component{
             Description
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={this.handleChange} type="text" name="description" placeholder="Description..." />
+              <Form.Control onChange={this.handleChange} type="text" name="description" placeholder="Description..." required/>
             </Col>
           </Form.Group>
 
@@ -97,7 +97,7 @@ class AddBookForm extends React.Component{
             Image URL
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={this.handleChange} type="text" name="image" placeholder="Image URL..." />
+              <Form.Control onChange={this.handleChange} type="text" name="image" placeholder="Image URL..." required/>
             </Col>
           </Form.Group>
 
@@ -106,14 +106,14 @@ class AddBookForm extends React.Component{
             Date Released
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={this.handleChange} defaultValue={today.toISOString().split('T')[0]} name="date_released" type="date" />
+              <Form.Control onChange={this.handleChange} defaultValue={today.toISOString().split('T')[0]} required name="date_released" type="date" />
             </Col>
           </Form.Group>
 
           <Form.Group as={Row} controlId="formPlaintextGenre">
             <Form.Label column sm="2">Genre</Form.Label>
             <Col sm="10">
-              <Form.Control onChange={this.handleChange} as="select" name="genre_id">
+              <Form.Control onChange={this.handleChange} as="select" name="genre_id" required>
                 <option>Select Genre</option>
                 {genreList.length !== 0 ? genreList.map((genre) => {
                   return <option value={genre.id} key={genre.id}> {genre.name} </option>

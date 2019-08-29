@@ -92,7 +92,13 @@ class Home extends React.Component{
             let params = new URLSearchParams(window.location.search)
             return(
               <div>
-                <BooksList history={history} sortby={params.get("sortby")} search={params.get("search")} dataSource={`http://localhost:3030/books`} key={window.location.href} />
+                <BooksList
+                  availability={params.get("availability")} 
+                  history={history}
+                  sortby={params.get("sortby")} 
+                  search={params.get("search")} 
+                  dataSource={`http://localhost:3030/books`} 
+                  key={window.location.href} />
               </div>
             );
           }} 

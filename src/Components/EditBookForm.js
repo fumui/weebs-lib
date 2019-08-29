@@ -7,15 +7,16 @@ import {getGenres} from '../Publics/Actions/genres';
 class EditBookForm extends React.Component{
   constructor(props){
     super(props)
+    const bookData = props.book.booksList.find((book) => book.id == props.bookId) 
     this.state = {
       genreList:[],
-      idBook: props.bookData.id,
+      idBook: props.bookId,
       formData:{
-        image: props.bookData.image,
-        title: props.bookData.title,
-        genre_id: props.bookData.genre_id,
-        description: props.bookData.description,
-        date_released: props.bookData.date_released,
+        image: bookData.image,
+        title: bookData.title,
+        genre_id: bookData.genre_id,
+        description: bookData.description,
+        date_released: bookData.date_released,
       },
       showModal:false,
       modalTitle:"",
@@ -38,8 +39,7 @@ class EditBookForm extends React.Component{
     newFormData[name] = value
     this.setState({
       formData: newFormData
-    })
-    console.log(this.state.formData)
+    },()=>{console.log(this.state.formData)})
   }
 
   handleSubmit = (event)=>{
@@ -67,6 +67,7 @@ class EditBookForm extends React.Component{
   };
   render(){
     const {genreList} = this.state
+    console.log(this.state.bookData)
     return (
       <Fragment>
         <Form onSubmit={this.handleSubmit}>
@@ -109,7 +110,13 @@ class EditBookForm extends React.Component{
           <Form.Group as={Row} controlId="formPlaintextGenre">
             <Form.Label column sm="2">Genre</Form.Label>
             <Col sm="10">
-              <Form.Control onChange={this.handleChange} as="select" name="genre_id" value={this.props.genre_id}>
+              <Form.Control 
+                onChange={this.handleChange} 
+                as="select" 
+                name="genre_id" 
+                defaultValue={this.props.bookData.genre_id} 
+                value={this.props.bookData.genre_id}
+                >
                 {genreList.length !== 0 ? genreList.map((genre) => {
                   return <option value={genre.id} key={genre.id}> {genre.name} </option>
                 })

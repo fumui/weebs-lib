@@ -7,8 +7,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
 import {deleteBook, getBookById} from '../Publics/Actions/books';
 import {getProfile} from '../Publics/Actions/users';
-import {borrow, returnBook, getLatestBorrowingByBookId} from '../Publics/Actions/borrowings';
+import {returnBook, getLatestBorrowingByBookId} from '../Publics/Actions/borrowings';
 import EditBookModal from '../Components/EditBookModal';
+import AddBorrowingModal from '../Components/AddBorrowingModal';
+import store from '../Publics/Store'
 
 class BookDetail extends React.Component{
   constructor(props){
@@ -22,18 +24,20 @@ class BookDetail extends React.Component{
       showModal:false,
       modalTitle:"",
       modalMessage:"",
+      unsubscibe : store.subscribe(this.listener)
     }
-    this.handleDelete=this.handleDelete.bind(this);
-    this.handleBorrow=this.handleBorrow.bind(this);
-    this.handleClose=this.handleClose.bind(this);
   }
 
-  componentDidMount = async () => {
-    if(!window.localStorage.getItem("token"))
-      this.props.history.push('/')
-      
-    if(!this.state.bookData){
-      await this.props.dispatch(getBookById(this.props.bookId))
+  listener = ()=>{
+    const current = store.getState().book.booksList.find((book)=>{return book.id == Number(this.props.bookId)});
+    console.log(current, this.state.bookData)
+    if(current !== this.state.bookData){
+      this.setState({bookData: current})
+    }
+  }
+
+  getBookData = async () => {
+    await this.props.dispatch(getBookById(this.props.bookId))
       this.setState(
         {bookData: this.props.book.booksList.find((book)=>{return book.id == Number(this.props.bookId)})},
         async ()=>{
@@ -44,11 +48,23 @@ class BookDetail extends React.Component{
           })
         }
       )
+  }
+
+  componentDidMount = async () => {
+    if(!window.localStorage.getItem("token"))
+      this.props.history.push('/')
+      
+    if(!this.state.bookData){
+      this.getBookData()
     }
     await this.props.dispatch(getProfile())
     this.setState({
       userData: this.props.user.userProfile
     })
+  }
+
+  componentWillUnmount = () => {
+    this.state.unsubscibe()
   }
 
   handleDelete = (event) => {
@@ -70,56 +86,31 @@ class BookDetail extends React.Component{
       })
   }
 
-  handleBorrow = async (event) => {
-    const target= event.target
-    const action = target.innerHTML
+  handleReturn = async (event) => {
     const data = {
       book_id:this.state.bookData.id,
       user_id:this.state.userData.id,
     }
-    if(action === "Borrow"){
-      this.props.dispatch(borrow(data))
-        .then(()=>{
-          this.setState({
-            showModal:true,
-            modalTitle:"Success",
-            modalMessage:"Book Borrowed",
-            borrowedBy:data.user_id,
-            bookData:{
-              ...this.state.bookData,
-              availability:0
-            }
-          })
+    this.props.dispatch(returnBook(data))
+      .then(()=>{
+        this.setState({
+          showModal:true,
+          modalTitle:"Success",
+          modalMessage:"Book Returned",
+          borrowedBy:0,
+          bookData:{
+            ...this.state.bookData,
+            availability:1
+          }
         })
-        .catch(() => {
-          this.setState({
-            showModal:true,
-            modalTitle:"Failed",
-            modalMessage:this.props.borrowing.errMessage
-          })
+      })
+      .catch(() => {
+        this.setState({
+          showModal:true,
+          modalTitle:"Failed",
+          modalMessage:this.props.borrowing.errMessage
         })
-    }else if(action === "Return"){
-      this.props.dispatch(returnBook(data))
-        .then(()=>{
-          this.setState({
-            showModal:true,
-            modalTitle:"Success",
-            modalMessage:"Book Returned",
-            borrowedBy:0,
-            bookData:{
-              ...this.state.bookData,
-              availability:1
-            }
-          })
-        })
-        .catch(() => {
-          this.setState({
-            showModal:true,
-            modalTitle:"Failed",
-            modalMessage:this.props.borrowing.errMessage
-          })
-        })
-    }
+      })
   }
 
   handleClose = ()=>{
@@ -147,35 +138,69 @@ class BookDetail extends React.Component{
       const newImageUrl = bookData.image.includes('yenpress')? bookData.image.split('w=')[0] + `w=${window.innerWidth}`:bookData.image
       return (
         <div style={{overflow:"hidden"}}>
-          <Link to="../../home" variant="light" className=" btn btn-light back-button"><FontAwesomeIcon  icon={faArrowLeft} /></Link>
+          <Link 
+            to="../../home" 
+            variant="light" 
+            className=" btn btn-light back-button"
+          >
+            <FontAwesomeIcon  icon={faArrowLeft} />
+          </Link>
           <div className="book-detail-image">
-            <img className="cover-img" src={newImageUrl} alt="cover"/>
-            <img className="book-img" src={bookData.image}  alt="miniCover"/>
+            <img 
+              className="cover-img"
+              src={newImageUrl} 
+              alt="cover"
+            />
+            <img 
+              className="book-img" 
+              src={bookData.image} 
+              alt="miniCover"
+            />
           </div>
+          
           {this.state.userData.level === 'admin' ? 
           <div className="book-detail-control">
             <Row>
-              <EditBookModal variant="outline-light" history={this.props.history} bookData={this.state.bookData} />
+              <EditBookModal variant="outline-light" history={this.props.history} bookId={this.state.bookData.id} bookData={this.state.bookData} />
               <Button variant="outline-light" size="lg" onClick={this.handleDelete}>Delete</Button>
             </Row>
           </div>
           :''}
+
           <div className="book-detail-data">
-            <Button variant="warning" className="genre-button">{bookData.genre}</Button>
-            <Button variant="outline-warning" className="availability-button">{bookData.availability === 1 ? "Available": "Not Available"}</Button>
+            <Button 
+              variant="warning" 
+              className="genre-button"
+            >
+              {bookData.genre}
+            </Button>
+            <Button 
+              variant="outline-warning" 
+              className="availability-button"
+            >
+              {bookData.availability === 1 ? "Available": "Not Available"}
+            </Button>
             <div className="book-title">{bookData.title}</div>
-            <div className="book-date-released">{(new Date(bookData.date_released.split('T')[0])).toDateString()}</div>
+            <div className="book-date-released">
+              {(new Date(bookData.date_released.split('T')[0])).toDateString()}
+            </div>
             <Container className="book-description">{bookData.description}</Container>
           </div>
-          <Button 
-            disabled={bookData.availability !== 1 && this.state.userData.id !== this.state.borrowedBy} 
-            variant="warning" 
-            size="lg"  
-            className="borrow-button"
-            onClick={this.handleBorrow}
-          >
-            {this.state.userData.id === this.state.borrowedBy ?"Return":"Borrow"}
-          </Button>
+
+          {this.state.userData.level === 'admin' ? 
+            bookData.availability === 1 ?
+              <AddBorrowingModal bookId={bookData.id} className="borrow-button" variant="warning" />
+              :
+              <Button
+              variant="warning" 
+              size="lg"  
+              className="borrow-button"
+              onClick={this.handleReturn}
+              >
+                Return
+              </Button>
+          :''}
+          
           <Modal show={this.state.showModal} onHide={this.handleClose}>
             <Modal.Header>
               <Modal.Title>{this.state.modalTitle}</Modal.Title>
