@@ -1,5 +1,7 @@
 const initState = {
   userProfile:{},
+  errMessage:'',
+  message:'',
   isLoading:false,
   isRejected:false,
   isFulfilled:false,
@@ -18,6 +20,7 @@ const user = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message
       }
     case 'LOGIN_FULFILLED':
       return{
@@ -38,6 +41,7 @@ const user = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message
       }
     case 'REGISTER_FULFILLED':
       return{
@@ -57,6 +61,7 @@ const user = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message
       }
     case 'GET_PROFILE_FULFILLED':
       return{

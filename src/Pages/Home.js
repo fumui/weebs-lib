@@ -15,6 +15,7 @@ import PopularBooksCarousel from '../Components/PopularBooksCarousel';
 import SortByDropdown from '../Components/SortByDropdown';
 import {SearchBook} from '../Components/SearchBook';
 import {getProfile} from '../Publics/Actions/users';
+import AvailabilityDropdown from '../Components/AvailabilityDropdown';
 
 class Home extends React.Component{
   constructor(props){
@@ -22,7 +23,7 @@ class Home extends React.Component{
     this.state = {
       sidebarOpen : false,
       search:"",
-      userData:undefined
+      userData:undefined,
     }
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
     
@@ -32,10 +33,10 @@ class Home extends React.Component{
       sidebarOpen : open
     })
   }
-  componentDidMount(){
+  componentDidMount= async () => {
     if(window.localStorage.getItem("token") === null)
       this.props.history.push('/')
-      this.props.dispatch(getProfile())
+      await this.props.dispatch(getProfile())
       this.setState({
         userData: this.props.user.userProfile
       })
@@ -61,6 +62,7 @@ class Home extends React.Component{
           <GenreDropdown history={this.props.history}/>
           <YearDropdown history={this.props.history}/>
           <SortByDropdown history={this.props.history}/>
+          <AvailabilityDropdown history={this.props.history} />
           <SearchBook history={this.props.history}/>
           <Navbar.Brand onClick={()=>{this.props.history.push("/home")}}><img src={Bookshelf} alt="bookshelf"/>Weeb's Library</Navbar.Brand>
         </Navbar>
@@ -72,7 +74,13 @@ class Home extends React.Component{
             return(
               <div>
                 <PopularBooksCarousel history={history}/>
-                <BooksList history={history} sortby={params.get("sortby")} search={params.get("search")} dataSource={`http://localhost:3030/books`} key={window.location.href} />
+                <BooksList 
+                  availability={params.get("availability")} 
+                  history={history} 
+                  sortby={params.get("sortby")} 
+                  search={params.get("search")} 
+                  dataSource={`http://localhost:3030/books`} 
+                  key={window.location.href + this.state} />
               </div>
             );
           }} 

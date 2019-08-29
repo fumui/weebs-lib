@@ -43,7 +43,6 @@ class UserSideBar extends React.Component{
           this.state.level === "admin" ? 
           <Row className="justify-content-md-center">
             <AddBookModal history={this.state.history}/>
-            {/* <BookModal title="Add Book" content={<AddBookForm history={this.state.history}/>}/> */}
           </Row>
           :''
         }

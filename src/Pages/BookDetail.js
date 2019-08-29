@@ -5,8 +5,6 @@ import {Link} from 'react-router-dom'
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
-import BookModal from '../Components/BookModal';
-import EditBookForm from '../Components/EditBookForm';
 import {deleteBook, getBookById} from '../Publics/Actions/books';
 import {getProfile} from '../Publics/Actions/users';
 import {borrow, returnBook, getLatestBorrowingByBookId} from '../Publics/Actions/borrowings';
@@ -53,14 +51,23 @@ class BookDetail extends React.Component{
     })
   }
 
-  handleDelete = async (event) => {
-    await this.props.dispatch(deleteBook(this.state.bookData.id))
-    this.setState({
-      showModal:true,
-      modalTitle:"Success",
-      modalMessage:`Success deleting Book`,
-      redirectOnCloseModal:true
-    })
+  handleDelete = (event) => {
+    this.props.dispatch(deleteBook(this.state.bookData.id))
+      .then(()=>{
+        this.setState({
+          showModal:true,
+          modalTitle:"Success",
+          modalMessage:`Success deleting Book`,
+          redirectOnCloseModal:true
+        })
+      })
+      .catch(() => {
+        this.setState({
+          showModal:true,
+          modalTitle:"Failed",
+          modalMessage:this.props.book.errMessage
+        })
+      })
   }
 
   handleBorrow = async (event) => {
@@ -71,29 +78,47 @@ class BookDetail extends React.Component{
       user_id:this.state.userData.id,
     }
     if(action === "Borrow"){
-      await this.props.dispatch(borrow(data))
-      this.setState({
-        showModal:true,
-        modalTitle:"Success",
-        modalMessage:"Book Borrowed",
-        borrowedBy:data.user_id,
-        bookData:{
-          ...this.state.bookData,
-          availability:0
-        }
-      })
+      this.props.dispatch(borrow(data))
+        .then(()=>{
+          this.setState({
+            showModal:true,
+            modalTitle:"Success",
+            modalMessage:"Book Borrowed",
+            borrowedBy:data.user_id,
+            bookData:{
+              ...this.state.bookData,
+              availability:0
+            }
+          })
+        })
+        .catch(() => {
+          this.setState({
+            showModal:true,
+            modalTitle:"Failed",
+            modalMessage:this.props.borrowing.errMessage
+          })
+        })
     }else if(action === "Return"){
-      await this.props.dispatch(returnBook(data))
-      this.setState({
-        showModal:true,
-        modalTitle:"Success",
-        modalMessage:"Book Returned",
-        borrowedBy:0,
-        bookData:{
-          ...this.state.bookData,
-          availability:1
-        }
-      })
+      this.props.dispatch(returnBook(data))
+        .then(()=>{
+          this.setState({
+            showModal:true,
+            modalTitle:"Success",
+            modalMessage:"Book Returned",
+            borrowedBy:0,
+            bookData:{
+              ...this.state.bookData,
+              availability:1
+            }
+          })
+        })
+        .catch(() => {
+          this.setState({
+            showModal:true,
+            modalTitle:"Failed",
+            modalMessage:this.props.borrowing.errMessage
+          })
+        })
     }
   }
 
@@ -130,21 +155,7 @@ class BookDetail extends React.Component{
           {this.state.userData.level === 'admin' ? 
           <div className="book-detail-control">
             <Row>
-              {/* <BookModal
-                title="Edit Book"
-                variant="outline-light"
-                content={
-                  <EditBookForm 
-                    idBook={bookData.id}
-                    title={bookData.title}
-                    description={bookData.description}
-                    image={bookData.image}
-                    date_released={bookData.date_released}
-                    genre_id={bookData.genre_id}
-                  />
-                }
-              /> */}
-              <EditBookModal history={this.props.history} />
+              <EditBookModal variant="outline-light" history={this.props.history} bookData={this.state.bookData} />
               <Button variant="outline-light" size="lg" onClick={this.handleDelete}>Delete</Button>
             </Row>
           </div>
@@ -153,7 +164,7 @@ class BookDetail extends React.Component{
             <Button variant="warning" className="genre-button">{bookData.genre}</Button>
             <Button variant="outline-warning" className="availability-button">{bookData.availability === 1 ? "Available": "Not Available"}</Button>
             <div className="book-title">{bookData.title}</div>
-            <div className="book-date-released">{(new Date(bookData.date_released)).toDateString()}</div>
+            <div className="book-date-released">{(new Date(bookData.date_released.split('T')[0])).toDateString()}</div>
             <Container className="book-description">{bookData.description}</Container>
           </div>
           <Button 

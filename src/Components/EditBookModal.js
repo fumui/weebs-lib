@@ -31,7 +31,11 @@ class EditBookModal extends React.Component{
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <EditBookForm closeModal={()=>{this.setState({showModal:false})}} history={this.props.history}/>
+            <EditBookForm 
+              closeModal={()=>{this.setState({showModal:false})}} 
+              history={this.props.history}
+              bookData= {this.props.bookData}
+              />
           </Modal.Body>
         </Modal>
       </Fragment>

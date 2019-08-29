@@ -22,26 +22,26 @@ const App=()=> {
         />
         <Route
           path={'/home'}
-          render={({history}) => {
-            return <Home history={history}/>
+          render={(props) => {
+            return <Home {...props}/>
           }}
         />
         <Route
           path={'/book/:id'}
-          component={({match,history}) => {
-            return <BookDetail history={history} bookId={match.params.id} bookUrl={`http://localhost:3030/books/${match.params.id}`} key={history.location}/>;
+          component={(props) => {
+            return <BookDetail {...props} bookId={props.match.params.id} bookUrl={`http://localhost:3030/books/${props.match.params.id}`} key={props.history.location}/>;
           }} 
         />
         <Route
           path={'/login'}
-          render={({history}) => {
-            return <Auth history={history}/>;
+          render={(props) => {
+            return <Auth {...props}/>;
           }}
         />
         <Route
           path={'/register'}
-          render={({history}) => {
-            return <Auth history={history}/>;
+          render={(props) => {
+            return <Auth {...props}/>;
           }}
         />
       </Router>

@@ -31,7 +31,6 @@ class AddBookForm extends React.Component{
   handleClose = ()=>{
     this.setState({showModal: false})
     this.props.closeModal()
-    // this.state.history.push("/")
   }
 
   handleChange(event){
@@ -46,15 +45,23 @@ class AddBookForm extends React.Component{
     console.log(this.state.formData)
   }
 
-  handleSubmit = async (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    await this.props.dispatch(addBook(this.state.formData))
-    console.log(this.props.book)
-    this.setState({
-      showModal: true,
-      modalTitle:"Success",
-      modalMessage:"Success Adding Book",
-    })
+    this.props.dispatch(addBook(this.state.formData))
+      .then(()=>{
+        this.setState({
+          showModal: true,
+          modalTitle:"Success",
+          modalMessage:"Success Adding Book",
+        })
+      })
+      .catch(() => {
+        this.setState({
+          showModal:true,
+          modalTitle:"Failed",
+          modalMessage:this.props.book.errMessage
+        })
+      })
   }
 
   componentDidMount = async () => {

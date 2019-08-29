@@ -14,6 +14,7 @@ class BooksList extends React.Component{
       history: props.history,
       data: null,
       page: 1,
+      availability:props.availability,
     }
   }
   componentDidMount(){
@@ -25,7 +26,7 @@ class BooksList extends React.Component{
   }
 
   getDataBooks = async (page) => {
-    await this.props.dispatch(getBooks(this.state.dataSource, page, this.props.sortby, this.props.search))
+    await this.props.dispatch(getBooks(this.state.dataSource, page, this.props.sortby, this.props.search, this.props.availability))
     this.setState({
       data: this.props.book,
       page: page

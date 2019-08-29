@@ -35,14 +35,24 @@ class RegisterForm extends React.Component{
     })
   }
 
-  handleSubmit = async (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    await this.props.dispatch(register(this.state.formData))
-    this.setState({
-      showModal:true,
-      modalTitle:"Success",
-      modalMessage:"Success Registering",
-    })
+    this.props.dispatch(register(this.state.formData))
+      .then(res=>{
+        this.setState({
+          showModal:true,
+          modalTitle:"Success",
+          modalMessage: res.action.payload.data.message,
+        })
+      })
+      .catch(()=>{
+        this.setState({
+          showModal:true,
+          modalTitle:"Failed",
+          modalMessage: this.props.user.errMessage,
+        })
+      })
+    
   }
   render(){
     return(

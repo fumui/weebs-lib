@@ -1,12 +1,13 @@
 import Axios from 'axios'
 const token = window.localStorage.getItem("token")
-export const getBooks = (dataSource, page = 1, sortby, search) => {
+export const getBooks = (dataSource, page = 1, sortby, search, availability) => {
   let url = `${dataSource}?page=${page}`
   if(sortby !== null)
     url += `&sortby=${sortby}`
   if(search !== null )
     url += `&search=${search}`
-
+  if(availability !== null )
+    url += `&availability=${availability}`
   return {
     type:'GET_BOOKS',
     payload: Axios.get(url,{

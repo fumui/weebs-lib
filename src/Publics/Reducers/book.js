@@ -2,6 +2,8 @@ const initState = {
   booksList:[],
   yearsList:[],
   popularBooksList:[],
+  errMessage:'',
+  message:'',
   isLoading:false,
   isRejected:false,
   isFulfilled:false,
@@ -20,6 +22,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'GET_BOOKS_FULFILLED':
       return{
@@ -40,6 +43,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'GET_BOOK_BY_ID_FULFILLED':
       state.booksList.push(action.payload.data.data[0])
@@ -60,6 +64,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'ADD_BOOKS_FULFILLED':
       state.booksList.unshift(action.payload.data.data)
@@ -80,6 +85,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'EDIT_BOOKS_FULFILLED':
       const newBookData = action.payload.data.data
@@ -101,6 +107,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'DELETE_BOOKS_FULFILLED':
       return{
@@ -121,6 +128,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'GET_BOOK_YEARS_FULFILLED':
       return{
@@ -141,6 +149,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'GET_POPULAR_BOOKS_FULFILLED':
       return{

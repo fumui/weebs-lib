@@ -58,23 +58,4 @@ function ModalLayer(props) {
     </Modal>
   );
 }
-
-function BookModal(props) {
-  const [modalShow, setModalShow] = React.useState(false);
-
-  return (
-    <div>
-      <Button variant={props.variant || "light"} size="lg" onClick={() => setModalShow(true)}>
-        {props.title}
-      </Button>
-
-      <ModalLayer
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        title={props.title}
-        content={props.content}
-      />
-    </div>
-  );
-}
 export default AddBookModal

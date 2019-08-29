@@ -9,13 +9,13 @@ class EditBookForm extends React.Component{
     super(props)
     this.state = {
       genreList:[],
-      idBook: props.idBook,
+      idBook: props.bookData.id,
       formData:{
-        image: props.image,
-        title: props.title,
-        genre_id: props.genre_id,
-        description: props.description,
-        date_released: props.date_released,
+        image: props.bookData.image,
+        title: props.bookData.title,
+        genre_id: props.bookData.genre_id,
+        description: props.bookData.description,
+        date_released: props.bookData.date_released,
       },
       showModal:false,
       modalTitle:"",
@@ -42,15 +42,23 @@ class EditBookForm extends React.Component{
     console.log(this.state.formData)
   }
 
-  handleSubmit = async (event)=>{
+  handleSubmit = (event)=>{
     event.preventDefault();
-    await this.props.dispatch(editBook(this.state.idBook,this.state.formData))
-    
-    this.setState({
-      showModal:true,
-      modalTitle:"Success",
-      modalMessage:"Success edit book",
-    })
+    this.props.dispatch(editBook(this.state.idBook,this.state.formData))
+      .then(()=>{
+        this.setState({
+          showModal:true,
+          modalTitle:"Success",
+          modalMessage:"Success edit book",
+        })
+      })
+      .catch(() => {
+        this.setState({
+          showModal:true,
+          modalTitle:"Failed",
+          modalMessage:this.props.book.errMessage
+        })
+      })
   }
 
   componentDidMount = async () => {

@@ -1,5 +1,7 @@
 const initState = {
   genresList:[],
+  errMessage:'',
+  message:'',
   isLoading:false,
   isRejected:false,
   isFulfilled:false,
@@ -18,6 +20,7 @@ const genre = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'GET_GENRES_FULFILLED':
       return{
@@ -38,6 +41,7 @@ const genre = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'ADD_GENRES_FULFILLED':
       return{
@@ -58,6 +62,7 @@ const genre = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'EDIT_GENRES_FULFILLED':
       const newGenreData = action.payload.data.data
@@ -79,6 +84,7 @@ const genre = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
+        errMessage:action.payload.response.data.message,
       }
     case 'DELETE_GENRES_FULFILLED':
       return{
