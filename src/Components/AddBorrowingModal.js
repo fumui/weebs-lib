@@ -17,7 +17,7 @@ class AddBorrowingModal extends React.Component{
           variant={this.props.variant || "light"} 
           size="lg"
           onClick={() => {this.setState({showModal:true})}}>
-          Add Borrowing
+          Borrow Book
         </Button>
         <Modal
           show={this.state.showModal}

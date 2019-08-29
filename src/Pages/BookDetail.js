@@ -121,6 +121,8 @@ class BookDetail extends React.Component{
 
   render(){
     const {bookData} = this.state
+    
+
     console.log(this.state)
     if(bookData === undefined){
       console.log(this.state)
@@ -135,6 +137,7 @@ class BookDetail extends React.Component{
         <Alert variant="danger">Book Not Found</Alert>
       )
     }else{
+      let stringDateReleased = new Date(bookData.date_released).toDateString()
       const newImageUrl = bookData.image.includes('yenpress')? bookData.image.split('w=')[0] + `w=${window.innerWidth}`:bookData.image
       return (
         <div style={{overflow:"hidden"}}>
@@ -182,7 +185,7 @@ class BookDetail extends React.Component{
             </Button>
             <div className="book-title">{bookData.title}</div>
             <div className="book-date-released">
-              {(new Date(bookData.date_released.split('T')[0])).toDateString()}
+              {stringDateReleased}
             </div>
             <Container className="book-description">{bookData.description}</Container>
           </div>

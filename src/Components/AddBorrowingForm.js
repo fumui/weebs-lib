@@ -98,7 +98,8 @@ class AddBorrowingForm extends React.Component{
 const mapStateToProps = state => {
   return{
     book: state.book,
-    genre: state.genre
+    genre: state.genre,
+    borrowing: state.borrowing
   }
 }
 export default connect(mapStateToProps)(AddBorrowingForm)

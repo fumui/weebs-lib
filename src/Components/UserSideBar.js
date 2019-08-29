@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{Fragment} from 'react'
 import {Link} from 'react-router-dom'
 import {Container, Row, Button} from 'react-bootstrap'
 import '../App.css'
@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 
 import {getProfile} from '../Publics/Actions/users';
 import AddBookModal from './AddBookModal';
+import AddBorrowingModal from './AddBorrowingModal';
 class UserSideBar extends React.Component{
   constructor(props){
     super(props)
@@ -41,9 +42,14 @@ class UserSideBar extends React.Component{
         <Row className="justify-content-md-center"><Link to="/home/history" className="btn btn-light btn-lg" size="lg" variant="light">History</Link></Row>
         {
           this.state.level === "admin" ? 
-          <Row className="justify-content-md-center">
-            <AddBookModal history={this.state.history}/>
-          </Row>
+          <Fragment>
+            <Row className="justify-content-md-center">
+              <AddBookModal history={this.state.history}/>
+            </Row>
+            <Row className="justify-content-md-center">
+              <AddBorrowingModal variant="light"/>
+            </Row>
+          </Fragment>
           :''
         }
         <Row className="justify-content-md-center"><Button size="lg" variant="light" onClick={this.handleLogout} >Logout</Button></Row>

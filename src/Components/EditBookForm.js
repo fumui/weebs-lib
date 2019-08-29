@@ -67,7 +67,13 @@ class EditBookForm extends React.Component{
   };
   render(){
     const {genreList} = this.state
-    console.log(this.state.bookData)
+    const rawDate = new Date(this.state.formData.date_released)
+    let year = rawDate.getFullYear()
+    let month = rawDate.getMonth() < 10 ? `0`+(rawDate.getMonth() + 1) : rawDate.getMonth() + 1
+    let date = rawDate.getDate() < 10 ? `0`+rawDate.getDate() : rawDate.getDate()
+
+    let date_released = `${year}-${month}-${date}`
+
     return (
       <Fragment>
         <Form onSubmit={this.handleSubmit}>
@@ -103,7 +109,7 @@ class EditBookForm extends React.Component{
             Date Released
             </Form.Label>
             <Col sm="10">
-              <Form.Control value={this.state.formData.date_released.split('T')[0]} onChange={this.handleChange} name="date_released" type="date" />
+              <Form.Control value={date_released} onChange={this.handleChange} name="date_released" type="date" />
             </Col>
           </Form.Group>
 
@@ -148,7 +154,7 @@ class EditBookForm extends React.Component{
 const mapStateToProps = (state) => {
   return{
     book: state.book,
-    genre: state.genre
+    genre: state.genre,
   }
 }
 export default connect(mapStateToProps)(EditBookForm)
