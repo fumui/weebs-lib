@@ -36,7 +36,7 @@ class BookCard extends React.Component{
           <Card.Title>{this.state.title}</Card.Title>
           <Badge variant="warning">{this.state.genre}</Badge>
           <Card.Text>
-            {description.length > 30 ?  description.substr(0,75)+'...': description}
+            {description.length > 75 ?  description.substr(0,75)+'...': description}
           </Card.Text>
         </Card.Body>
       </Card>

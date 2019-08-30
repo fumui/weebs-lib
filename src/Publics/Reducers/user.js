@@ -20,14 +20,13 @@ const user = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message
       }
     case 'LOGIN_FULFILLED':
       return{
         ...state,
         isLoading:false,
         isFulfilled:true,
-        token:action.payload.data.token
       }
     case 'REGISTER_PENDING':
       return{
@@ -41,7 +40,7 @@ const user = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message
       }
     case 'REGISTER_FULFILLED':
       return{
@@ -61,7 +60,7 @@ const user = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message
       }
     case 'GET_PROFILE_FULFILLED':
       return{

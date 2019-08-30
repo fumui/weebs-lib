@@ -2,6 +2,7 @@ const initState = {
   booksList:[],
   yearsList:[],
   popularBooksList:[],
+  page:undefined,
   errMessage:'',
   message:'',
   isLoading:false,
@@ -22,14 +23,16 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'GET_BOOKS_FULFILLED':
+        // action.payload.data.data.map(book => state.booksList.push(book))
       return{
         ...state,
         isLoading:false,
         isFulfilled:true,
-        booksList: action.payload.data.data
+        booksList:action.payload.data.data,
+        page:action.payload.data.page
       }
     case 'GET_BOOK_BY_ID_PENDING':
       return{
@@ -43,7 +46,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'GET_BOOK_BY_ID_FULFILLED':
       state.booksList.push(action.payload.data.data[0])
@@ -64,7 +67,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'ADD_BOOKS_FULFILLED':
       state.booksList.unshift(action.payload.data.data)
@@ -85,7 +88,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'EDIT_BOOKS_FULFILLED':
       const newBookData = action.payload.data.data[0]
@@ -93,7 +96,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isFulfilled:true,
-        booksList: state.booksList.map((book)=>{return book.id == newBookData.id ? newBookData : book})
+        booksList: state.booksList.map((book)=>{return Number(book.id) === Number(newBookData.id) ? newBookData : book})
       }
     case 'DELETE_BOOKS_PENDING':
       return{
@@ -107,14 +110,14 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'DELETE_BOOKS_FULFILLED':
       return{
         ...state,
         isLoading:false,
         isFulfilled:true, 
-        booksList: state.booksList.filter((book)=>{return book.id != action.payload.data.data.id})
+        booksList: state.booksList.filter((book)=>{return Number(book.id) !== Number(action.payload.data.data.id)})
       }
     case 'GET_BOOK_YEARS_PENDING':
       return{
@@ -128,7 +131,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'GET_BOOK_YEARS_FULFILLED':
       return{
@@ -149,7 +152,7 @@ const book = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'GET_POPULAR_BOOKS_FULFILLED':
       return{

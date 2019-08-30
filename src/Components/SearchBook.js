@@ -13,8 +13,8 @@ export const SearchBook = (props)=>{
         <FormControl
           onKeyPress={(evt)=>{
             if(evt.key === 'Enter') {
-              props.history.push(`/home?search=${evt.target.value}`)
               evt.preventDefault()
+              props.history.push(`/home?search=${evt.target.value}`)
             }
           }}
           name="search"

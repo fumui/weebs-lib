@@ -20,7 +20,7 @@ const borrowing = (state = initState, action) => {
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'BORROW_BOOK_FULFILLED':
       return{
@@ -41,7 +41,7 @@ const borrowing = (state = initState, action) => {
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'RETURN_BOOK_FULFILLED':
       return{
@@ -62,7 +62,7 @@ const borrowing = (state = initState, action) => {
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'GET_LATEST_BOOK_BORROWING_FULFILLED':
       return{

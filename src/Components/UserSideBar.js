@@ -4,7 +4,7 @@ import {Container, Row, Button} from 'react-bootstrap'
 import '../App.css'
 import {connect} from 'react-redux';
 
-import {getProfile} from '../Publics/Actions/users';
+import {getProfile, logout} from '../Publics/Actions/users';
 import AddBookModal from './AddBookModal';
 import AddBorrowingModal from './AddBorrowingModal';
 class UserSideBar extends React.Component{
@@ -21,8 +21,9 @@ class UserSideBar extends React.Component{
     }
     this.handleLogout = this.handleLogout.bind(this)
   }
-  handleLogout = (event) => { 
+  handleLogout = async (event) => { 
     window.localStorage.removeItem("token")
+    await this.props.dispatch(logout())
     if(window.localStorage.getItem("token") === null)
       this.props.history.push('/')
   }
@@ -36,7 +37,9 @@ class UserSideBar extends React.Component{
     return (
     <div>
       <img src={this.state.image} alt="user"  className="User-picture"/>
-      <h5>{this.state.fullname}</h5>
+      <h4>{this.state.id}</h4>
+      <h5>{this.state.username}</h5>
+      <h6>{this.state.fullname}</h6>
       <Container className="sidebar-buttons ">
         <Row className="justify-content-md-center"><Link to="/home/explore" className="btn btn-light btn-lg" size="lg" variant="light">Explore</Link></Row>
         <Row className="justify-content-md-center"><Link to="/home/history" className="btn btn-light btn-lg" size="lg" variant="light">History</Link></Row>

@@ -5,7 +5,7 @@ export default function AvailabilityDropdown(props){
   return(
     <Dropdown>
         <Dropdown.Toggle variant="light" id="dropdown-basic">
-          availability
+          Availability
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item onClick={()=>{props.history.push('?availability=1')}}>Available</Dropdown.Item>

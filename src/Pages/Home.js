@@ -37,9 +37,6 @@ class Home extends React.Component{
     if(window.localStorage.getItem("token") === null)
       this.props.history.push('/')
       await this.props.dispatch(getProfile())
-      this.setState({
-        userData: this.props.user.userProfile
-      })
   }
 
   render(){
@@ -107,10 +104,10 @@ class Home extends React.Component{
           path="/home/history" 
           exact={true}
           render={() => {
-            if(this.state.userData !== undefined )
+            if(this.props.user.userProfile.id !== undefined )
               return(
                 <div>
-                  <BooksList dataSource={`http://localhost:3030/borrowings/history/${this.state.userData.id}`}/>
+                  <BooksList dataSource={`http://localhost:3030/borrowings/history/${this.props.user.userProfile.id}`}/>
                 </div>
               );
             else 

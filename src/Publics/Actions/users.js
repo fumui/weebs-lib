@@ -23,3 +23,8 @@ export const getProfile = () => {
     )
   }
 }
+export const logout = () => {
+  return {
+    type:'USER_LOGOUT',
+  }
+}

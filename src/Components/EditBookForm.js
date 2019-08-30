@@ -7,7 +7,7 @@ import {getGenres} from '../Publics/Actions/genres';
 class EditBookForm extends React.Component{
   constructor(props){
     super(props)
-    const bookData = props.book.booksList.find((book) => book.id == props.bookId) 
+    const bookData = props.book.booksList.find((book) => Number(book.id) === Number(props.bookId)) 
     this.state = {
       genreList:[],
       idBook: props.bookId,

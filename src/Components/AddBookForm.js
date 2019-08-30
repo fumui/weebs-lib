@@ -22,18 +22,14 @@ class AddBookForm extends React.Component{
       modalMessage:"",
       history:props.history,
     }
-    console.log(props)
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClose  = this.handleClose.bind(this);
   }
 
-  handleClose = ()=>{
+  handleClose = () => {
     this.setState({showModal: false})
     this.props.closeModal()
   }
 
-  handleChange(event){
+  handleChange = (event) => {
     let newFormData = {...this.state.formData}
     const target = event.target
     const name = target.name

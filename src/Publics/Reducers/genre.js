@@ -20,7 +20,7 @@ const genre = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'GET_GENRES_FULFILLED':
       return{
@@ -41,7 +41,7 @@ const genre = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'ADD_GENRES_FULFILLED':
       return{
@@ -62,7 +62,7 @@ const genre = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'EDIT_GENRES_FULFILLED':
       const newGenreData = action.payload.data.data
@@ -70,7 +70,7 @@ const genre = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isFulfilled:true,
-        genresList: state.genresList.map((genre)=>{return genre.id == newGenreData.id ? newGenreData : genre})
+        genresList: state.genresList.map((genre)=>{return Number(genre.id) === Number(newGenreData.id) ? newGenreData : genre})
       }
     case 'DELETE_GENRES_PENDING':
       return{
@@ -84,14 +84,14 @@ const genre = (state = initState, action)=>{
         ...state,
         isLoading:false,
         isRejected:true,
-        errMessage:action.payload.response.data.message,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'DELETE_GENRES_FULFILLED':
       return{
         ...state,
         isLoading:false,
         isFulfilled:true, 
-        genresList: state.genresList.filter((genre)=>{return genre.id != action.payload.data.data.id})
+        genresList: state.genresList.filter((genre)=>{return Number(genre.id) !== Number(action.payload.data.data.id)})
       }
     default:
       return state
