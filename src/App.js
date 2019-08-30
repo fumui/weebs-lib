@@ -29,7 +29,7 @@ const App=()=> {
         <Route
           path={'/book/:id'}
           component={(props) => {
-            return <BookDetail {...props} bookId={props.match.params.id} bookUrl={`http://localhost:3030/books/${props.match.params.id}`} key={props.history.location}/>;
+            return <BookDetail {...props} bookId={props.match.params.id} bookUrl={`http://${process.env.REACT_APP_BACKEND_HOST}/books/${props.match.params.id}`} key={props.history.location}/>;
           }} 
         />
         <Route

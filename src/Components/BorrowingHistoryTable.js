@@ -1,5 +1,5 @@
 import React from "react";
-import {Table, Button, Container} from 'react-bootstrap'
+import {Table, Button, Container, Card} from 'react-bootstrap'
 import {connect} from 'react-redux'
 
 import {getBorrowingHistory} from '../Publics/Actions/borrowings';
@@ -39,7 +39,7 @@ class BorrowingHistoryTable extends React.Component{
                     <td>{borrowingDate.toDateString()}</td>
                     <td>{expirationDate.toDateString()}</td>
                     <td>{book.returned_at ? new Date(book.returned_at).toDateString() : "Not Yet Returned"}</td>
-                    <td><Button variant="warning" onClick>Book Details</Button></td>
+                    <td><Card body><Button style={{zIndex : 10}} variant="warning" onClick={()=>{this.props.history.push(`/book/${book.book_id}`)}}>Book Details</Button></Card></td>
                   </tr>
                 )
               })

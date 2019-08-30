@@ -79,7 +79,7 @@ class Home extends React.Component{
                   history={history} 
                   sortby={params.get("sortby")} 
                   search={params.get("search")} 
-                  dataSource={`http://localhost:3030/books`} 
+                  dataSource={`http://${process.env.REACT_APP_BACKEND_HOST}/books`} 
                   key={window.location.href + this.state} />
               </div>
             );
@@ -97,7 +97,7 @@ class Home extends React.Component{
                   history={history}
                   sortby={params.get("sortby")} 
                   search={params.get("search")} 
-                  dataSource={`http://localhost:3030/books`} 
+                  dataSource={`http://${process.env.REACT_APP_BACKEND_HOST}/books`} 
                   key={window.location.href} />
               </div>
             );
@@ -106,12 +106,11 @@ class Home extends React.Component{
         <Route 
           path="/home/history" 
           exact={true}
-          render={() => {
+          render={({history}) => {
             if(this.props.user.userProfile.id !== undefined )
               return(
                 <div>
-                  <BorrowingHistoryTable/>
-                  {/* <BooksList dataSource={`http://localhost:3030/borrowings/history/${this.props.user.userProfile.id}`}/> */}
+                  <BorrowingHistoryTable history={history} />
                 </div>
               );
             else 
@@ -125,13 +124,13 @@ class Home extends React.Component{
         <Route 
           path="/home/genre/:genre" 
           component={(url) => {
-            return <BooksList dataSource={`http://localhost:3030/books/genre/${url.match.params.genre}`}/>;
+            return <BooksList dataSource={`http://${process.env.REACT_APP_BACKEND_HOST}/books/genre/${url.match.params.genre}`}/>;
           }} 
         />
         <Route 
           path="/home/year/:year" 
           component={(url) => {
-            return <BooksList dataSource={`http://localhost:3030/books/year/${url.match.params.year}`}/>;
+            return <BooksList dataSource={`http://${process.env.REACT_APP_BACKEND_HOST}/books/year/${url.match.params.year}`}/>;
           }} 
         />
       </div>
