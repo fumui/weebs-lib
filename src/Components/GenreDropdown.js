@@ -17,11 +17,13 @@ class GenreDropdown extends React.Component{
   }
 
   componentDidMount = async () => {
-    await this.props.dispatch(getGenres())
-    this.setState ({genresList: this.props.genre.genresList})
+    if(this.props.genre.genresList.length === 0){
+      await this.props.dispatch(getGenres())
+      this.setState ({genresList: this.props.genre.genresList})
+    }
   };
   render() {
-    const {genresList} = this.state
+    const {genresList} = this.props.genre
     return(
       <Dropdown>
         <Dropdown.Toggle variant="light" id="dropdown-basic">

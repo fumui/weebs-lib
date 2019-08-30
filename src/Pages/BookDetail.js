@@ -10,16 +10,15 @@ import {getProfile} from '../Publics/Actions/users';
 import {returnBook, getLatestBorrowingByBookId} from '../Publics/Actions/borrowings';
 import EditBookModal from '../Components/EditBookModal';
 import AddBorrowingModal from '../Components/AddBorrowingModal';
+import ReturnBookModal from '../Components/ReturnBookModal';
 import store from '../Publics/Store'
 
 class BookDetail extends React.Component{
   constructor(props){
     super(props)
-    console.log(props)
     this.state= {
       bookUrl:props.bookUrl,
       bookData: props.book.booksList.find((book)=>{return book.id === Number(props.bookId)}),
-      userData:{},
       borrowedBy:0,
       showModal:false,
       modalTitle:"",
@@ -46,7 +45,7 @@ class BookDetail extends React.Component{
       return (
         <div style={{overflow:"hidden"}}>
           <Link 
-            to="../../home" 
+            to="/home" 
             variant="light" 
             className=" btn btn-light back-button"
           >
@@ -65,7 +64,7 @@ class BookDetail extends React.Component{
             />
           </div>
           
-          {this.state.userData.level === 'admin' ? 
+          {this.props.user.userProfile.level === 'admin' ? 
             <div className="book-detail-control">
               <Row>
                 <EditBookModal variant="outline-light" history={this.props.history} bookId={this.state.bookData.id} bookData={this.state.bookData} />
@@ -95,18 +94,11 @@ class BookDetail extends React.Component{
             <Container className="book-description">{bookData.description}</Container>
           </div>
 
-          {this.state.userData.level === 'admin' ? 
+          {this.props.user.userProfile.level === 'admin' ? 
             bookData.availability === 1 ?
               <AddBorrowingModal bookId={bookData.id} className="borrow-button" variant="warning" />
               :
-              <Button
-                variant="warning" 
-                size="lg"  
-                className="borrow-button"
-                onClick={this.handleReturn}
-              >
-                Return
-              </Button>
+              <ReturnBookModal  bookId={bookData.id} className="borrow-button" variant="warning" readOnlyBookId={true}/>
           :''}
           
           <Modal show={this.state.showModal} onHide={this.handleClose}>
@@ -134,10 +126,12 @@ class BookDetail extends React.Component{
     if(!this.state.bookData){
       this.getBookData()
     }
-    await this.props.dispatch(getProfile())
-    this.setState({
-      userData: this.props.user.userProfile
-    })
+    if(!this.props.user.userProfile){
+      await this.props.dispatch(getProfile())
+      this.setState({
+        userData: this.props.user.userProfile
+      })
+    }
   }
 
   componentWillUnmount = () => {
@@ -145,10 +139,25 @@ class BookDetail extends React.Component{
   }
 
   listener = ()=>{
-    const current = store.getState().book.booksList.find((book)=>{return Number(book.id) === Number(this.props.bookId)});
-    console.log(current, this.state.bookData)
-    if(current !== this.state.bookData){
-      this.setState({bookData: current})
+    const currentBookData = store.getState().book.booksList.find((book)=>{return Number(book.id) === Number(this.props.bookId)});
+    if(currentBookData !== this.state.bookData){
+      this.setState({bookData: currentBookData})
+    }
+
+    const currentBorrowingData = store.getState().borrowing.borrowingData
+    if(currentBorrowingData && currentBorrowingData.book_id == currentBookData.id){
+      if(currentBorrowingData.returned_at)
+        this.setState({
+          bookData:{
+            ...currentBookData, availability:1
+          }
+        })
+      else if (currentBorrowingData.borrowed_at)
+        this.setState({
+          bookData:{
+            ...currentBookData, availability:0
+          }
+        })
     }
   }
 
@@ -185,34 +194,6 @@ class BookDetail extends React.Component{
         })
       })
   }
-
-  handleReturn = async (event) => {
-    const data = {
-      book_id:this.state.bookData.id,
-      user_id:this.state.userData.id,
-    }
-    this.props.dispatch(returnBook(data))
-      .then(()=>{
-        this.setState({
-          showModal:true,
-          modalTitle:"Success",
-          modalMessage:"Book Returned",
-          borrowedBy:0,
-          bookData:{
-            ...this.state.bookData,
-            availability:1
-          }
-        })
-      })
-      .catch(() => {
-        this.setState({
-          showModal:true,
-          modalTitle:"Failed",
-          modalMessage:this.props.borrowing.errMessage
-        })
-      })
-  }
-
   handleClose = ()=>{
     this.setState({showModal: false})
     if (this.state.redirectOnCloseModal)

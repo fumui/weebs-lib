@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {getProfile, logout} from '../Publics/Actions/users';
 import AddBookModal from './AddBookModal';
 import AddBorrowingModal from './AddBorrowingModal';
+import ReturnBookModal from './ReturnBookModal';
 class UserSideBar extends React.Component{
   constructor(props){
     super(props)
@@ -28,37 +29,50 @@ class UserSideBar extends React.Component{
       this.props.history.push('/')
   }
   componentDidMount = async() => {
-    await this.props.dispatch(getProfile())
-    this.setState({
-      ...this.props.user.userProfile
-    })
+    if(!this.props.user.userProfile){
+      await this.props.dispatch(getProfile())
+      this.setState({
+        ...this.props.user.userProfile
+      })
+    }
   }
   render(){
-    return (
-    <div>
-      <img src={this.state.image} alt="user"  className="User-picture"/>
-      <h4>{this.state.id}</h4>
-      <h5>{this.state.username}</h5>
-      <h6>{this.state.fullname}</h6>
-      <Container className="sidebar-buttons ">
-        <Row className="justify-content-md-center"><Link to="/home/explore" className="btn btn-light btn-lg" size="lg" variant="light">Explore</Link></Row>
-        <Row className="justify-content-md-center"><Link to="/home/history" className="btn btn-light btn-lg" size="lg" variant="light">History</Link></Row>
-        {
-          this.state.level === "admin" ? 
-          <Fragment>
-            <Row className="justify-content-md-center">
-              <AddBookModal history={this.state.history}/>
-            </Row>
-            <Row className="justify-content-md-center">
-              <AddBorrowingModal variant="light"/>
-            </Row>
-          </Fragment>
-          :''
-        }
-        <Row className="justify-content-md-center"><Button size="lg" variant="light" onClick={this.handleLogout} >Logout</Button></Row>
-      </Container>
-    </div>)
+    if(this.props.user.userProfile){
+      return (
+        <div>
+          <img src={this.props.user.userProfile.image||"https://icon-library.net/images/user-login-icon/user-login-icon-17.jpg"} alt="user"  className="User-picture"/>
+          <h4>{this.props.user.userProfile.id}</h4>
+          <h5>{this.props.user.userProfile.username}</h5>
+          <h6>{this.props.user.userProfile.fullname}</h6>
+          <Container className="sidebar-buttons ">
+            <Row className="justify-content-md-center"><Link to="/home/explore" className="btn btn-light btn-lg" size="lg" variant="light">Explore</Link></Row>
+            <Row className="justify-content-md-center"><Link to="/home/history" className="btn btn-light btn-lg" size="lg" variant="light">History</Link></Row>
+            {
+              this.props.user.userProfile.level === "admin" ? 
+              <Fragment>
+                <Row className="justify-content-md-center">
+                  <AddBookModal history={this.state.history}/>
+                </Row>
+                <Row className="justify-content-md-center">
+                  <AddBorrowingModal variant="light"/>
+                </Row>
+                <Row className="justify-content-md-center">
+                  <ReturnBookModal variant="light"/>
+                </Row>
+              </Fragment>
+              :''
+            }
+            <Row className="justify-content-md-center"><Button size="lg" variant="light" onClick={this.handleLogout} >Logout</Button></Row>
+          </Container>
+        </div>
+      )
+    }else{
+      return(
+        <h5>Loading....</h5>
+      )
+    }
   }
+    
 }
 const mapStateToProps = (state) => {
   return{

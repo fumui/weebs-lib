@@ -1,6 +1,6 @@
 import Axios from 'axios'
 export const getBooks = (dataSource = null, page = 1, sortby = null, search = null, availability = null) => {
-  let url = `${dataSource}?page=${page}`
+  let url = `${dataSource}/?page=${page}`
   if(sortby !== null)
     url += `&sortby=${sortby}`
   if(search !== null )

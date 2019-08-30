@@ -16,11 +16,13 @@ class PopularBookCarousel extends React.Component{
     this.props.history.push(`/book/${id}`)
   }
   componentDidMount = async () => {
-    await this.props.dispatch(getPopularBooks())
-    this.setState ({popularBooksList: this.props.book.popularBooksList})
+    if(this.props.book.popularBooksList.length === 0){
+      await this.props.dispatch(getPopularBooks())
+      this.setState ({popularBooksList: this.props.book.popularBooksList})
+    }
   };
   render(){
-    const {popularBooksList} = this.state
+    const {popularBooksList} = this.props.book
     return (
       <Carousel style={{width:"45%", marginLeft:"25%", marginRight:"25%"}}>
         {popularBooksList !== null ? popularBooksList.map((book, index) => {

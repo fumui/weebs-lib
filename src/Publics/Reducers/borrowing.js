@@ -1,5 +1,6 @@
 const initState = {
-   borrowingData:{},
+   borrowingData:undefined,
+   borrowingHistoryData:[],
    errMessage:'',
    message:'',
    isLoading:false,
@@ -70,6 +71,27 @@ const borrowing = (state = initState, action) => {
         isLoading:false,
         isFulfilled:true,
         borrowingData:action.payload.data.data
+      }
+    case 'GET_BORROWING_HISTORY_PENDING':
+      return{
+        ...state,
+        isLoading:true,
+        isRejected:false,
+        isFulfilled:false,
+      }
+    case 'GET_BORROWING_HISTORY_REJECTED':
+      return{
+        ...state,
+        isLoading:false,
+        isRejected:true,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
+      }
+    case 'GET_BORROWING_HISTORY_FULFILLED':
+      return{
+        ...state,
+        isLoading:false,
+        isFulfilled:true,
+        borrowingHistoryData:action.payload.data.data
       }
     default:
       return state

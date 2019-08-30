@@ -16,6 +16,7 @@ import SortByDropdown from '../Components/SortByDropdown';
 import {SearchBook} from '../Components/SearchBook';
 import {getProfile} from '../Publics/Actions/users';
 import AvailabilityDropdown from '../Components/AvailabilityDropdown';
+import BorrowingHistoryTable from '../Components/BorrowingHistoryTable';
 
 class Home extends React.Component{
   constructor(props){
@@ -33,16 +34,18 @@ class Home extends React.Component{
       sidebarOpen : open
     })
   }
-  componentDidMount= async () => {
+  componentDidMount= () => {
     if(window.localStorage.getItem("token") === null)
       this.props.history.push('/')
-      await this.props.dispatch(getProfile())
+    if(!this.props.user.userProfile)
+      this.props.dispatch(getProfile())
   }
 
   render(){
     return(
       <div>
         <Sidebar
+          children={''}
           sidebar={
             <UserSideBar
               history={this.props.history}
@@ -107,7 +110,8 @@ class Home extends React.Component{
             if(this.props.user.userProfile.id !== undefined )
               return(
                 <div>
-                  <BooksList dataSource={`http://localhost:3030/borrowings/history/${this.props.user.userProfile.id}`}/>
+                  <BorrowingHistoryTable/>
+                  {/* <BooksList dataSource={`http://localhost:3030/borrowings/history/${this.props.user.userProfile.id}`}/> */}
                 </div>
               );
             else 

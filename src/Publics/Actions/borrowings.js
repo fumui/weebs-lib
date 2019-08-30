@@ -33,3 +33,15 @@ export const getLatestBorrowingByBookId = (id) => {
     )
   }
 }
+
+export const getBorrowingHistory = () => {
+  return {
+    type:'GET_BORROWING_HISTORY',
+    payload: Axios.get(`http://localhost:3030/borrowings/history`,{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}

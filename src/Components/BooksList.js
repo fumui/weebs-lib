@@ -26,7 +26,6 @@ class BooksList extends React.Component{
             {
                this.props.book.booksList.length !== 0? 
                this.props.book.booksList.map((book, index) => {
-                console.log(book.id)
                 return(
                     <BookCard  
                       onClick={() => this.getDetails(index)}

@@ -8,7 +8,6 @@ class YearDropdown extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      yearsList: [],
       history: props.history,
     }
   }
@@ -17,12 +16,13 @@ class YearDropdown extends React.Component{
   }
 
 
-  componentDidMount = async () => {
-    await this.props.dispatch(getBookYears())
-    this.setState ({yearsList: this.props.book.yearsList})
+  componentDidMount = () => {
+    if(this.props.book.yearsList.length === 0){
+      this.props.dispatch(getBookYears())
+    }
   };
   render() {
-    const {yearsList} = this.state
+    const {yearsList} = this.props.book
     return(
       <Dropdown>
         <Dropdown.Toggle variant="light" id="dropdown-basic">

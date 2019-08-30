@@ -69,7 +69,7 @@ class EditBookForm extends React.Component{
     const {genreList} = this.state
     const rawDate = new Date(this.state.formData.date_released)
     let year = rawDate.getFullYear()
-    let month = rawDate.getMonth() < 10 ? `0`+(rawDate.getMonth() + 1) : rawDate.getMonth() + 1
+    let month = rawDate.getMonth() < 9 ? `0`+(rawDate.getMonth() + 1) : rawDate.getMonth() + 1
     let date = rawDate.getDate() < 10 ? `0`+rawDate.getDate() : rawDate.getDate()
 
     let date_released = `${year}-${month}-${date}`

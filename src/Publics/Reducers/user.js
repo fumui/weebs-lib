@@ -1,5 +1,5 @@
 const initState = {
-  userProfile:{},
+  userProfile: undefined,
   errMessage:'',
   message:'',
   isLoading:false,
