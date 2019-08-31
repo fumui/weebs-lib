@@ -1,5 +1,5 @@
 import React from "react";
-import {Table, Button, Container, Card} from 'react-bootstrap'
+import {Table, Button, Container, Card,Alert} from 'react-bootstrap'
 import {connect} from 'react-redux'
 
 import {getBorrowingHistory} from '../Publics/Actions/borrowings';
@@ -14,6 +14,7 @@ class BorrowingHistoryTable extends React.Component{
   render(){
     return (
       <Container>
+      {this.props.borrowing.borrowingHistoryData.length !== 0 ? 
         <Table responsive>
           <thead>
             <tr>
@@ -26,8 +27,7 @@ class BorrowingHistoryTable extends React.Component{
             </tr>
           </thead>
           <tbody>
-            {this.props.borrowing.borrowingHistoryData.length !== 0 ? 
-              this.props.borrowing.borrowingHistoryData.map(book => {
+              {this.props.borrowing.borrowingHistoryData.map(book => {
                 const borrowingDate = new Date(book.borrowed_at)
                 let expirationDate = new Date()
                 expirationDate.setTime(borrowingDate.getTime() + (1000*60*60*24*7))
@@ -41,12 +41,13 @@ class BorrowingHistoryTable extends React.Component{
                     <td>{book.returned_at ? new Date(book.returned_at).toDateString() : "Not Yet Returned"}</td>
                     <td><Card body><Button style={{zIndex : 10}} variant="warning" onClick={()=>{this.props.history.push(`/book/${book.book_id}`)}}>Book Details</Button></Card></td>
                   </tr>
-                )
-              })
-              :''
-            }
+                  )
+                })
+              }:''
           </tbody>
         </Table>
+        :
+        <Alert variant='warning'>You haven't borrow any book yet</Alert>}
       </Container>
     )
   }

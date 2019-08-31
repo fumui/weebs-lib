@@ -1,6 +1,7 @@
 const initState = {
   booksList:[],
   yearsList:[],
+  bookGenresList:[],
   popularBooksList:[],
   page:undefined,
   errMessage:'',
@@ -140,21 +141,42 @@ const book = (state = initState, action)=>{
         isFulfilled:true,
         yearsList: action.payload.data.data
       }
-    case 'GET_POPULAR_BOOKS_PENDING':
+    case 'GET_BOOK_GENRES_PENDING':
       return{
         ...state,
         isLoading:true,
         isRejected:false,
         isFulfilled:false,
       }
-    case 'GET_POPULAR_BOOKS_REJECTED':
+    case 'GET_BOOK_GENRES_REJECTED':
       return{
         ...state,
         isLoading:false,
         isRejected:true,
         errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
-    case 'GET_POPULAR_BOOKS_FULFILLED':
+    case 'GET_BOOK_GENRES_FULFILLED':
+      return{
+        ...state,
+        isLoading:false,
+        isFulfilled:true,
+        bookGenresList: action.payload.data.data
+      }
+    case 'GET_NEWEST_BOOKS_PENDING':
+      return{
+        ...state,
+        isLoading:true,
+        isRejected:false,
+        isFulfilled:false,
+      }
+    case 'GET_NEWEST_BOOKS_REJECTED':
+      return{
+        ...state,
+        isLoading:false,
+        isRejected:true,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
+      }
+    case 'GET_NEWEST_BOOKS_FULFILLED':
       return{
         ...state,
         isLoading:false,

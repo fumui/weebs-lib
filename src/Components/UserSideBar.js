@@ -41,9 +41,11 @@ class UserSideBar extends React.Component{
       return (
         <div>
           <img src={this.props.user.userProfile.image||"https://icon-library.net/images/user-login-icon/user-login-icon-17.jpg"} alt="user"  className="User-picture"/>
-          <h4>{this.props.user.userProfile.id}</h4>
-          <h5>{this.props.user.userProfile.username}</h5>
-          <h6>{this.props.user.userProfile.fullname}</h6>
+          <Container style={{textAlign:"left"}}>
+            <h6>ID Number : {this.props.user.userProfile.id}</h6>
+            <h6>Username : {this.props.user.userProfile.username}</h6>
+            <h6>Fullname : {this.props.user.userProfile.fullname}</h6>
+          </Container>
           <Container className="sidebar-buttons ">
             <Row className="justify-content-md-center"><Link to="/home/explore" className="btn btn-light btn-lg" size="lg" variant="light">Explore</Link></Row>
             <Row className="justify-content-md-center"><Link to="/home/history" className="btn btn-light btn-lg" size="lg" variant="light">History</Link></Row>

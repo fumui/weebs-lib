@@ -1,7 +1,7 @@
 import React,{Fragment} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {Form, Button, Modal} from 'react-bootstrap';
+import {Form, Button, Modal, Spinner} from 'react-bootstrap';
 
 import {register} from '../Publics/Actions/users';
 
@@ -82,9 +82,21 @@ class RegisterForm extends React.Component{
             </Form.Group>
           </div>
           <Link to="./login" className="btn btn-light" >Log in</Link>
-          <Button variant="dark" type="submit" className="btn-black">
-            Sign up
-          </Button>
+          {this.props.user.isLoading?
+            <Button variant="dark" disabled>
+              <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              Loading...
+            </Button>:
+            <Button variant="dark" type="submit" className="btn-black">
+              Register
+            </Button>
+          }
         </Form>
         <Modal show={this.state.showModal} onHide={this.handleClose}>
             <Modal.Header>

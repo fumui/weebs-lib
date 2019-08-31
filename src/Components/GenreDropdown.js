@@ -1,13 +1,13 @@
 import React from 'react'
 import {connect} from 'react-redux';
 import {Dropdown} from 'react-bootstrap'
-import {getGenres} from '../Publics/Actions/genres'
+import {getBookGenres} from '../Publics/Actions/books'
 
 class GenreDropdown extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      genresList: [],
+      bookGenresList: [],
       history: props.history,
     }
   }
@@ -17,22 +17,22 @@ class GenreDropdown extends React.Component{
   }
 
   componentDidMount = async () => {
-    if(this.props.genre.genresList.length === 0){
-      await this.props.dispatch(getGenres())
-      this.setState ({genresList: this.props.genre.genresList})
+    if(this.props.book.bookGenresList.length === 0){
+      await this.props.dispatch(getBookGenres())
+      this.setState ({bookGenresList: this.props.book.bookGenresList})
     }
   };
   render() {
-    const {genresList} = this.props.genre
+    const {bookGenresList} = this.props.book
     return(
       <Dropdown>
         <Dropdown.Toggle variant="light" id="dropdown-basic">
           All Categories
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {genresList.length > 0 ? 
-            genresList.map((genre) => {
-              return <Dropdown.Item key={genre.name} onClick={()=>{this.goToGenrePath(genre.name)}}>{genre.name}</Dropdown.Item>
+          {bookGenresList.length > 0 ? 
+            bookGenresList.map((genre) => {
+              return <Dropdown.Item key={genre.genre} onClick={()=>{this.goToGenrePath(genre.genre)}}>{genre.genre}</Dropdown.Item>
             }):
             <Dropdown.Item href="#">Loading...</Dropdown.Item>}
         </Dropdown.Menu>
@@ -42,7 +42,7 @@ class GenreDropdown extends React.Component{
 }
 const mapStateToProps = state => {
   return{
-    genre: state.genre
+    book: state.book
   }
 }
 export default connect(mapStateToProps)(GenreDropdown)

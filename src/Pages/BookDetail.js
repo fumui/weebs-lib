@@ -143,6 +143,9 @@ class BookDetail extends React.Component{
     if(currentBookData !== this.state.bookData){
       this.setState({bookData: currentBookData})
     }
+    if(!currentBookData){
+      this.props.history.push('/')
+    }
 
     const currentBorrowingData = store.getState().borrowing.borrowingData
     if(currentBorrowingData && currentBorrowingData.book_id == currentBookData.id){
@@ -176,16 +179,8 @@ class BookDetail extends React.Component{
       )
   }
 
-  handleDelete = (event) => {
-    this.props.dispatch(deleteBook(this.state.bookData.id))
-      .then(()=>{
-        this.setState({
-          showModal:true,
-          modalTitle:"Success",
-          modalMessage:`Success deleting Book`,
-          redirectOnCloseModal:true
-        })
-      })
+  handleDelete = async (event) => {
+    await this.props.dispatch(deleteBook(this.state.bookData.id))
       .catch(() => {
         this.setState({
           showModal:true,
@@ -193,6 +188,12 @@ class BookDetail extends React.Component{
           modalMessage:this.props.book.errMessage
         })
       })
+    this.setState({
+      showModal:true,
+      modalTitle:"Success",
+      modalMessage:`Success deleting Book`,
+      redirectOnCloseModal:true
+    })
   }
   handleClose = ()=>{
     this.setState({showModal: false})

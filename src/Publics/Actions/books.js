@@ -28,6 +28,20 @@ export const getBookById = (id) => {
     )
   }
 }
+
+export const getBookGenres = () => {
+  return {
+    type:'GET_BOOK_GENRES',
+    payload: Axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/books/genre`,{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}
+
+
 export const addBook = (data) => {
   return {
     type:'ADD_BOOKS',
@@ -74,10 +88,10 @@ export const getBookYears = () => {
   }
 }
 
-export const getPopularBooks = () => {
+export const getNewestBooks = () => {
   return {
-    type:'GET_POPULAR_BOOKS',
-    payload: Axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/books/popular`,{
+    type:'GET_NEWEST_BOOKS',
+    payload: Axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/books/newest`,{
         headers:{
           Authorization : window.localStorage.getItem("token")
         }
