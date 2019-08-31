@@ -23,12 +23,13 @@ class BookDetail extends React.Component{
       showModal:false,
       modalTitle:"",
       modalMessage:"",
-      unsubscibe : store.subscribe(this.listener)
+      // unsubscribe: store.subscribe(this.listener)
     }
   }
 
+
   render(){
-    const {bookData} = this.state
+    const bookData = this.props.book.booksList.find((book)=>{return book.id === Number(this.props.bookId)})
     if(bookData === undefined){
       return (
         <div className="container">
@@ -67,7 +68,7 @@ class BookDetail extends React.Component{
           {this.props.user.userProfile.level === 'admin' ? 
             <div className="book-detail-control">
               <Row>
-                <EditBookModal variant="outline-light" history={this.props.history} bookId={this.state.bookData.id} bookData={this.state.bookData} />
+                <EditBookModal variant="outline-light" history={this.props.history} bookId={bookData.id} bookData={bookData} />
                 <Button variant="outline-light" size="lg" onClick={this.handleDelete}>Delete</Button>
               </Row>
             </div>
@@ -135,7 +136,7 @@ class BookDetail extends React.Component{
   }
 
   componentWillUnmount = () => {
-    this.state.unsubscibe()
+    // this.state.unsubscribe()
   }
 
   listener = ()=>{
@@ -147,21 +148,21 @@ class BookDetail extends React.Component{
       this.props.history.push('/')
     }
 
-    const currentBorrowingData = store.getState().borrowing.borrowingData
-    if(currentBorrowingData && currentBorrowingData.book_id == currentBookData.id){
-      if(currentBorrowingData.returned_at)
-        this.setState({
-          bookData:{
-            ...currentBookData, availability:1
-          }
-        })
-      else if (currentBorrowingData.borrowed_at)
-        this.setState({
-          bookData:{
-            ...currentBookData, availability:0
-          }
-        })
-    }
+    // const currentBorrowingData = store.getState().borrowing.borrowingData
+    // if(currentBorrowingData && currentBorrowingData.book_id == currentBookData.id && store.getState().borrowing.isFulfilled){
+    //   if(currentBorrowingData.returned_at)
+    //     this.setState({
+    //       bookData:{
+    //         ...currentBookData, availability:1
+    //       }
+    //     })
+    //   else if (currentBorrowingData.borrowed_at && store.getState().borrowing.isFulfilled)
+    //     this.setState({
+    //       bookData:{
+    //         ...currentBookData, availability:0
+    //       }
+    //     })
+    //   }
   }
 
 

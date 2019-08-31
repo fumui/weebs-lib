@@ -183,6 +183,13 @@ const book = (state = initState, action)=>{
         isFulfilled:true,
         popularBooksList: action.payload.data.data
       }
+    case 'SET_BOOK_AVALIABILITY':
+      let bookData = state.booksList.find((book)=>{return book.id === Number(action.payload.bookId)})
+      bookData.availability = action.payload.availability
+      return{
+        ...state,
+        booksList: state.booksList.map((book)=>{return Number(book.id) === Number(bookData.id) ? bookData : book})
+      }
     default:
       return state
   }

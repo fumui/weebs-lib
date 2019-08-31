@@ -3,6 +3,7 @@ import {Row, Col, Form, Button, Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import {borrow} from '../Publics/Actions/borrowings';
+import {setAvailability} from '../Publics/Actions/books';
 
 class AddBorrowingForm extends React.Component{
   constructor(props){
@@ -20,8 +21,10 @@ class AddBorrowingForm extends React.Component{
   }
 
   handleClose = ()=>{
-    this.setState({showModal: false})
     this.props.closeModal()
+    this.setState({showModal: false})
+    if(this.state.modalTitle !== "Failed")
+      this.props.dispatch(setAvailability(this.state.formData.book_id, 0))
   }
 
   handleChange = (event) => {

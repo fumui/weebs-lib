@@ -1,13 +1,14 @@
 import React, {Fragment} from 'react';
 import {Modal, Row, Col, Form, Button} from 'react-bootstrap';
 import {connect} from 'react-redux'
-import {editBook} from '../Publics/Actions/books';
+import {editBook, setAvailability} from '../Publics/Actions/books';
 import {getGenres} from '../Publics/Actions/genres';
 
 class EditBookForm extends React.Component{
   constructor(props){
     super(props)
     const bookData = props.book.booksList.find((book) => Number(book.id) === Number(props.bookId)) 
+    const date_released = new Date(bookData.date_released)
     this.state = {
       genreList:[],
       idBook: props.bookId,
@@ -16,7 +17,7 @@ class EditBookForm extends React.Component{
         title: bookData.title,
         genre_id: bookData.genre_id,
         description: bookData.description,
-        date_released: bookData.date_released,
+        date_released: bookData.date_released.split('T')[0],
       },
       showModal:false,
       modalTitle:"",

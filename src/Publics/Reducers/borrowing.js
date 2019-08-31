@@ -24,6 +24,7 @@ const borrowing = (state = initState, action) => {
         errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'BORROW_BOOK_FULFILLED':
+      console.log(state)
       return{
         ...state,
         isLoading:false,

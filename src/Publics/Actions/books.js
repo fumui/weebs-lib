@@ -99,3 +99,10 @@ export const getNewestBooks = () => {
     )
   }
 }
+
+export const setAvailability = (bookId,availability) => {
+  return {
+    type:'SET_BOOK_AVALIABILITY',
+    payload: {bookId,availability}
+  }
+}

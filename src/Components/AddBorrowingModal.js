@@ -9,6 +9,7 @@ class AddBorrowingModal extends React.Component{
       showModal: false,
     }
   }
+  hide = ()=>{this.setState({showModal:false})}
   render(){
     return(
       <Fragment>
@@ -32,7 +33,10 @@ class AddBorrowingModal extends React.Component{
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddBorrowingForm bookId={this.props.bookId} closeModal={()=>{this.setState({showModal:false})}} history={this.props.history}/>
+            <AddBorrowingForm 
+              bookId={this.props.bookId} 
+              closeModal={this.hide} 
+              history={this.props.history}/>
           </Modal.Body>
         </Modal>
       </Fragment>
