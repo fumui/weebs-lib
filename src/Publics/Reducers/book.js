@@ -114,11 +114,13 @@ const book = (state = initState, action)=>{
         errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'DELETE_BOOKS_FULFILLED':
+      let deletedBook= state.booksList.filter((book)=>{return Number(book.id) !== Number(action.payload.data.data.id)})
+      deletedBook.deleted = true
       return{
         ...state,
         isLoading:false,
         isFulfilled:true, 
-        booksList: state.booksList.filter((book)=>{return Number(book.id) !== Number(action.payload.data.data.id)})
+        booksList: state.booksList.map((book)=>{return Number(book.id) === Number(deletedBook.id) ? deletedBook : book})
       }
     case 'GET_BOOK_YEARS_PENDING':
       return{

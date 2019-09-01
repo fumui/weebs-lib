@@ -177,3 +177,13 @@ figure img.carousel-book-image{
   top: 0;
   font-size: 1rem;
 }
+.deleteModalBody{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.deleteModalButtons{
+  display: flex;
+  justify-content: center;
+}

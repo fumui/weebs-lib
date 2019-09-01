@@ -46,6 +46,7 @@ class ReturnBookForm extends React.Component{
         console.error(err)
       })
     const borrowedBy = this.props.borrowing.borrowingData ? this.props.borrowing.borrowingData[0].user_id : undefined
+    const borrowed_at = this.props.borrowing.borrowingData ? this.props.borrowing.borrowingData[0].borrowed_at : undefined
     if(borrowedBy === undefined){
       this.setState({
         showModal:true,
@@ -62,11 +63,23 @@ class ReturnBookForm extends React.Component{
     }
     else{
       this.props.dispatch(returnBook(this.state.formData))
-        .then(()=>{
+        .then((res)=>{
+          let borrowedDate = new Date(borrowed_at)
+          let returnedDate = new Date(res.value.data.data.returned_at)
+          let borrrowedTimeElapsed = returnedDate.getTime() - borrowedDate.getTime()
+          let expirationTime =(1000*60*60*24*7)
+          let sanction = 0
+          let sanctionMessage = ''
+          if(borrrowedTimeElapsed > expirationTime)
+            sanction = (borrrowedTimeElapsed / expirationTime) * 2000
+          
+          if(sanction > 0)
+            sanctionMessage = `with Sanction : Rp ${sanction}`
+          
           this.setState({
             showModal:true,
             modalTitle:"Success",
-            modalMessage:"Book successfully returned",
+            modalMessage:`Book successfully returned ${sanctionMessage}`,
           })
         })
         .catch(() => {
