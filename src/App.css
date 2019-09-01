@@ -42,7 +42,7 @@
   border-radius: 24vh;
 }
 .Library-picture{
-  position: absolute;
+  position: fixed;
   height: 100vh;
   float: left;
   left: 0;
@@ -53,7 +53,7 @@
   font-size: 64px;
   margin-top:5vh;
   margin-left:5vh;
-  position: absolute;
+  position: fixed;
   z-index: 100;
   color:white;
   text-shadow: 2px 2px 5px rgb(0, 0, 0);
@@ -64,7 +64,7 @@
   margin-top:95vh;
   margin-bottom: 0px;
   margin-left:5vh;
-  position: absolute;
+  position: fixed;
   z-index: 100;
   color:white;
   text-shadow: 2px 2px 5px rgb(0, 0, 0);
@@ -76,7 +76,7 @@
 }
 .app-form-group{
   width: 50vh;
-  max-height: 15vh;
+  max-height: 18vh;
 }
 .app-form-group .app-form-control{
   padding: 2vh;

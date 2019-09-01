@@ -58,33 +58,33 @@ class RegisterForm extends React.Component{
     return(
       <Fragment>
         <Form style={this.state.style} onSubmit={this.handleSubmit}> 
-          <div className="card app-form-group">
+          <div className="app-form-group card ">
             <Form.Group controlId="formBasicUsername" className="card-body" style={{textAlign:"left"}}>
               <Form.Label>Username</Form.Label>
-              <Form.Control name="username" onChange={this.handleChange} type="text" placeholder="Enter username" style={{border:"none"}} className="app-form-control"/>
               <Form.Text className="text-muted">
                 min 6 and max 30 characters of (a-Z,0-9) 
               </Form.Text>
+              <Form.Control name="username" onChange={this.handleChange} type="text" placeholder="Enter username" style={{border:"none"}} className="app-form-control"/>
             </Form.Group>
           </div>
-          <div className="card app-form-group">
+          <div className="app-form-group card ">
             <Form.Group controlId="formBasicName" className="card-body" style={{textAlign:"left"}}>
               <Form.Label>Full Name</Form.Label>
               <Form.Control name="fullname" onChange={this.handleChange} type="text" placeholder="Full Name" className="app-form-control"/>
             </Form.Group>
-          </div><div className="card app-form-group">
+          </div><div className="app-form-group card ">
             <Form.Group controlId="formBasicEmail" className="card-body" style={{textAlign:"left"}}>
               <Form.Label>Email address</Form.Label>
               <Form.Control name="email" onChange={this.handleChange} type="email" placeholder="Enter email" style={{border:"none"}} className="app-form-control"/>
             </Form.Group>
           </div>
-          <div className="card app-form-group">
+          <div className="app-form-group card ">
             <Form.Group controlId="formBasicPassword" className="card-body" style={{textAlign:"left"}}>
               <Form.Label>Password</Form.Label>
-              <Form.Control name="password" onChange={this.handleChange} type="password" placeholder="Password" className="app-form-control"/>
               <Form.Text className="text-muted">
                 min 8 and max 30 characters of (a-Z,0-9) 
               </Form.Text>
+              <Form.Control name="password" onChange={this.handleChange} type="password" placeholder="Password" className="app-form-control"/>
             </Form.Group>
           </div>
           <Link to="./login" className="btn btn-light" >Log in</Link>
