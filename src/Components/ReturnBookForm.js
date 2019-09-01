@@ -71,7 +71,7 @@ class ReturnBookForm extends React.Component{
           let sanction = 0
           let sanctionMessage = ''
           if(borrrowedTimeElapsed > expirationTime)
-            sanction = Math.floor((borrrowedTimeElapsed - expirationTime) / 7) * 2000
+            sanction = Math.floor((borrrowedTimeElapsed - expirationTime) / (1000*60*60*24)) * 2000
           
           if(sanction > 0)
             sanctionMessage = `with Sanction : Rp ${sanction}`
