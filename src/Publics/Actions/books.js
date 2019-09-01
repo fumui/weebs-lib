@@ -20,7 +20,7 @@ export const getBooks = (dataSource = null, page = 1, sortby = null, search = nu
 export const getBookById = (id) => {
   return {
     type:'GET_BOOK_BY_ID',
-    payload: Axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/books/${id}`,{
+    payload: Axios.get(`https://${process.env.REACT_APP_BACKEND_HOST}/books/${id}`,{
         headers:{
           Authorization : window.localStorage.getItem("token")
         }
@@ -32,7 +32,7 @@ export const getBookById = (id) => {
 export const getBookGenres = () => {
   return {
     type:'GET_BOOK_GENRES',
-    payload: Axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/books/genre`,{
+    payload: Axios.get(`https://${process.env.REACT_APP_BACKEND_HOST}/books/genre`,{
         headers:{
           Authorization : window.localStorage.getItem("token")
         }
@@ -45,7 +45,7 @@ export const getBookGenres = () => {
 export const addBook = (data) => {
   return {
     type:'ADD_BOOKS',
-    payload: Axios.post(`http://${process.env.REACT_APP_BACKEND_HOST}/books`, data, {
+    payload: Axios.post(`https://${process.env.REACT_APP_BACKEND_HOST}/books`, data, {
         headers:{
           Authorization : window.localStorage.getItem("token")
         }
@@ -56,7 +56,7 @@ export const addBook = (data) => {
 export const deleteBook = (id) => {
   return {
     type:'DELETE_BOOKS',
-    payload: Axios.delete(`http://${process.env.REACT_APP_BACKEND_HOST}/books/${id}`,{
+    payload: Axios.delete(`https://${process.env.REACT_APP_BACKEND_HOST}/books/${id}`,{
         headers:{
           Authorization : window.localStorage.getItem("token")
         }
@@ -67,7 +67,7 @@ export const deleteBook = (id) => {
 export const editBook = (id, data) => {
   return {
     type:'EDIT_BOOKS',
-    payload: Axios.patch(`http://${process.env.REACT_APP_BACKEND_HOST}/books/${id}`, data,{
+    payload: Axios.patch(`https://${process.env.REACT_APP_BACKEND_HOST}/books/${id}`, data,{
         headers:{
           Authorization : window.localStorage.getItem("token")
         }
@@ -79,7 +79,7 @@ export const editBook = (id, data) => {
 export const getBookYears = () => {
   return {
     type:'GET_BOOK_YEARS',
-    payload: Axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/books/year/`,{
+    payload: Axios.get(`https://${process.env.REACT_APP_BACKEND_HOST}/books/year/`,{
         headers:{
           Authorization : window.localStorage.getItem("token")
         }
@@ -91,7 +91,7 @@ export const getBookYears = () => {
 export const getNewestBooks = () => {
   return {
     type:'GET_NEWEST_BOOKS',
-    payload: Axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/books/newest`,{
+    payload: Axios.get(`https://${process.env.REACT_APP_BACKEND_HOST}/books/newest`,{
         headers:{
           Authorization : window.localStorage.getItem("token")
         }
