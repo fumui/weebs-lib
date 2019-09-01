@@ -33,7 +33,7 @@ class BorrowingHistoryTable extends React.Component{
                 expirationDate.setTime(borrowingDate.getTime() + (1000*60*60*24*7))
                 console.log(expirationDate)
                 return(
-                  <tr>
+                  <tr key={book.borrowed_at + book.returned_at} >
                     <td>{book.book_id}</td>
                     <td>{book.title}</td>
                     <td>{borrowingDate.toDateString()}</td>
@@ -43,7 +43,7 @@ class BorrowingHistoryTable extends React.Component{
                   </tr>
                   )
                 })
-              }:''
+              }:<tr><td></td></tr>
           </tbody>
         </Table>
         :

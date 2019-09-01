@@ -2,7 +2,7 @@ import React,{Fragment} from 'react';
 import {Row, Col, Form, Button, Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
-import {borrow} from '../Publics/Actions/borrowings';
+import {borrow, getBorrowingHistory} from '../Publics/Actions/borrowings';
 import {setAvailability} from '../Publics/Actions/books';
 
 class AddBorrowingForm extends React.Component{
@@ -48,6 +48,7 @@ class AddBorrowingForm extends React.Component{
         const borrowingDate = new Date(borrowed_at)
         let expirationDate = new Date()
         expirationDate.setTime(borrowingDate.getTime() + (1000*60*60*24*7))
+        this.props.dispatch(getBorrowingHistory())
         this.setState({
           showModal: true,
           modalTitle:"Success",

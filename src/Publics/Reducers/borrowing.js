@@ -24,12 +24,13 @@ const borrowing = (state = initState, action) => {
         errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'BORROW_BOOK_FULFILLED':
+      const data = action.payload.data.data
       console.log(state)
       return{
         ...state,
         isLoading:false,
         isFulfilled:true,
-        borrowingData:action.payload.data.data
+        borrowingData:data
       }
     case 'RETURN_BOOK_PENDING':
       return{
