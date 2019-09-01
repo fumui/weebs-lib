@@ -1,17 +1,16 @@
 import React from 'react'
-import {Button, Container, Row, Modal, Alert} from 'react-bootstrap';
+import {Button, Container, Row, Alert} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {Link, Redirect} from 'react-router-dom'
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
-import {deleteBook, getBookById} from '../Publics/Actions/books';
+import {getBookById} from '../Publics/Actions/books';
 import {getProfile} from '../Publics/Actions/users';
-import {returnBook, getLatestBorrowingByBookId} from '../Publics/Actions/borrowings';
+import {getLatestBorrowingByBookId} from '../Publics/Actions/borrowings';
 import EditBookModal from '../Components/EditBookModal';
 import AddBorrowingModal from '../Components/AddBorrowingModal';
 import ReturnBookModal from '../Components/ReturnBookModal';
-import store from '../Publics/Store'
 import DeleteBookPrompt from '../Components/DeleteBookPrompt';
 
 class BookDetail extends React.Component{

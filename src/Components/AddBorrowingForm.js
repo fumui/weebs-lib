@@ -42,11 +42,16 @@ class AddBorrowingForm extends React.Component{
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.dispatch(borrow(this.state.formData))
-      .then(()=>{
+      .then((res)=>{
+        console.log(res)
+        const borrowed_at = res.value.data.data.borrowed_at
+        const borrowingDate = new Date(borrowed_at)
+        let expirationDate = new Date()
+        expirationDate.setTime(borrowingDate.getTime() + (1000*60*60*24*7))
         this.setState({
           showModal: true,
           modalTitle:"Success",
-          modalMessage:"Success Borrowing Book",
+          modalMessage:`Success Borrowing Book! Please return it before ${expirationDate.toDateString()}`,
         })
       })
       .catch(() => {

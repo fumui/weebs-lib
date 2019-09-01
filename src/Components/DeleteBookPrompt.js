@@ -50,7 +50,6 @@ class DeleteBookPrompt extends React.Component{
         <Modal
           show={this.state.showModal}
           onHide={() => {this.setState({showModal:false})}}
-          size="lg"
           aria-labelledby="contained-modal-title-vcenter"
           centered
           size="sm"

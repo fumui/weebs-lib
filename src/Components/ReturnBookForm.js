@@ -54,7 +54,7 @@ class ReturnBookForm extends React.Component{
         modalMessage:"This book has not been borrowed",
       })
     }
-    else if(borrowedBy != this.state.formData.user_id){
+    else if(Number(borrowedBy) !== Number(this.state.formData.user_id)){
       this.setState({
         showModal:true,
         modalTitle:"Failed",
