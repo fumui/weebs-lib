@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import {Modal, Button, Container, Row} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {confirmBorrowingRequests} from '../Publics/Actions/borrowings';
+import {confirmBorrowingRequests, rejectBorrowingRequests} from '../Publics/Actions/borrowings';
 
 class ConfirmBorrowingPrompt extends React.Component{
   constructor(props){
@@ -30,6 +30,22 @@ class ConfirmBorrowingPrompt extends React.Component{
       modalResponseMessage:`Borrowing Confirmed`,
     })
   }
+  handleReject = async (event) => {
+    await this.props.dispatch(rejectBorrowingRequests(this.props.borrowingData.id))
+      .catch(() => {
+        this.setState({
+          showResponseModal:true,
+          modalTitle:"Failed",
+          modalMessage:this.props.borrowing.errMessage
+        })
+      })
+    this.setState({
+      showResponseModal:true,
+      modalResponseTitle:"Success",
+      modalResponseMessage:`Request Rejected`,
+    })
+  }
+
   handleCloseResponse = ()=>{
     this.setState({showModal: false, showResponseModal:false,})
   }
@@ -56,8 +72,11 @@ class ConfirmBorrowingPrompt extends React.Component{
               <Row><h3>Confirm borrowing of {this.props.borrowingData.title} by {this.props.borrowingData.username}</h3></Row>
               <Row><h4>Are you sure?</h4></Row>
               <Row className="deleteModalButtons">
-                <Button variant="danger" onClick={() => {this.setState({showModal:false})}}>
+                <Button variant="secondary" onClick={() => {this.setState({showModal:false})}}>
                   No
+                </Button>
+                <Button variant="danger" onClick={this.handleReject}>
+                  Reject
                 </Button>
                 <Button variant="warning" onClick={this.handleConfirm}>
                   Yes

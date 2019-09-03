@@ -68,3 +68,14 @@ export const confirmBorrowingRequests = (id,book_id) => {
     )
   }
 }
+export const rejectBorrowingRequests = (id) => {
+  return {
+    type:'REJECT_BORROWING_REQUESTS',
+    payload: Axios.delete(`${process.env.REACT_APP_LOCAL_BACKEND_HOST}/borrowings/${id}`,{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}

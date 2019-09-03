@@ -137,6 +137,26 @@ const borrowing = (state = initState, action) => {
         isLoading:false,
         isFulfilled:true,
       }
+    case 'REJECT_BORROWING_REQUESTS_PENDING':
+      return{
+        ...state,
+        isLoading:true,
+        isRejected:false,
+        isFulfilled:false,
+      }
+    case 'REJECT_BORROWING_REQUESTS_REJECTED':
+      return{
+        ...state,
+        isLoading:false,
+        isRejected:true,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
+      }
+    case 'REJECT_BORROWING_REQUESTS_FULFILLED':
+      return{
+        ...state,
+        isLoading:false,
+        isFulfilled:true,
+      }
     default:
       return state
   }
