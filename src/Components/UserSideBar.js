@@ -61,6 +61,9 @@ class UserSideBar extends React.Component{
                 <Row className="justify-content-md-center">
                   <ReturnBookModal variant="light"/>
                 </Row>
+                <Row className="justify-content-md-center">
+                  <Link to="/home/requests" className="btn btn-light btn-lg" size="lg" variant="light">Requests</Link>
+                </Row>
               </Fragment>
               :''
             }

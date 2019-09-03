@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Container, Row, Alert} from 'react-bootstrap';
+import {Button, Container, Row, Alert, Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {Link, Redirect} from 'react-router-dom'
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons'
@@ -7,7 +7,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
 import {getBookById} from '../Publics/Actions/books';
 import {getProfile} from '../Publics/Actions/users';
-import {getLatestBorrowingByBookId} from '../Publics/Actions/borrowings';
+import {getLatestBorrowingByBookId, getBorrowingHistory, borrow} from '../Publics/Actions/borrowings';
 import EditBookModal from '../Components/EditBookModal';
 import AddBorrowingModal from '../Components/AddBorrowingModal';
 import ReturnBookModal from '../Components/ReturnBookModal';
@@ -104,8 +104,22 @@ class BookDetail extends React.Component{
               <AddBorrowingModal bookId={bookData.id} className="borrow-button" variant="warning" />
               :
               <ReturnBookModal  bookId={bookData.id} className="borrow-button" variant="warning" readOnlyBookId={true}/>
-          :''}
-          
+          :
+            bookData.availability === 1 ?
+              <Button onClick = {()=>{this.handleRequest(bookData.id)}} className="borrow-button" variant="warning" >Request</Button>
+              :
+              ''}
+          <Modal show={this.state.showModal} onHide={()=>{this.setState({showModal: false})}}>
+          <Modal.Header>
+            <Modal.Title>{this.state.modalTitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{this.state.modalMessage}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={()=>{this.setState({showModal: false})}}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
         </div>
       )
     }
@@ -145,6 +159,30 @@ class BookDetail extends React.Component{
       .catch(err => {
         console.error(err)
         this.props.history.push('/')
+      })
+  }
+
+  handleRequest = (book_id) =>{
+    const borrowData = {
+      book_id,
+      user_id:this.props.user.userProfile.id
+    }
+    this.props.dispatch(borrow(borrowData))
+      .then((res)=>{
+        console.log(res)
+        this.props.dispatch(getBorrowingHistory())
+        this.setState({
+          showModal: true,
+          modalTitle:"Success",
+          modalMessage:`Success Requesting Book`,
+        })
+      })
+      .catch(() => {
+        this.setState({
+          showModal:true,
+          modalTitle:"Failed",
+          modalMessage:this.props.borrowing.errMessage
+        })
       })
   }
 

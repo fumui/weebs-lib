@@ -17,6 +17,7 @@ import {SearchBook} from '../Components/SearchBook';
 import {getProfile} from '../Publics/Actions/users';
 import AvailabilityDropdown from '../Components/AvailabilityDropdown';
 import BorrowingHistoryTable from '../Components/BorrowingHistoryTable';
+import BorrowingRequestTable from '../Components/BorrowingRequestTable';
 
 class Home extends React.Component{
   constructor(props){
@@ -111,6 +112,24 @@ class Home extends React.Component{
               return(
                 <div>
                   <BorrowingHistoryTable history={history} />
+                </div>
+              );
+            else 
+              return(
+                <div>
+                  Loading...
+                </div>
+              );
+          }} 
+        />
+        <Route 
+          path="/home/requests" 
+          exact={true}
+          render={({history}) => {
+            if(this.props.user.userProfile.level === 'admin' )
+              return(
+                <div>
+                  <BorrowingRequestTable history={history} />
                 </div>
               );
             else 

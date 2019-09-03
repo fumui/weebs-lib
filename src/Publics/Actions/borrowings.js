@@ -45,3 +45,26 @@ export const getBorrowingHistory = () => {
     )
   }
 }
+export const getBorrowingRequests = () => {
+  return {
+    type:'GET_BORROWING_REQUESTS',
+    payload: Axios.get(`${process.env.REACT_APP_LOCAL_BACKEND_HOST}/borrowings/requests`,{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}
+export const confirmBorrowingRequests = (id,book_id) => {
+  const data = {id,book_id}
+  return {
+    type:'CONFIRM_BORROWING_REQUESTS',
+    payload: Axios.patch(`${process.env.REACT_APP_LOCAL_BACKEND_HOST}/borrowings/confirm`,data,{
+      headers:{
+        Authorization : window.localStorage.getItem("token")
+      }
+    }
+    )
+  }
+}
