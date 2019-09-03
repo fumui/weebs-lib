@@ -13,10 +13,10 @@ class AddBookForm extends React.Component{
       formData:{
         title: '',
         description:'',
-        image:'',
         date_released:new Date().toISOString().split('T')[0],
         genre_id:1,
       },
+      image:{},
       showModal:false,
       modalTitle:"",
       modalMessage:"",
@@ -41,9 +41,21 @@ class AddBookForm extends React.Component{
     console.log(this.state.formData)
   }
 
+  handleFile = (e) => {
+    const files = Array.from(e.target.files)
+    this.setState({image:files[0]})
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.dispatch(addBook(this.state.formData))
+    let formData = new FormData() 
+    formData.append('title', this.state.formData.title)
+    formData.append('description', this.state.formData.description)
+    formData.append('date_released', this.state.formData.date_released)
+    formData.append('genre_id', this.state.formData.genre_id)
+    formData.append('image', this.state.image)
+    console.log(formData);
+    this.props.dispatch(addBook(formData))
       .then(()=>{
         this.setState({
           showModal: true,
@@ -69,7 +81,7 @@ class AddBookForm extends React.Component{
     const {genreList} = this.state
     return (
       <Fragment>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} encType = "multipart/form-data">
           <Form.Group as={Row} controlId="formPlaintextTitle">
             <Form.Label column sm="2">
               Title
@@ -90,10 +102,10 @@ class AddBookForm extends React.Component{
 
           <Form.Group as={Row} controlId="formPlaintextImageURL">
             <Form.Label column sm="2">
-            Image URL
+            Image
             </Form.Label>
             <Col sm="10">
-              <Form.Control onChange={this.handleChange} type="text" name="image" placeholder="Image URL..." required/>
+              <Form.Control onChange={this.handleFile} type="file" name="image" placeholder="Image URL..." required/>
             </Col>
           </Form.Group>
 
