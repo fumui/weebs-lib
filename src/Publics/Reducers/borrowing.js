@@ -1,6 +1,7 @@
 const initState = {
    borrowingData:undefined,
    borrowingHistoryData:[],
+   borrowingRequestsData:[],
    errMessage:'',
    message:'',
    isLoading:false,
@@ -94,6 +95,67 @@ const borrowing = (state = initState, action) => {
         isLoading:false,
         isFulfilled:true,
         borrowingHistoryData:action.payload.data.data
+      }
+    case 'GET_BORROWING_REQUESTS_PENDING':
+      return{
+        ...state,
+        isLoading:true,
+        isRejected:false,
+        isFulfilled:false,
+      }
+    case 'GET_BORROWING_REQUESTS_REJECTED':
+      return{
+        ...state,
+        isLoading:false,
+        isRejected:true,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
+      }
+    case 'GET_BORROWING_REQUESTS_FULFILLED':
+      return{
+        ...state,
+        isLoading:false,
+        isFulfilled:true,
+        borrowingRequestsData:action.payload.data.data
+      }
+    case 'CONFIRM_BORROWING_REQUESTS_PENDING':
+      return{
+        ...state,
+        isLoading:true,
+        isRejected:false,
+        isFulfilled:false,
+      }
+    case 'CONFIRM_BORROWING_REQUESTS_REJECTED':
+      return{
+        ...state,
+        isLoading:false,
+        isRejected:true,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
+      }
+    case 'CONFIRM_BORROWING_REQUESTS_FULFILLED':
+      return{
+        ...state,
+        isLoading:false,
+        isFulfilled:true,
+      }
+    case 'REJECT_BORROWING_REQUESTS_PENDING':
+      return{
+        ...state,
+        isLoading:true,
+        isRejected:false,
+        isFulfilled:false,
+      }
+    case 'REJECT_BORROWING_REQUESTS_REJECTED':
+      return{
+        ...state,
+        isLoading:false,
+        isRejected:true,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
+      }
+    case 'REJECT_BORROWING_REQUESTS_FULFILLED':
+      return{
+        ...state,
+        isLoading:false,
+        isFulfilled:true,
       }
     default:
       return state

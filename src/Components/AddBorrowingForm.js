@@ -41,7 +41,9 @@ class AddBorrowingForm extends React.Component{
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.dispatch(borrow(this.state.formData))
+    let {formData} = this.state
+    if(this.props.user.userProfile.level === 'admin') formData.is_confirmed = 1
+    this.props.dispatch(borrow(formData))
       .then((res)=>{
         console.log(res)
         const borrowed_at = res.value.data.data.borrowed_at
@@ -108,6 +110,7 @@ const mapStateToProps = state => {
   return{
     book: state.book,
     genre: state.genre,
+    user: state.user,
     borrowing: state.borrowing
   }
 }
