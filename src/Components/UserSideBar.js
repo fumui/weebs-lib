@@ -49,12 +49,12 @@ class UserSideBar extends React.Component{
           <Container className="sidebar-buttons ">
             <Row className="justify-content-md-center"><Link to="/home/explore" className="btn btn-light btn-lg" size="lg" variant="light">Explore</Link></Row>
             <Row className="justify-content-md-center"><Link to="/home/history" className="btn btn-light btn-lg" size="lg" variant="light">History</Link></Row>
+            <Row className="justify-content-md-center">
+              <AddBookModal user={this.props.user} history={this.state.history}/>
+            </Row>
             {
               this.props.user.userProfile.level === "admin" ? 
               <Fragment>
-                <Row className="justify-content-md-center">
-                  <AddBookModal history={this.state.history}/>
-                </Row>
                 <Row className="justify-content-md-center">
                   <AddBorrowingModal variant="light"/>
                 </Row>
@@ -63,6 +63,9 @@ class UserSideBar extends React.Component{
                 </Row>
                 <Row className="justify-content-md-center">
                   <Link to="/home/requests" className="btn btn-light btn-lg" size="lg" variant="light">Requests</Link>
+                </Row>
+                <Row className="justify-content-md-center">
+                  <Link to="/home/donations" className="btn btn-light btn-lg" size="lg" variant="light">Donations</Link>
                 </Row>
               </Fragment>
               :''

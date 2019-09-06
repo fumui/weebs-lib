@@ -11,10 +11,11 @@ class EditBookForm extends React.Component{
     this.state = {
       genreList:[],
       idBook: props.bookId,
+      image: undefined,
       formData:{
-        image: bookData.image,
         title: bookData.title,
         genre_id: bookData.genre_id,
+        image: bookData.image,
         description: bookData.description,
         date_released: bookData.date_released.split('T')[0],
       },
@@ -28,6 +29,11 @@ class EditBookForm extends React.Component{
   handleClose = ()=>{
     this.setState({showModal: false})
     this.props.closeModal()
+  }
+
+  handleFile = (e) => {
+    const files = Array.from(e.target.files)
+    this.setState({image:files[0]})
   }
 
 
@@ -44,7 +50,16 @@ class EditBookForm extends React.Component{
 
   handleSubmit = (event)=>{
     event.preventDefault();
-    this.props.dispatch(editBook(this.state.idBook,this.state.formData))
+    let formData = new FormData() 
+    formData.append('title', this.state.formData.title)
+    formData.append('description', this.state.formData.description)
+    formData.append('date_released', this.state.formData.date_released)
+    formData.append('genre_id', this.state.formData.genre_id)
+    
+    if (this.state.image !== undefined) {formData.append('image', this.state.image)}
+    else {formData.append('image', this.state.formData.image)}
+    
+    this.props.dispatch(editBook(this.state.idBook,formData))
       .then(()=>{
         this.setState({
           showModal:true,
@@ -97,10 +112,10 @@ class EditBookForm extends React.Component{
 
           <Form.Group as={Row} controlId="formPlaintextImageURL">
             <Form.Label column sm="2">
-            Image URL
+            Image
             </Form.Label>
             <Col sm="10">
-              <Form.Control value={this.state.formData.image} onChange={this.handleChange} type="text" name="image"  />
+              <Form.Control onChange={this.handleFile} type="file" name="image" placeholder="Image URL..."/>
             </Col>
           </Form.Group>
 

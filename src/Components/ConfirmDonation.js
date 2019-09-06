@@ -1,9 +1,9 @@
 import React, {Fragment} from 'react'
 import {Modal, Button, Container, Row} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {getBorrowingRequests,confirmBorrowingRequests, rejectBorrowingRequests} from '../Publics/Actions/borrowings';
+import {getDonationBooks, confirmBookDonation, deleteBook} from '../Publics/Actions/books';
 
-class ConfirmBorrowingPrompt extends React.Component{
+class ConfirmDonation extends React.Component{
   constructor(props){
     super(props)
     this.state = {
@@ -16,12 +16,12 @@ class ConfirmBorrowingPrompt extends React.Component{
   }
   
   handleConfirm = async (event) => {
-    await this.props.dispatch(confirmBorrowingRequests(this.props.borrowingData.id, this.props.borrowingData.book_id))
+    await this.props.dispatch(confirmBookDonation(this.props.bookData.id))
       .catch(() => {
         this.setState({
           showResponseModal:true,
           modalTitle:"Failed",
-          modalMessage:this.props.borrowing.errMessage
+          modalMessage:this.props.books.errMessage
         })
       })
     this.setState({
@@ -29,15 +29,15 @@ class ConfirmBorrowingPrompt extends React.Component{
       modalResponseTitle:"Success",
       modalResponseMessage:`Borrowing Confirmed`,
     })
-    this.props.dispatch(getBorrowingRequests())
+    this.props.dispatch(getDonationBooks())
   }
   handleReject = async (event) => {
-    await this.props.dispatch(rejectBorrowingRequests(this.props.borrowingData.id))
+    await this.props.dispatch(deleteBook(this.props.bookData.id))
       .catch(() => {
         this.setState({
           showResponseModal:true,
           modalTitle:"Failed",
-          modalMessage:this.props.borrowing.errMessage
+          modalMessage:this.props.books.errMessage
         })
       })
     this.setState({
@@ -45,8 +45,7 @@ class ConfirmBorrowingPrompt extends React.Component{
       modalResponseTitle:"Success",
       modalResponseMessage:`Request Rejected`,
     })
-    this.props.dispatch(getBorrowingRequests())
-
+    this.props.dispatch(getDonationBooks())
   }
 
   handleCloseResponse = ()=>{
@@ -72,7 +71,7 @@ class ConfirmBorrowingPrompt extends React.Component{
         >
           <Modal.Body>
             <Container className="deleteModalBody">
-              <Row><h3>Confirm borrowing of {this.props.borrowingData.title} by {this.props.borrowingData.username}</h3></Row>
+              <Row><h3>Confirm donation {this.props.bookData.title}</h3></Row>
               <Row><h4>Are you sure?</h4></Row>
               <Row className="deleteModalButtons">
                 <Button variant="secondary" onClick={() => {this.setState({showModal:false})}}>
@@ -108,7 +107,7 @@ class ConfirmBorrowingPrompt extends React.Component{
 }
 const mapStateToProps = state => {
   return {
-    borrowing: state.borrowing,
+    books: state.books,
   }
 }
-export default connect(mapStateToProps)(ConfirmBorrowingPrompt)
+export default connect(mapStateToProps)(ConfirmDonation)

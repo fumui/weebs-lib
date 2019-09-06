@@ -16,7 +16,9 @@ class AddBookModal extends React.Component{
           variant={this.props.variant || "light"} 
           size="lg"
           onClick={() => {this.setState({showModal:true})}}>
-          Add Book
+          {
+            this.props.user.userProfile.level === 'admin'?'Add Book': 'Donate Book'
+          }
         </Button>
         <Modal
           show={this.state.showModal}

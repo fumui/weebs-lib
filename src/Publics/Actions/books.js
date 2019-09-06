@@ -100,6 +100,30 @@ export const getNewestBooks = () => {
   }
 }
 
+export const getDonationBooks = () => {
+  return {
+    type:'GET_DONATION_BOOKS',
+    payload: Axios.get(`${process.env.REACT_APP_LOCAL_BACKEND_HOST}/books?availability=2`,{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}
+
+export const confirmBookDonation = (id) => {
+  return {
+    type:'CONFIRM_DONATION',
+    payload: Axios.patch(`${process.env.REACT_APP_LOCAL_BACKEND_HOST}/books/confirm/${id}`,null,{
+        headers:{
+          Authorization : window.localStorage.getItem("token")
+        }
+      }
+    )
+  }
+}
+
 export const setAvailability = (bookId,availability) => {
   return {
     type:'SET_BOOK_AVALIABILITY',
