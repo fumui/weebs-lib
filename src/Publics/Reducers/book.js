@@ -3,6 +3,7 @@ const initState = {
   yearsList:[],
   bookGenresList:[],
   popularBooksList:[],
+  donatedBooksList:[],
   page:undefined,
   errMessage:'',
   message:'',
@@ -184,6 +185,28 @@ const book = (state = initState, action)=>{
         isLoading:false,
         isFulfilled:true,
         popularBooksList: action.payload.data.data
+      }
+    case 'GET_DONATION_BOOKS_PENDING':
+      return{
+        ...state,
+        isLoading:true,
+        isRejected:false,
+        isFulfilled:false,
+      }
+    case 'GET_DONATION_BOOKS_REJECTED':
+      return{
+        ...state,
+        isLoading:false,
+        isRejected:true,
+        errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
+        donatedBooksList: []
+      }
+    case 'GET_DONATION_BOOKS_FULFILLED':
+      return{
+        ...state,
+        isLoading:false,
+        isFulfilled:true,
+        donatedBooksList: action.payload.data.data
       }
     case 'SET_BOOK_AVALIABILITY':
       let bookData = state.booksList.find((book)=>{return book.id === Number(action.payload.bookId)})

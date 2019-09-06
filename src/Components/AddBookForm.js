@@ -48,13 +48,15 @@ class AddBookForm extends React.Component{
 
   handleSubmit = (event) => {
     event.preventDefault();
+    let availability = this.props.user.userProfile.level === 'admin'? 1 : 2;
     let formData = new FormData() 
     formData.append('title', this.state.formData.title)
     formData.append('description', this.state.formData.description)
     formData.append('date_released', this.state.formData.date_released)
     formData.append('genre_id', this.state.formData.genre_id)
     formData.append('image', this.state.image)
-    console.log(formData);
+    formData.append('availability', availability)
+    
     this.props.dispatch(addBook(formData))
       .then(()=>{
         this.setState({
@@ -154,7 +156,8 @@ class AddBookForm extends React.Component{
 const mapStateToProps = state => {
   return{
     book: state.book,
-    genre: state.genre
+    genre: state.genre,
+    user: state.user
   }
 }
 export default connect(mapStateToProps)(AddBookForm)

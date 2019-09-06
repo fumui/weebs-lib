@@ -18,6 +18,7 @@ import {getProfile} from '../Publics/Actions/users';
 import AvailabilityDropdown from '../Components/AvailabilityDropdown';
 import BorrowingHistoryTable from '../Components/BorrowingHistoryTable';
 import BorrowingRequestTable from '../Components/BorrowingRequestTable';
+import BookDonationTable from '../Components/BookDonationTable';
 
 class Home extends React.Component{
   constructor(props){
@@ -80,7 +81,7 @@ class Home extends React.Component{
                   history={history} 
                   sortby={params.get("sortby")} 
                   search={params.get("search")} 
-                  dataSource={`${process.env.REACT_APP_LOCAL_BACKEND_HOST}/books`} 
+                  dataSource={`${process.env.REACT_APP_REMOTE_BACKEND_HOST}/books`} 
                   key={window.location.href + this.state} />
               </div>
             );
@@ -98,7 +99,7 @@ class Home extends React.Component{
                   history={history}
                   sortby={params.get("sortby")} 
                   search={params.get("search")} 
-                  dataSource={`${process.env.REACT_APP_LOCAL_BACKEND_HOST}/books`} 
+                  dataSource={`${process.env.REACT_APP_REMOTE_BACKEND_HOST}/books`} 
                   key={window.location.href} />
               </div>
             );
@@ -141,15 +142,33 @@ class Home extends React.Component{
           }} 
         />
         <Route 
+          path="/home/donations" 
+          exact={true}
+          render={({history}) => {
+            if(this.props.user.userProfile.level === 'admin' )
+              return(
+                <div>
+                  <BookDonationTable history={history} />
+                </div>
+              );
+            else 
+              return(
+                <div>
+                  Loading...
+                </div>
+              );
+          }} 
+        />
+        <Route 
           path="/home/genre/:genre" 
           component={(url) => {
-            return <BooksList dataSource={`${process.env.REACT_APP_LOCAL_BACKEND_HOST}/books/genre/${url.match.params.genre}`}/>;
+            return <BooksList dataSource={`${process.env.REACT_APP_REMOTE_BACKEND_HOST}/books/genre/${url.match.params.genre}`}/>;
           }} 
         />
         <Route 
           path="/home/year/:year" 
           component={(url) => {
-            return <BooksList dataSource={`${process.env.REACT_APP_LOCAL_BACKEND_HOST}/books/year/${url.match.params.year}`}/>;
+            return <BooksList dataSource={`${process.env.REACT_APP_REMOTE_BACKEND_HOST}/books/year/${url.match.params.year}`}/>;
           }} 
         />
       </div>

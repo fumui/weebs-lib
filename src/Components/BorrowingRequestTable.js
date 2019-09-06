@@ -44,7 +44,7 @@ class BorrowingHistoryTable extends React.Component{
           </tbody>
         </Table>
         :
-        <Alert variant='warning'>You haven't borrow any book yet</Alert>}
+        <Alert variant='warning'>No borrowing request</Alert>}
       </Container>
     )
   }

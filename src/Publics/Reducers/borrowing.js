@@ -108,6 +108,7 @@ const borrowing = (state = initState, action) => {
         ...state,
         isLoading:false,
         isRejected:true,
+        borrowingRequestsData:[],
         errMessage:action.payload.response ? action.payload.response.data.message : action.payload.message,
       }
     case 'GET_BORROWING_REQUESTS_FULFILLED':
