@@ -2,6 +2,7 @@ import React, {Fragment} from 'react'
 import {Modal, Button, Container, Row} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {getBorrowingRequests,confirmBorrowingRequests, rejectBorrowingRequests} from '../Publics/Actions/borrowings';
+import { setAvailability } from '../Publics/Actions/books';
 
 class ConfirmBorrowingPrompt extends React.Component{
   constructor(props){
@@ -29,6 +30,7 @@ class ConfirmBorrowingPrompt extends React.Component{
       modalResponseTitle:"Success",
       modalResponseMessage:`Borrowing Confirmed`,
     })
+    this.props.dispatch(setAvailability(this.props.borrowingData.book_id, 0))
     this.props.dispatch(getBorrowingRequests())
   }
   handleReject = async (event) => {
