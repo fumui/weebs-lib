@@ -12,6 +12,7 @@ import EditBookModal from '../Components/EditBookModal';
 import AddBorrowingModal from '../Components/AddBorrowingModal';
 import ReturnBookModal from '../Components/ReturnBookModal';
 import DeleteBookPrompt from '../Components/DeleteBookPrompt';
+import ConfirmDonation from '../Components/ConfirmDonation';
 
 class BookDetail extends React.Component{
   constructor(props){
@@ -103,7 +104,10 @@ class BookDetail extends React.Component{
             bookData.availability === 1 ?
               <AddBorrowingModal bookId={bookData.id} className="borrow-button" variant="warning" />
               :
-              <ReturnBookModal  bookId={bookData.id} className="borrow-button" variant="warning" readOnlyBookId={true}/>
+              bookData.availability === 0 ?
+                <ReturnBookModal  bookId={bookData.id} className="borrow-button" variant="warning" readOnlyBookId={true}/>
+                :
+                <ConfirmDonation bookData={bookData} className="borrow-button" variant="warning" />
           :
             bookData.availability === 1 ?
               <Button onClick = {()=>{this.handleRequest(bookData.id)}} className="borrow-button" variant="warning" >Request</Button>
