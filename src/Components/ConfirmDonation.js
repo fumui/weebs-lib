@@ -27,7 +27,7 @@ class ConfirmDonation extends React.Component{
     this.setState({
       showResponseModal:true,
       modalResponseTitle:"Success",
-      modalResponseMessage:`Borrowing Confirmed`,
+      modalResponseMessage:`Donation Confirmed`,
     })
     this.props.dispatch(getDonationBooks())
   }
