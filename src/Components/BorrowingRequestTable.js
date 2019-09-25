@@ -35,12 +35,24 @@ class BorrowingHistoryTable extends React.Component{
                     <td>{borrowing.book_id}</td>
                     <td>{borrowing.title}</td>
                     <td>{borrowing.username}</td>
-                    <td><Card body><ConfirmBorrowingPrompt borrowingData = {borrowing}/></Card></td>
-                    <td><Card body><Button style={{zIndex : 10}} variant="warning" onClick={()=>{this.props.history.push(`/book/${borrowing.book_id}`)}}>Book Details</Button></Card></td>
+                    <td>
+                      <Card style={{border:'none'}}>
+                        <Card.Body style={{padding:0}}>
+                          <ConfirmBorrowingPrompt borrowingData = {borrowing}/>
+                        </Card.Body>
+                      </Card>
+                    </td>
+                    <td>
+                      <Card style={{border:'none'}}>
+                        <Card.Body style={{padding:0}}>
+                          <Button variant="warning" onClick={()=>{this.props.history.push(`/book/${borrowing.book_id}`)}}>Book Details</Button>
+                        </Card.Body>
+                      </Card>
+                    </td>
                   </tr>
                   )
                 })
-              }:<tr><td></td></tr>
+              }
           </tbody>
         </Table>
         :

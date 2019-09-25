@@ -61,7 +61,7 @@ class ConfirmBorrowingPrompt extends React.Component{
         <Button 
           className= {this.props.className}
           variant={this.props.variant || "light"} 
-          size="lg"
+          size="md"
           onClick={() => {this.setState({showModal:true})}}>
           Confirm
         </Button>

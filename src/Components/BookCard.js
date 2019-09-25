@@ -25,10 +25,10 @@ class BookCard extends React.Component{
     const {description} = this.state
     return(
       <Card 
-        style={{ width: '25%',cursor:"pointer", margin: '3%'}} 
+        style={{ width: '29%',cursor:"pointer", margin: '2%', borderRadius: '0.25rem', boxShadow: '10px 10px 6px -2px rgba(112,112,112,0.7)'}} 
         onClick={() => {this.redirectToDetails()}}
       >
-        <figure>
+        <figure style={{ borderRadius: 'inherit', borderBottomLeftRadius: 0, borderBottomRightRadius:0 }}>
           <Card.Img variant="top" src={this.state.imgUrl} className="book-image"/>
           {this.state.availability === 1 ? <Badge variant="warning" className="availability-badge">Available</Badge>: <Badge variant="danger" className="availability-badge">Unavailable</Badge>}
         </figure>
