@@ -35,7 +35,7 @@ class PopularBookCarousel extends React.Component{
                 alt={book.title}
               />
               </figure>
-              <Carousel.Caption bsPrefix='carousel-caption' className="book-carousel-caption">
+              <Carousel.Caption style={{bottom:0}} className="book-carousel-caption">
                 <h3>{book.title}</h3>
               </Carousel.Caption>
             </Carousel.Item>
